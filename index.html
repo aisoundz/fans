@@ -714,7 +714,7 @@ body.nonotes .q-why{display:none}
 
   <div class="demo">
     <div class="demo-lab">
-      <span>Demo &mdash; you are the show clock</span>
+      <span id="dbar">Demo &mdash; you are the show clock</span>
       <button id="notesBtn" onclick="toggleNotes()">Designer notes</button>
     </div>
     <div class="demo-row">
@@ -769,7 +769,7 @@ body.nonotes .q-why{display:none}
       </div>
     </div>
 
-    <div>
+    <div id="pickerBlock">
       <div class="eyebrow" style="margin-bottom:9px">Pick a room &middot; three scales</div>
       <div class="rail" id="rail"></div>
       <p class="lede" style="margin-top:11px">An arena night has five Gametimes because it has a support act, a costume change and an encore. A 250-cap club has none of those &mdash; so it gets three, and it asks things an arena physically cannot.</p>
@@ -786,7 +786,7 @@ body.nonotes .q-why{display:none}
       <div id="setlist" style="margin-top:13px;display:flex;flex-direction:column;gap:5px"></div>
     </div>
 
-    <div class="dsp">
+    <div class="dsp" id="dspBlock">
       <div class="hd"><span class="t">On Repeat</span><span class="pill">Spotify &middot; connected</span></div>
       <p class="lede">The half of the product that is not at the venue. Between tracks, while you are already listening, we ask you one thing about the show you went to.</p>
       <div class="track"><div class="art"></div>
@@ -806,12 +806,12 @@ body.nonotes .q-why{display:none}
   <!-- ================= BOARD ================= -->
   <section class="screen" id="s-board">
     <div class="card">
-      <div class="eyebrow gel">Kia Forum &middot; tonight</div>
+      <div class="eyebrow gel" id="bEyebrow">Kia Forum &middot; tonight</div>
       <h2 class="sec" style="margin:7px 0 4px">The room</h2>
       <p class="lede">One board per show. It resets at the door, so the person who has been to forty shows starts level with the person at their first.</p>
-      <div class="rows" id="board" style="margin-top:13px"></div><div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line3)"><div class="eyebrow" style="color:var(--cyan)">The building</div><p class="lede" style="margin-top:6px">Every section is scoring against every other section. Yours is lit.</p><div id="bowl"></div></div>
+      <div class="rows" id="board" style="margin-top:13px"></div><div id="bowlBlock" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line3)"><div class="eyebrow" style="color:var(--cyan)">The building</div><p class="lede" style="margin-top:6px">Every section is scoring against every other section. Yours is lit.</p><div id="bowl"></div></div>
     </div>
-    <div class="card">
+    <div class="card" id="prizeCard">
       <div class="eyebrow" style="color:var(--amb)">What the artist put up</div>
       <h2 class="sec" style="margin:7px 0 11px">Tonight's prizes</h2>
       <div style="display:flex;flex-direction:column;gap:8px">
@@ -825,7 +825,7 @@ body.nonotes .q-why{display:none}
           <div class="d">Everyone who clears 60 walks to the stand with 20% in their hand. This is the one that pays for itself before you leave the building.</div></div></div>
       </div>
     </div>
-    <div class="card">
+    <div class="card" id="tourCard">
       <div class="eyebrow" style="color:var(--cyan)">Your tour</div>
       <h2 class="sec" style="margin:7px 0 4px">Six shows, one season</h2>
       <p class="lede">A show is worth at most 100, however many rooms you open. Best room of the night is the one that counts &mdash; so going to a show beats farming a feed.</p>
@@ -1316,11 +1316,50 @@ function computeCeiling(){ var t=0;
   return t; }
 
 function paintShow(){
+  /* On a real artist's link this is not a demo of anything — it is their
+     show, and the banner should say so. */
+  var db=$('dbar');
+  if(db) db.innerHTML = SHOW.real
+    ? esc(SHOW.act)+' &mdash; you set the pace'
+    : 'Demo &mdash; you are the show clock';
+  /* The board's eyebrow is the venue you are actually in. */
+  var be=$('bEyebrow');
+  if(be) be.innerHTML = esc(SHOW.venue)+' &middot; tonight';
+  /* ON REPEAT IS A LISTENING HISTORY WE DO NOT HAVE. On a demo act it is
+     a fair illustration of the between-shows half; on a real artist's link
+     it is two invented play counts under their own name. */
+  var dsp=$('dspBlock');
+  if(dsp) dsp.style.display = SHOW.real ? 'none' : '';
+  /* AN ARTIST'S LINK IS ABOUT THEIR SHOW. The room picker exists to prove
+     a club is not a small arena; on a real night it offers an artist's own
+     audience three other acts to go and play instead. */
+  var pb=$('pickerBlock');
+  if(pb) pb.style.display = SHOW.real ? 'none' : '';
+  /* THE PRIZES ARE THE ARTIST'S TO SET, AND ON A REAL LINK THEY HAVE NOT
+     SET THEM YET — the reward is deliberately deferred to the last moment.
+     Listing a soundcheck pass and an LED wall the artist never agreed to
+     is the app making a promise on their behalf to their own audience. */
+  var pz=$('prizeCard');
+  if(pz){
+    if(SHOW.real){
+      pz.innerHTML='<div class="eyebrow" style="color:var(--amb)">What the artist put up</div>'
+        +'<h2 class="sec" style="margin:7px 0 11px">'+esc(SHOW.act)+' decides</h2>'
+        +'<p class="lede">Nothing is promised here that the band has not promised. '
+        +'They can set tonight\'s reward any time before the house lights &mdash; '
+        +'the setlist off the wedge, a merch code, first shout on the next city. '
+        +'Play the night; they will tell you.</p>';
+    }
+  }
   document.documentElement.style.setProperty('--gel-a',SHOW.gelA);
   document.documentElement.style.setProperty('--gel-b',SHOW.gelB);
   $('mAct').textContent=SHOW.act; $('hAct').textContent=SHOW.act;
-  $('hWho').innerHTML=esc(SHOW.venue)+' · '+seatLabel()+' · <span id="hPos">7th</span> of <span id="hIn">'
-    +playing()+'</span>';
+  /* A REAL SHOW HAS NO STANDINGS. There is no server counting the room,
+     so "9th of 90" would be two invented numbers in the artist's own
+     header. Their venue and their night, and nothing we did not measure. */
+  $('hWho').innerHTML = SHOW.real
+    ? esc(SHOW.venue)+' &middot; tonight'
+    : esc(SHOW.venue)+' · '+seatLabel()+' · <span id="hPos">7th</span> of <span id="hIn">'
+      +playing()+'</span>';
   $('mVen').textContent=SHOW.venue+" · "+SHOW.city;
   $('mWhen').textContent = SHOW.demo
     ? 'Tonight · '+SHOW.scale.split(' · ')[0].toLowerCase()+' · doors 8:00'
@@ -1481,7 +1520,7 @@ function renderHud(){
   var el=$('hStreak');
   el.textContent=(S.streak>=2?'◆ ':'● ')+S.streak+(mult()>1?' ×'+mult():'');
   el.className='st'+(S.streak>=5?' blaze':(S.streak>=2?' hot':''));
-  $('hPos').textContent=ord(pos());
+  var hp=$('hPos'); if(hp) hp.textContent=ord(pos());
   $('hPts').textContent=S.pts;
   var open=S.sealed.filter(function(x){return !x.done});
   var tray=$('tray');
@@ -1596,7 +1635,9 @@ function renderQ(){
    +'</svg><div class="t" id="ringT">'+win+'</div></div>'
    +'<div class="worth"><div class="v" id="worthV">'+(g.worth*BASE)+'</div>'
    +'<div class="l">points · falling'+(mult()>1?' · ×'+mult()+' live':'')+'</div></div>'
-   +'<div class="here"><div class="v">'+playing()+'</div><div class="l">answering<br>with you</div></div></div>'
+   +(showsCrowd()
+      ? '<div class="here"><div class="v">'+playing()+'</div><div class="l">answering<br>with you</div></div>'
+      : '')+'</div>'
    +'<div class="qtag">'+esc(q.k)+(q.look?' · tap the one you saw':'')+'</div>'
    +'<h2 class="qbig">'+esc(q.t)+'</h2>'
    +'<div class="tiles'+(q.o.length>3||q.look?'':' one')+'" id="tiles">'+tiles+'</div>'
@@ -1712,13 +1753,14 @@ function answer(idx){
   }
   var w=$('worthV'); if(w){ w.classList.add('stamp'); w.textContent=(ok?'+':'')+raw; }
 
-  /* 180ms — the room starts answering with you, and nothing resolves yet */
-  var sp=split(q);
+  /* 180ms — the room starts answering with you, and nothing resolves yet.
+     On a real artist's show there is no room being counted, so the bar
+     never draws and the beat is held on the tiles alone. */
+  var sp=showsCrowd()?split(q):null;
   setTimeout(function(){
     for(var i=0;i<q.o.length;i++){
       var c=$('c'+i), p=$('p'+i), t=$('t'+i);
-      if(c) c.style.width=sp[i]+'%';
-      if(p) p.textContent=sp[i]+'%';
+      if(sp){ if(c) c.style.width=sp[i]+'%'; if(p) p.textContent=sp[i]+'%'; }
       if(t) t.classList.add('shown');
     }
   },180);
@@ -1741,15 +1783,17 @@ function answer(idx){
 
   /* 720ms — six words, not a paragraph */
   setTimeout(function(){
-    var sec=sectionPct(q);
+    var sec=showsCrowd()?sectionPct(q):0;
     $('after').innerHTML=
       '<div class="verdict '+(ok?'good':'bad')+'">'
       +'<div class="m">'+(ok?'✓':(timedOut?'⏱':'✕'))+'</div>'
       +'<div class="x">'+(ok?('+'+earned+(m>1?'  ·  '+raw+' ×'+m+' streak':''))
          :(timedOut?'Out of time':(q.mode==='room'?'The room went the other way':'It was '+esc(q.a))))
-      +'<small>'+(q.mode==='room'
+      +'<small>'+(!sp
+         ? 'worth '+raw+' at '+esc(GAPS[S.gap].t.toLowerCase())+' · your score is yours alone tonight'
+         : (q.mode==='room'
          ? sp[ai]+'% of this room said '+esc(q.o[ai])+' · you are '+(ok?'with':'against')+' the building'
-         : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.broadcast?'your area':(SHOW.demo?'the front':'section 214')))+'</small></div></div>'
+         : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.broadcast?'your area':(SHOW.demo?'the front':'section 214'))))+'</small></div></div>'
       +'<div class="reax">'+esc(q.r||'')+'</div>'
       +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
     /* AN EXPLICIT WAY FORWARD, ALONGSIDE THE AUTO-ADVANCE.
@@ -1838,13 +1882,13 @@ function seal(idx){
   var w=$('worthV'); if(w){ w.textContent='HELD'; w.classList.add('held'); }
 
   /* The room's split shows, but labelled as SENTIMENT, not truth. No tick,
-     no cross, nothing green, nothing red. */
-  var sp=split(q);
+     no cross, nothing green, nothing red — and nothing at all when there
+     is no room being counted. */
+  var sp=showsCrowd()?split(q):null;
   setTimeout(function(){
     for(var i=0;i<q.o.length;i++){
       var c=$('c'+i), p=$('p'+i), t=$('t'+i);
-      if(c) c.style.width=sp[i]+'%';
-      if(p) p.textContent=sp[i]+'%';
+      if(sp){ if(c) c.style.width=sp[i]+'%'; if(p) p.textContent=sp[i]+'%'; }
       if(t) t.classList.add('shown');
     }
   },180);
@@ -1855,7 +1899,7 @@ function seal(idx){
     var land=GAPS[q.settles];
     $('after').innerHTML='<div class="verdict held"><div class="m">◆</div>'
       +'<div class="x">'+esc(q.lock||'Sealed.')
-      +'<small>'+sp[idx]+'% of this room is with you · worth '+worthNow()
+      +'<small>'+(sp?sp[idx]+'% of this room is with you · ':'')+'worth '+worthNow()
       +' now, '+Math.round(land.worth*BASE)+' when it lands</small></div></div>'
       +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
     var lastQ=S.qi+1>=g.q.length;
@@ -1890,7 +1934,7 @@ function renderSettle(){
   var mins=Math.max(1,Math.round((Date.now()-it.at)/60000));
   var held=Math.max(1,Math.min(3,S.gap-it.gap));      /* the hold bonus */
   var pay=ok?Math.round(GAPS[S.gap].worth*BASE*held):0;
-  var sp=split(q), roomPct=sp[q.o.indexOf(q.a)];
+  var roomPct=showsCrowd()?split(q)[q.o.indexOf(q.a)]:null;
   wash('set');
   $('stage').innerHTML='<div class="settle" id="settleCard">'
    +'<div class="slab">Sealed at '+esc(GAPS[it.gap].t.toLowerCase())+' · settling now</div>'
@@ -1908,7 +1952,8 @@ function renderSettle(){
     f.className='flip squash '+(ok?'ok':'no');
     f.innerHTML='<div class="ql">'+(ok?'Called it':'It was')+'</div>'
       +'<div class="pick">'+esc(q.a)+'</div>'
-      +'<div class="ago">'+roomPct+'% of the building had it</div>';
+      +'<div class="ago">'+(roomPct!==null?roomPct+'% of the building had it'
+            :'sealed '+mins+' minute'+(mins===1?'':'s')+' ago')+'</div>';
     requestAnimationFrame(function(){ f.classList.remove('squash'); });
   },1250);
   setTimeout(function(){
@@ -2081,6 +2126,27 @@ function bowlHtml(){
 }
 function renderBoard(){
   var mine=S.pts;
+  /* THERE ARE NO OTHER PEOPLE ON A REAL SHOW'S BOARD, because nothing is
+     counting them. Four invented usernames with invented scores in
+     invented sections is a fabricated audience, shown to an artist's own
+     fans, on their own night. One honest row instead, and a sentence
+     saying plainly what is missing and why. */
+  if(SHOW.real){
+    $('board').innerHTML =
+      '<div class="row me"><span class="pos">&mdash;</span>'
+      +'<div class="nm">YOU<small>this phone &middot; '+esc(SHOW.venue)+'</small></div>'
+      +'<div style="text-align:right"><span class="sc">'+mine+'</span></div></div>'
+      +'<div style="padding:14px 2px 2px;font-size:13px;line-height:1.5;color:var(--dim)">'
+      +'Your score lives on this phone tonight. There is no shared board yet &mdash; '
+      +'that needs a server, and we would rather show you nothing than show you people who are not here.</div>';
+    var bw=$('bowl'); if(bw) bw.innerHTML='';
+    /* The section heat map and the six-show season are both records of
+       people and nights that do not exist on this link. */
+    var bb=$('bowlBlock'); if(bb) bb.style.display='none';
+    var tc=$('tourCard');  if(tc) tc.style.display='none';
+    var sn=$('seasNow'); if(sn) sn.textContent=Math.round(S.earned/CEILING*100);
+    return;
+  }
   var rows=[{n:'marisol_87',s:Math.max(120,mine+64),t:'Section 112'},
             {n:'pea_since_03',s:Math.max(90,mine-28),t:'Floor GA'},
             {n:'YOU',s:mine,t:'Section 214 · carried in '+S.carry,me:true},
@@ -2174,8 +2240,136 @@ function tick(){
   else { CEL.parts.length=0; try{ctx.clearRect(0,0,Wd,H)}catch(e){} }
 }
 
+
+/* ==================================================================
+   A REAL ARTIST'S REAL SHOW, OFF A LINK
+   ------------------------------------------------------------------
+   The four rooms above are hand-built documents. This builds the same
+   document from three facts an artist already has in their phone —
+   who they are, where they are, and the running order — and the whole
+   engine below never learns the difference. Same shape, one renderer,
+   one grader. A wizard that emitted anything else would be the wizard
+   that is wrong, not the app.
+
+   THE HARD RULE HERE: every question this writes is graded against
+   the artist's own setlist and NOTHING ELSE. There is no live count
+   of submissions on a static site, so a generated show carries no
+   room questions and prints no crowd percentages. Showing a real
+   fan "68% of the building had it" when there is no building being
+   counted is inventing a number in front of the artist's own
+   audience, and that is the one thing this shop does not do.
+   ================================================================== */
+function makeShow(act, venue, set){
+  act = String(act||'').trim().slice(0,40) || 'Tonight';
+  venue = String(venue||'').trim().slice(0,40) || 'The show';
+  set = (set||[]).map(function(x){ return String(x).trim().slice(0,60); })
+                 .filter(function(x){ return x.length; }).slice(0,24);
+  if(set.length < 3) return null;          /* three songs is the floor */
+
+  /* The palette is stage lighting, not brand colour — but an artist at
+     load-in is not picking hexes, so the two gels come off their name
+     and are at least consistently theirs every night. */
+  var h = hash(act);
+  var a = 'hsl('+(h%360)+',82%,64%)', b = 'hsl('+((h>>8)%360)+',72%,58%)';
+
+  var n = set.length, mid = Math.max(1, Math.floor(n/2)), last = set[n-1];
+  function four(must, pool){
+    var out=[must], i;
+    for(i=0;i<pool.length && out.length<4;i++) if(pool[i]!==must) out.push(pool[i]);
+    var k = hash(must) % out.length;                 /* answer not always first */
+    return out.slice(k).concat(out.slice(0,k));
+  }
+  function band(){
+    if(n<=5)  return ['4 or fewer','5','6','7 or more'];
+    if(n<=8)  return ['5 or fewer','6 to 8','9 to 11','12 or more'];
+    return ['8 or fewer','9 to 11','12 to 15','16 or more'];
+  }
+  function bandOf(c){
+    var B=band(), i, lo;
+    for(i=0;i<B.length;i++){
+      if(/or fewer/.test(B[i])){ if(c<=parseInt(B[i],10)) return B[i]; }
+      else if(/or more/.test(B[i])){ if(c>=parseInt(B[i],10)) return B[i]; }
+      else if(/to/.test(B[i])){ var m=B[i].match(/(\d+) to (\d+)/); if(c>=+m[1]&&c<=+m[2]) return B[i]; }
+      else if(c===parseInt(B[i],10)) return B[i];
+    }
+    return B[B.length-1];
+  }
+
+  var gaps = [
+   {n:"Gametime 01", t:"Soundcheck", when:"Doors open · nothing on stage yet",
+    sub:"Nothing on stage yet. Seal your calls now — they pay out later, at the rate of the gametime they land in.",
+    worth:1, songsDone:0, mins:"before the set", q:[
+      {k:"Predict", mode:"predict", settles:1, win:30, t:"What do they open with?",
+       o:four(set[0], set), a:set[0],
+       lock:"Sealed. Settles when they're off.", r:"Song one. You had it.",
+       w:"The question everybody in the room has an opinion about, and the only one that has to be sealed rather than graded — because at doors it cannot possibly be known yet."},
+      {k:"Predict", mode:"predict", settles:2, win:30, t:"How many songs tonight?",
+       o:band(), a:bandOf(n),
+       lock:"Sealed until the lights come up.", r:"That was the count.",
+       w:"A range, not a number, because you are guessing at a set you have not seen. It settles at the very end, which is what keeps a phone out at the walk-up."},
+      {k:"Predict", mode:"predict", settles:2, win:30, t:"What do they close with?",
+       o:four(last, set), a:last,
+       lock:"Sealed. The long one.", r:"That was the last one.",
+       w:"Sealed at the cheapest gametime and settled at the dearest, which is the whole arithmetic of the product in a single card."}
+    ]},
+   {n:"Gametime 02", t:"The Bridge", when:"Mid-set · the stage is empty",
+    sub:"They are off and the room is talking. This is about the half of the show you just watched.",
+    worth:3, songsDone:mid, mins:"the break", q:[
+      {k:"Recall", mode:"recall", t:"Which came first — "+set[0]+" or "+set[1]+"?",
+       o:[set[1], set[0]], a:set[0],
+       r:"That opened it.",
+       w:"Set order is the fact that changes night to night, so it can only be answered by somebody who was actually here."},
+      {k:"Recall", mode:"recall", t:"What was song "+(mid>1?mid:2)+"?",
+       o:four(set[(mid>1?mid:2)-1], set), a:set[(mid>1?mid:2)-1],
+       r:"That was it.",
+       w:"Asked while the memory is still hot, which is the entire mechanism the recall case rests on."}
+    ]},
+   {n:"Gametime 03", t:"The Outro", when:"House lights · on the way out",
+    sub:"That's the show. Last calls settle now, and this one is worth five times what Soundcheck was.",
+    worth:5, songsDone:n, mins:"the walk out", q:[
+      {k:"Recall", mode:"recall", t:"What closed it?",
+       o:four(last, set), a:last,
+       r:"Four minutes ago.",
+       w:"Asked before the walk to the car overwrites it — the peak-end rule, used deliberately."},
+      {k:"Recall", mode:"recall", t:"Which came later — "+set[n-2]+" or "+set[n-3]+"?",
+       o:[set[n-3], set[n-2]], a:set[n-2],
+       r:"That one ran later.",
+       w:"The end of a set blurs faster than the start, so this is the hardest honest question in the file."}
+    ]}
+  ];
+  if(n < 6) gaps[1].q.pop();               /* a short set has less to recall */
+
+  return { act:act, venue:venue, city:"tonight", scale:"Live · "+n+" songs",
+           gelA:a, gelB:b, cap:"in the room", demo:true, real:true,
+           set:set, gaps:gaps };
+}
+
+/* THE CROWD IS ONLY SHOWN WHERE A CROWD IS BEING COUNTED. One owner,
+   because the alternative is three copies of the same judgement and
+   this file already has thirteen numbered bugs of exactly that shape. */
+function showsCrowd(){ return !(SHOW && SHOW.real); }
+
+/* ---- the link ---------------------------------------------------
+   The show travels in the URL, because there is no server to keep it
+   in. Encode is in advance.html; this is the only decoder. */
+function b64uDecode(t){
+  t = String(t).replace(/-/g,'+').replace(/_/g,'/');
+  while(t.length % 4) t += '=';
+  return decodeURIComponent(escape(atob(t)));
+}
+function showFromUrl(){
+  try{
+    var m = location.search.match(/[?&]s=([^&]+)/);
+    if(!m) return null;
+    var o = JSON.parse(b64uDecode(decodeURIComponent(m[1])));
+    return makeShow(o.a, o.v, o.s);
+  }catch(e){ return null; }
+}
+
 /* ====================== BOOT ====================================== */
-loadShow(0);
+var URLSHOW = showFromUrl();
+if(URLSHOW){ SHOWS.unshift(URLSHOW); loadShow(0); }
+else loadShow(0);
 /* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
    thing it was counting down to. */
 var T=862;

@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Advance · Fans Gametime</title>
+<meta name="description" content="Turn tonight's show into a game your room can play. Three facts, one link.">
+<meta name="theme-color" content="#06060b">
+<link rel="icon" href="icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Figtree:wght@400;500;600;800&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+/* ======================================================================
+   THE ADVANCE — the artist's side. The real music-industry word for the
+   paperwork you send ahead of a show, which is exactly what this is.
+
+   Built for a person standing in a load-in doorway with one hand free.
+   Single-theme dark: the room is dark and a white screen held up in it is
+   the behaviour that gets phones banned.
+
+   VOICE FOR THE COARSE PASS, THUMB FOR THE FINE PASS. Who and where are
+   spoken. The setlist is typed or pasted, because a misheard song title
+   becomes a question that grades a real fan wrong in front of a real
+   artist, and that is not a trade worth making for four saved seconds.
+   ====================================================================== */
+:root{
+  --house:#06060b; --deck:#0e0c17; --card:#191325; --card2:#241c37;
+  --line:rgba(255,255,255,.11); --line2:rgba(255,255,255,.06);
+  --ink:#f1ecf8; --dim:#a99bc2; --dimmer:#7a6d94;
+  --mag:#ff3d9a; --amb:#ffb545; --cyan:#35e0e8; --green:#2fe6a0; --red:#ff4d5e;
+  --disp:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--house); color:var(--ink); font-family:var(--body);
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+  background-image:
+    radial-gradient(700px 420px at 50% -10%, rgba(255,61,154,.18), transparent 64%),
+    radial-gradient(600px 400px at 10% 100%, rgba(124,92,255,.14), transparent 62%);
+  background-attachment:fixed;
+  padding:max(18px,env(safe-area-inset-top)) 18px max(28px,env(safe-area-inset-bottom));
+}
+.app{max-width:440px; margin:0 auto; display:flex; flex-direction:column; min-height:calc(100vh - 60px)}
+h1,h2,h3{font-family:var(--disp); margin:0; line-height:.97; text-transform:uppercase; text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--amb); outline-offset:3px}
+
+/* ---- head ---- */
+.brand{display:flex; align-items:center; gap:9px; margin-bottom:20px}
+.brand .bars{display:flex; gap:2.5px; align-items:flex-end}
+.brand .bars i{width:3.5px;height:11px;background:var(--dimmer);border-radius:1px;display:block}
+.brand .bars i.lit{background:var(--amb);height:18px;box-shadow:0 0 9px rgba(255,181,69,.6)}
+.brand span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dimmer)}
+.step{flex:1; display:flex; flex-direction:column}
+h1{font-size:clamp(38px,11vw,52px); font-weight:900; color:#fff; margin-bottom:7px}
+.sub{font-size:14.5px; color:var(--dim); line-height:1.5; margin-bottom:20px}
+.sub b{color:#e6ddf5}
+
+/* ---- progress ---- */
+.prog{display:flex; gap:4px; margin-bottom:22px}
+.prog i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.10)}
+.prog i.on{background:var(--amb); box-shadow:0 0 8px rgba(255,181,69,.6)}
+.prog i.done{background:var(--dimmer)}
+
+/* ---- mic ---- */
+.micwrap{display:flex;flex-direction:column;align-items:center;gap:16px;margin:6px 0 18px}
+.micbtn{width:120px;height:120px;border-radius:50%;position:relative;display:flex;
+  align-items:center;justify-content:center;border:1px solid rgba(53,224,232,.5);
+  background:rgba(53,224,232,.09);transition:background .2s,border-color .2s}
+.micbtn.live{background:rgba(255,61,154,.17);border-color:rgba(255,61,154,.72)}
+.micbtn .pr{position:absolute;inset:-9px;border-radius:50%;border:1px solid rgba(255,61,154,.5);opacity:0}
+.micbtn.live .pr{animation:pulse 1.5s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.94);opacity:.7}100%{transform:scale(1.2);opacity:0}}
+.wave{display:flex;align-items:center;gap:4px;height:42px}
+.wave i{display:block;width:5px;border-radius:3px;background:var(--cyan);height:9px;transition:height .09s}
+.micbtn.live .wave i{background:var(--mag)}
+.hint{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--dim);text-align:center;line-height:1.9}
+.hint em{color:var(--amb);font-style:normal}
+
+/* ---- fields ---- */
+.f{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.f label{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dimmer)}
+.f input,.f textarea{
+  width:100%;background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:13px;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;
+  -webkit-appearance:none;
+}
+.f textarea{font-family:var(--mono);font-size:14px;line-height:1.95;min-height:210px;resize:vertical}
+.f input:focus,.f textarea:focus{border-color:rgba(255,181,69,.6);outline:none}
+.f .note{font-size:12px;color:var(--dimmer);line-height:1.45}
+
+/* ---- buttons ---- */
+.btn{display:block;width:100%;text-align:center;border-radius:4px;padding:16px;
+  font-family:var(--disp);font-weight:900;text-transform:uppercase;font-size:25px;line-height:1;
+  border:1px solid rgba(47,230,160,.55);background:rgba(47,230,160,.14);color:var(--green);
+  transition:transform .12s,opacity .2s}
+.btn:active{transform:scale(.985)}
+.btn small{display:block;font-family:var(--mono);font-size:9px;font-weight:600;
+  letter-spacing:.15em;margin-top:7px;color:var(--dim)}
+.btn.amber{border-color:rgba(255,181,69,.55);background:rgba(255,181,69,.13);color:var(--amb)}
+.btn.ghost{border-color:var(--line);background:transparent;color:var(--dim);font-size:16px;padding:12px}
+.btn[disabled]{opacity:.32;cursor:default}
+.link{display:block;width:100%;text-align:center;font-family:var(--mono);font-size:10px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--dimmer);margin-top:12px;
+  text-decoration:underline;text-underline-offset:3px}
+.bot{margin-top:auto;padding-top:18px}
+
+/* ---- generated preview ---- */
+.gen{border:1px dashed rgba(47,230,160,.42);background:rgba(47,230,160,.055);
+  border-radius:3px;padding:13px;margin-bottom:14px}
+.gen .h{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.gen .h b{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.gen ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.gen li{font-size:13px;color:#dcd3ec;line-height:1.4;display:flex;gap:9px}
+.gen li i{font-family:var(--mono);font-style:normal;font-size:8.5px;letter-spacing:.08em;
+  color:var(--dimmer);flex:0 0 44px;padding-top:3px;text-transform:uppercase}
+
+/* ---- the link out ---- */
+.out{background:var(--card);border:1px solid rgba(255,181,69,.4);border-radius:4px;
+  padding:18px 15px;text-align:center;margin-bottom:14px}
+.out .k{font-family:var(--mono);font-size:9px;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--amb);margin-bottom:11px}
+.out .u{font-family:var(--mono);font-size:11px;line-height:1.6;color:#ded5ec;
+  word-break:break-all;background:var(--house);border:1px solid var(--line);
+  border-radius:3px;padding:11px;text-align:left;max-height:96px;overflow:auto}
+.out .cw{font-family:var(--disp);font-size:29px;font-weight:900;color:#fff;margin:4px 0 12px;line-height:1}
+.warn{border-left:2px solid var(--amb);background:rgba(255,181,69,.06);padding:12px 14px;
+  font-size:13px;line-height:1.5;color:#ded5ec;margin-bottom:14px}
+.warn b{font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--amb);display:block;margin-bottom:5px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:9;
+  background:var(--green);color:#04140d;font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;padding:11px 18px;border-radius:3px;
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="brand">
+    <span class="bars"><i></i><i class="lit"></i><i></i><i></i></span>
+    <span>The Advance · Fans Gametime</span>
+  </div>
+  <div class="prog" id="prog"><i class="on"></i><i></i><i></i></div>
+  <div class="step" id="step"></div>
+</div>
+<div class="toast" id="toast">Copied</div>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+
+var A={step:0, act:'', venue:'', set:[], listening:false, heard:''};
+
+/* ---- who and where, spoken -------------------------------------- */
+function parseWhoWhere(t){
+  var s=' '+t.toLowerCase().replace(/[,.!?]/g,' ').replace(/\s+/g,' ')+' ', o={};
+  var m=s.match(/^\s*(.+?)\s+at\s+(.+?)(?:\s+tonight)?\s*$/);
+  if(m){ o.act=tc(m[1]); o.venue=tc(m[2]); return o; }
+  var v=s.match(/\bat\s+(.+?)(?:\s+tonight)?\s*$/);
+  if(v){ o.venue=tc(v[1]); o.act=tc(s.replace(v[0],'').trim()); }
+  else o.act=tc(s.trim());
+  return o;
+}
+function tc(s){ return String(s).trim().replace(/\b[a-z]/g,function(m){return m.toUpperCase()}); }
+
+/* ---- render ------------------------------------------------------ */
+function prog(){
+  var p=$('prog').children;
+  for(var i=0;i<3;i++) p[i].className = i<A.step?'done':(i===A.step?'on':'');
+}
+function render(){
+  prog();
+  var el=$('step');
+  if(A.step===0) el.innerHTML=scr0();
+  else if(A.step===1) el.innerHTML=scr1();
+  else el.innerHTML=scr2();
+  if(A.step===0){ $('fAct').value=A.act; $('fVen').value=A.venue; }
+  if(A.step===1){ $('fSet').value=A.set.join('\n'); }
+}
+
+function scr0(){
+  var bars=''; for(var i=0;i<5;i++) bars+='<i></i>';
+  return '<h1>Who, and where</h1>'+
+  '<p class="sub">Hold the mic and say it — <b>"Wednesday Static at The Echo tonight."</b> Or type it. Takes about eight seconds either way.</p>'+
+  '<div class="micwrap">'+
+    '<button class="micbtn'+(A.listening?' live':'')+'" id="mic" aria-label="Hold to talk">'+
+      '<span class="pr"></span><span class="wave" id="wave">'+bars+'</span></button>'+
+    '<p class="hint" id="hint">'+(A.listening?'Listening… let go when done':'Hold to talk')+'</p>'+
+  '</div>'+
+  '<div class="f"><label for="fAct">Act</label><input id="fAct" placeholder="Your name" '+
+    'autocomplete="off" autocapitalize="words" oninput="__set(\'act\',this.value)"></div>'+
+  '<div class="f"><label for="fVen">Venue</label><input id="fVen" placeholder="The room you\'re in tonight" '+
+    'autocomplete="off" autocapitalize="words" oninput="__set(\'venue\',this.value)"></div>'+
+  '<div class="bot"><button class="btn" id="n0" onclick="__next()">Next<small>the running order</small></button></div>';
+}
+
+function scr1(){
+  return '<h1>The running order</h1>'+
+  '<p class="sub">One song a line, in the order you\'ll play it. <b>Paste it if you\'ve already got it.</b> Three songs minimum — every question is graded against this and nothing else, so get the order right.</p>'+
+  '<div class="f"><label for="fSet">Setlist</label>'+
+    '<textarea id="fSet" placeholder="Sirens on Sunset&#10;Nothing Doing&#10;Hold Still&#10;Paper Radio&#10;Cassette 94&#10;Static" '+
+    'autocapitalize="words" spellcheck="false" oninput="__setlist(this.value)"></textarea>'+
+    '<p class="note" id="cnt">0 songs</p></div>'+
+  '<div class="bot"><button class="btn" id="n1" onclick="__next()">Write the questions<small>3 gametimes</small></button>'+
+  '<button class="link" onclick="__back()">back</button></div>';
+}
+
+function scr2(){
+  var url=buildUrl(), qs=preview();
+  var li='';
+  qs.forEach(function(q){ li+='<li><i>'+esc(q[0])+'</i>'+esc(q[1])+'</li>'; });
+  return '<h1>Send it out</h1>'+
+  '<p class="sub">This link <b>is</b> the show. Anyone who opens it plays your set, tonight, free. Post it to your story before you go on.</p>'+
+  '<div class="gen"><div class="h"><b></b>'+qs.length+' questions, all graded off your setlist</div><ul>'+li+'</ul></div>'+
+  '<div class="out"><div class="k">Your link is ready</div>'+
+    '<div class="cw">'+esc(A.act)+'</div>'+
+    '<div class="u" id="url" data-full="'+esc(url)+'">'+esc(shortUrl(url))+'</div>'+
+    '<p class="note" style="margin-top:9px;text-align:center">It is a long one &mdash; '+
+    'the whole setlist rides inside it. Use Share or Copy, never type it.</p></div>'+
+  '<button class="btn amber" onclick="__share()" style="margin-bottom:9px">Share it<small>story, text, group chat</small></button>'+
+  '<button class="btn ghost" onclick="__copy()" style="margin-bottom:14px">Copy link</button>'+
+  '<div class="warn"><b>What this does and doesn\'t do tonight</b>'+
+    'Every question grades for real off your setlist, and each fan keeps their own score on their own phone. '+
+    'There is no shared leaderboard and no list back to you yet — that needs a server, and it is the next thing built. '+
+    'Nothing in the app will ever show your fans a crowd number we did not actually count.</div>'+
+  '<div class="bot"><button class="btn" onclick="__play()">Play it yourself first<small>60 seconds · see what they see</small></button>'+
+  '<button class="link" onclick="__back()">change the setlist</button></div>';
+}
+
+/* ---- preview of what the generator will write -------------------- */
+function preview(){
+  var s=A.set, n=s.length, mid=Math.max(1,Math.floor(n/2)), out=[];
+  out.push(['Seals','What do they open with?']);
+  out.push(['Seals','How many songs tonight?']);
+  out.push(['Seals','What do they close with?']);
+  out.push(['Recall','Which came first — '+s[0]+' or '+s[1]+'?']);
+  if(n>=6) out.push(['Recall','What was song '+(mid>1?mid:2)+'?']);
+  out.push(['Recall','What closed it?']);
+  if(n>=4) out.push(['Recall','Which came later — '+s[n-2]+' or '+s[n-3]+'?']);
+  return out;
+}
+
+/* ---- the link ----------------------------------------------------- */
+function b64u(str){
+  var b=btoa(unescape(encodeURIComponent(str)));
+  return b.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+/* The setlist travels inside the link, so the link is long. Showing all
+   240 characters of it to an artist at load-in reads as something having
+   gone wrong. Show the shape of it, and move them to Share. */
+function shortUrl(u){
+  var m=u.replace(/^https?:\/\//,'').replace(/^file:\/\/\//,'');
+  return m.length>46 ? m.slice(0,34)+'…'+m.slice(-8) : m;
+}
+function buildUrl(){
+  var payload=JSON.stringify({a:A.act,v:A.venue,s:A.set});
+  var base=location.href.replace(/advance\.html.*$/,'').replace(/[?#].*$/,'');
+  if(!/\/$/.test(base)) base+='/';
+  return base+'?s='+b64u(payload);
+}
+
+/* ---- actions ------------------------------------------------------ */
+window.__set=function(k,v){ A[k]=v; gate(); };
+window.__setlist=function(v){
+  A.set=v.split('\n').map(function(x){return x.trim()}).filter(function(x){return x.length});
+  var c=$('cnt'); if(c){ c.textContent=A.set.length+' song'+(A.set.length===1?'':'s')+
+    (A.set.length<3?' · need at least 3':''); }
+  gate();
+};
+function gate(){
+  var b0=$('n0'), b1=$('n1');
+  if(b0) b0.disabled=!(A.act.trim() && A.venue.trim());
+  if(b1) b1.disabled=A.set.length<3;
+}
+window.__next=function(){ buzz(12); A.step=Math.min(2,A.step+1); render(); gate(); };
+window.__back=function(){ buzz(12); A.step=Math.max(0,A.step-1); render(); gate(); };
+window.__play=function(){ location.href=buildUrl(); };
+window.__copy=function(){
+  var u=buildUrl();
+  var done=function(){ buzz([10,40,18]); var t=$('toast'); t.classList.add('on');
+    setTimeout(function(){t.classList.remove('on')},1400); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(u).then(done, fallback);
+  } else fallback();
+  function fallback(){
+    var ta=document.createElement('textarea'); ta.value=u; ta.style.position='fixed';
+    ta.style.opacity='0'; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); done(); }catch(e){}
+    document.body.removeChild(ta);
+  }
+};
+window.__share=function(){
+  var u=buildUrl();
+  var txt='Play along with '+A.act+' tonight at '+A.venue+'. Free, takes a second:';
+  if(navigator.share){ navigator.share({title:A.act+' · Fans Gametime', text:txt, url:u})
+    .then(function(){buzz(12)}).catch(function(){}); }
+  else window.__copy();
+};
+
+/* ---- voice: coarse pass only ------------------------------------- */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec=null, waveT=null;
+function waveOn(){ var w=$('wave'); if(!w)return;
+  waveT=setInterval(function(){ for(var i=0;i<w.children.length;i++)
+    w.children[i].style.height=(6+Math.round(Math.random()*30))+'px'; },110); }
+function waveOff(){ if(waveT){clearInterval(waveT);waveT=null;}
+  var w=$('wave'); if(!w)return; for(var i=0;i<w.children.length;i++) w.children[i].style.height='9px'; }
+
+function beginListen(){
+  if(A.listening||A.step!==0) return;
+  if(!SR){ var h0=$('hint'); if(h0) h0.innerHTML='No mic on this browser — <em>type it below</em>'; return; }
+  A.listening=true; A.heard=''; buzz(12);
+  var b=$('mic'); if(b) b.classList.add('live');
+  var h=$('hint'); if(h) h.textContent='Listening… let go when done';
+  waveOn();
+  try{
+    rec=new SR(); rec.lang='en-US'; rec.interimResults=true; rec.continuous=false;
+    rec.onresult=function(e){ var t=''; for(var i=0;i<e.results.length;i++) t+=e.results[i][0].transcript;
+      A.heard=t.trim(); var hh=$('hint'); if(hh) hh.textContent='“'+A.heard+'”'; };
+    rec.onerror=function(){ endListen(true); };
+    rec.start();
+  }catch(e){ endListen(true); }
+}
+function endListen(failed){
+  if(!A.listening) return;
+  A.listening=false; buzz(10); waveOff();
+  if(rec){ try{rec.stop()}catch(e){} rec=null; }
+  var b=$('mic'); if(b) b.classList.remove('live');
+  var h=$('hint');
+  if(failed || !A.heard){ if(h) h.innerHTML='Didn\'t catch that — <em>type it below</em>'; return; }
+  var o=parseWhoWhere(A.heard);
+  if(o.act) A.act=o.act;
+  if(o.venue) A.venue=o.venue;
+  render(); gate();
+  var h2=$('hint'); if(h2) h2.innerHTML='Heard you — <em>check it below</em>';
+}
+document.addEventListener('pointerdown',function(e){
+  var m=e.target.closest&&e.target.closest('#mic'); if(m){ e.preventDefault(); beginListen(); }});
+document.addEventListener('pointerup',function(){ if(A.listening) endListen(false); });
+document.addEventListener('pointercancel',function(){ if(A.listening) endListen(false); });
+
+render(); gate();
+})();
+</script>
+</body>
+</html>
