@@ -61,6 +61,31 @@ if [ ! -f "$KEYFILE" ]; then
 fi
 
 CRED=$(cat "$KEYFILE")
+
+# READ BEFORE WRITE. Prove the key works and show what is there now, so a bad
+# key or an OTE key fails on a harmless GET instead of half-writing a live
+# domain's records. Also prints the current records as a rollback note.
+echo "Checking the key against $DOMAIN..."
+code=$(curl -s -o /tmp/gd.pre -w '%{http_code}' \
+  "https://api.godaddy.com/v1/domains/$DOMAIN/records" \
+  -H "Authorization: sso-key $CRED")
+if [ "$code" != "200" ]; then
+  echo "  HTTP $code — the key did not work. Nothing was changed."
+  case "$code" in
+    401) echo "  401 = bad key/secret, or an OTE (test) key was made instead of Production." ;;
+    403) echo "  403 = the API is not open on this account." ;;
+  esac
+  echo "  $(head -c 240 /tmp/gd.pre)"
+  show_manual; exit 1
+fi
+echo "  key works. Records before the change are saved at /tmp/gd.pre:"
+python3 -c "
+import json
+for r in json.load(open('/tmp/gd.pre')):
+    print('    %-6s %-6s %s' % (r.get('type'), r.get('name'), r.get('data')))
+" 2>/dev/null | head -20
+cp /tmp/gd.pre ~/fans/dns-before-$(date +%Y%m%d-%H%M).json
+
 BODY=$(printf '%s\n' "${IPS[@]}" | python3 -c "
 import sys,json
 print(json.dumps([{'data':ip.strip(),'ttl':600} for ip in sys.stdin if ip.strip()]))")
