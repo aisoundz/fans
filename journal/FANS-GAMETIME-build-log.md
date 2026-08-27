@@ -177,3 +177,80 @@ rooms were the founder alone. Retention is strong (2.8 nights a person, no push,
 no streaks); acquisition is zero. Product quality and audience size are
 uncorrelated in this operation's own data. **Do not walk into Live Nation with a
 prototype and nothing else** — run one real room first, however small.
+
+---
+
+# 27 August 2026 — The artist tier ships
+
+**Live:** `https://fansgametime.com/advance.html` (the artist tool) and any link
+it produces. Built to be handed to a real artist the same night.
+
+## Why this is the strongest move the product has had
+
+The moat argument was *"almost nobody can grade a live show at six thousand venues
+a night."* True — and it caps growth at one tour at a time, because relationships
+do not go faster for money. **At the artist tier the grading problem dissolves:
+the artist wrote the setlist.** The resolution network we cannot buy, one artist
+hands over free about their own show, in exchange for the one thing nobody gives
+them — the list of who was in the room.
+
+It also attacks the only number that is actually broken. Thirteen humans ever,
+retention 2.8 nights, acquisition zero. This is the first design here where
+**somebody else is motivated to bring the audience.**
+
+## What was built
+
+- **`advance.html`** — three facts (act, venue, running order) become a link.
+  **Voice for the coarse pass, thumb for the fine pass:** who and where are spoken;
+  the setlist is typed or pasted, because a misheard song title becomes a question
+  that grades a real fan wrong in front of a real artist.
+- **The show travels inside the URL** (`?s=<base64url>` of `{a,v,s}`, ~220 chars).
+  There is no backend on `fans/` at all — zero network calls, by design.
+- **`makeShow()` is the only generator and index.html the only decoder**, so an
+  artist-made night and a hand-built room are the same document and the engine
+  never learns the difference. Three gametimes, predict + recall only, every
+  answer graded off the artist's own setlist. A malformed `?s=` falls back
+  silently to the demo app.
+
+## The harder half: everything it now refuses to say
+
+The four demo rooms are illustrations and their crowd data is hash-derived —
+`split()`'s own comment says *"in production is a live count of submissions."*
+Fine for a fictional band. In front of a real artist's real fans it is inventing
+numbers. **Seven fabrications had to be found and suppressed, every one by
+rendering the app and reading the screen, none by reading the code:**
+
+1. the crowd bar and per-tile percentages
+2. "N answering with you"
+3. "9th of 90" in the header
+4. four invented usernames with invented scores in invented sections
+5. the section heat map and the six-show season history
+6. two invented Spotify play counts under the artist's own name
+7. a prize list promising soundcheck passes the artist never offered
+
+One owner — **`showsCrowd()`**, false when `SHOW.real`. Generated nights carry
+**no room questions at all**: a room question with nobody counting it is a guess
+wearing a percentage. Where the truth is missing the app now says so plainly —
+*"we would rather show you nothing than show you people who are not here."*
+
+## What it does NOT do yet — say this to any artist
+
+Every question grades for real; **each fan's score lives on their own phone.**
+No shared leaderboard, no live room, **no list back to the artist** — all three
+need a server. Tonight's version proves *the game*, not *the data*, and the data
+is the half the artist actually wants. That backend is the next thing.
+
+## Verification
+
+Four Playwright suites, green against the **live** site: wizard round-trip, a full
+three-gametime playthrough, the seal-and-settle path paying at the landing
+gametime's rate, and a per-tab scan for invented data. The four demo rooms are
+behaviourally unchanged.
+
+## Staged, not deployed
+
+`/artists/` — the tool as its own installable app (own manifest, add-to-homescreen)
+at `fansgametime.com/artists`, with `advance.html` left as a redirect. Built and
+syntax-clean; **held back deliberately.** The one real change it needs is
+`siteRoot()`: the link must point at the player at `/`, not at the directory the
+tool is served from.
