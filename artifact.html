@@ -262,6 +262,63 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
   text-transform:uppercase;color:#fff}
 .flare .s{font:700 11.5px/1.4 var(--f);color:var(--body);margin-top:5px}
 
+/* ---- SEALED, AND THE FLIP ------------------------------------------
+   A locked prediction must feel UNFINISHED. No green, no red, no confetti
+   — wax and amber and silence. That unfinished feeling is the thing that
+   brings the phone back out an hour later, and it is the whole reason the
+   doors round is worth playing. ------------------------------------- */
+.tile.held{border-color:var(--amb);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--amb) 20%,var(--card2)),var(--card))}
+.tile.wax{box-shadow:0 0 26px color-mix(in srgb,var(--amb) 42%,transparent);
+  animation:press .28s cubic-bezier(.2,1.5,.4,1)}
+@keyframes press{0%{transform:scale(1)}55%{transform:scale(.965)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.tile.wax{animation:none}}
+.worth .v.held{font-size:26px;color:var(--amb);letter-spacing:.06em}
+.verdict.held{border-color:color-mix(in srgb,var(--amb) 48%,transparent);
+  background:linear-gradient(150deg,rgba(255,181,69,.12),var(--card))}
+.verdict.held .m{background:rgba(255,181,69,.2);color:var(--amb)}
+
+.settle{display:flex;flex-direction:column;align-items:center;gap:0;flex:1;
+  justify-content:flex-start;padding:26px 0 20px;text-align:center;animation:tk .34s ease}
+.settle .slab{font:800 9.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dim)}
+.flip{position:relative;width:100%;margin-top:18px;height:196px;
+  transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.flip.turned{transform:rotateX(180deg)}
+@media (prefers-reduced-motion:reduce){.flip{transition:none}}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px 18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
+  border:1px solid var(--line2);background:var(--card)}
+.flip .front{filter:grayscale(1) brightness(.72)}
+.flip .back{transform:rotateX(180deg)}
+.flip .back.ok{border-color:var(--green);
+  background:linear-gradient(160deg,rgba(47,230,160,.2),var(--card))}
+.flip .back.no{border-color:var(--red);
+  background:linear-gradient(160deg,rgba(255,77,94,.16),var(--card))}
+.flip .ql{font:700 12.5px/1.35 var(--f);color:var(--muted);max-width:26ch}
+.flip .pick{font-family:var(--d);font-weight:900;font-size:34px;line-height:1;
+  color:var(--ink);text-wrap:balance}
+.flip .back.ok .pick{color:#eafff6}
+.flip .ago{font:600 10.5px/1 var(--mono);color:var(--dim);letter-spacing:.04em}
+.pay{margin-top:20px;min-height:52px}
+.pay b{display:block;font-family:var(--d);font-weight:900;font-size:48px;line-height:1;
+  color:var(--muted);font-variant-numeric:tabular-nums}
+.pay.good b{color:var(--amb);text-shadow:0 6px 30px color-mix(in srgb,var(--amb) 55%,transparent)}
+.pay span{display:block;font:600 11.5px/1.5 var(--f);color:var(--muted);margin-top:7px;
+  max-width:32ch;margin-left:auto;margin-right:auto}
+.settle .btn{margin-top:20px}
+
+/* THE SEALED TRAY. Always visible while anything is outstanding, because a
+   fan must never be able to forget there is money on the table at house
+   lights. That is what stops the walk to the car after song thirteen. */
+.tray{display:flex;align-items:center;gap:9px;padding:9px 13px;flex:none;
+  background:color-mix(in srgb,var(--amb) 9%,var(--chrome));
+  border-bottom:1px solid color-mix(in srgb,var(--amb) 26%,transparent)}
+.tray .d{flex:none;color:var(--amb);font-size:11px}
+.tray .t{flex:1;min-width:0;font:700 11px/1.35 var(--f);color:var(--body)}
+.tray .t b{color:var(--amb)}
+
 /* ---- BETWEEN GAPS: THE ROOM, not a form -------------------------- */
 .hold{display:flex;flex-direction:column;gap:14px}
 .holdhero{border-radius:var(--r);padding:22px 18px;text-align:center;
@@ -480,6 +537,16 @@ body.nonotes .q-why{display:none}
 .arena{transition:transform .23s cubic-bezier(.4,0,.2,1),opacity .23s ease}
 .arena.out{transform:translateX(-34px);opacity:0}
 @media (prefers-reduced-motion:reduce){.arena{transition:none}}
+.nextbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;
+  margin-top:13px;padding:15px 14px;border-radius:var(--r2);cursor:pointer;
+  border:1px solid var(--line2);background:var(--glass);color:var(--ink);
+  font:800 13.5px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;
+  transition:background .15s,border-color .15s,transform .08s;
+  animation:rise .3s ease}
+.nextbtn:hover{background:var(--glass2);border-color:var(--gel-b);color:#fff}
+.nextbtn:active{transform:translateY(1px)}
+.nextbtn i{width:0;height:0;border-left:7px solid currentColor;
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
 .reax{font:600 13px/1.5 var(--f);color:var(--muted);margin-top:10px;padding-left:2px}
 .flare.broke{border-color:color-mix(in srgb,var(--red) 45%,transparent);
   background:linear-gradient(150deg,rgba(255,77,94,.2),transparent)}
@@ -555,6 +622,7 @@ body.nonotes .q-why{display:none}
     <div class="sc"><span class="v" id="hPts">18</span><span class="l">pts</span></div>
   </div>
 
+  <div class="tray" id="tray" style="display:none"><span class="d">◆</span><span class="t" id="trayT"></span></div>
   <div class="body" id="scroller">
 
   <!-- ================= HOME ================= -->
@@ -675,137 +743,152 @@ body.nonotes .q-why{display:none}
 var SHOW={
   act:"Black Eyed Peas",
   venue:"Kia Forum", city:"Inglewood, CA",
-  gelA:"#ff3d9a", gelB:"#35e0e8",     /* the artist's two — repainted per show */
+  gelA:"#ff3d9a", gelB:"#35e0e8",
   cap:"24,000 in the room",
   set:["Let's Get It Started","Boom Boom Pow","Rock That Body","RITMO (Bad Boys for Life)",
        "MAMACITA","MABUTI / Bebot","#thatPOWER / Scream & Shout","Seven Nation Army",
        "Pump It","Don't Stop the Party","Where Is the Love?","I Gotta Feeling","Meet Me Halfway"]
 };
 
-/* ---- THE GAPS -------------------------------------------------------
-   The whole product in one table. A show has exactly five dead spots and
-   this is all five. Points escalate the way STATS escalates by quarter —
-   the night gets more expensive to look away from as it goes on. -------- */
+/* ---- THE THREE MODES ------------------------------------------------
+   The first bank was written as if the fan were watching. They are not —
+   the set is sacred, so we only ever speak to them in a gap, and in a gap
+   nothing is happening on stage. That leaves exactly three legal questions:
+
+     PREDICT  locks now, is NOT graded now, and visibly settles in a later
+              gap. It pays at the rate of the gap it LANDS in, which is
+              what makes forty-five minutes of standing around worth playing.
+     RECALL   about the stretch of show that just ended. Past tense, because
+              it is in the past.
+     ROOM     about the crowd around you. The room's own answer IS the
+              truth, so it can never be wrong and never void — and it is
+              the only data in live music nobody has ever collected.
+
+   The old bank graded four predictions at DOORS, before a note was played,
+   and told the fan "the whole building sang it" while the building was
+   half empty. That is the bug the founder saw and it was structural, not
+   a wording problem.
+   ------------------------------------------------------------------- */
 var GAPS=[
- {n:"Gap 01", t:"Doors", sub:"45 minutes of standing around with a drink. Nothing has happened yet, so tonight this is the prediction sheet.",
+ {n:"Gap 01", t:"Doors", sub:"Forty-five minutes with a drink and nothing on stage. So tonight this is the sheet — you seal your calls now and they pay out later.",
   worth:1, songsDone:0, mins:"45 min", q:[
-  {k:"First",       v:1, t:"What opens the show tonight?",
+  {k:"Predict", mode:"predict", settles:2, win:30, t:"What do they open with?",
    o:["Let's Get It Started","Boom Boom Pow","Pump It","Where Is the Love?"], a:"Let's Get It Started",
-   r:"They open with it every night on this run. Nobody bets against it.",
-   w:"Locked in before a note. This is the question everybody in the building has an opinion about — and it settles ninety minutes later in front of them."},
-  {k:"Tally",       v:1, t:"How many full costume changes will the group make?",
+   lock:"Sealed. Settles at the break.", r:"Called it. Song one.",
+   w:"The question everybody in the building has an opinion about — and the one the app used to grade forty-five minutes before it could possibly be known. It now seals, and flips in front of you an hour later."},
+  {k:"Predict", mode:"predict", settles:1, win:30, t:"How many songs does the opener get?",
+   o:["5 or fewer","6 to 8","9 or more"], a:"6 to 8",
+   lock:"Sealed. Settles in an hour.", r:"Seven. You had the range.",
+   w:"The teacher card. It settles first, at the changeover, so the fan learns what a sealed call feels like before the big ones land."},
+  {k:"Predict", mode:"predict", settles:4, win:30, t:"How many full costume changes tonight?",
    o:["None","1","2","3 or more"], a:"2",
-   r:"Two. The second one is the one most people miss.",
+   lock:"Sealed until the lights come up.", r:"Two. The second one hid.",
    w:"Zero to three, never more. Count something that happens twelve times and you need a notebook; count something that happens twice and you remember both."},
-  {k:"Which was more", v:1, t:"More songs tonight from Elephunk or from The E.N.D.?",
-   o:["Elephunk","The E.N.D.","Even"], a:"The E.N.D.",
-   r:"The E.N.D. carries the middle of every night.",
-   w:"Two streams tracked loosely. No exact count needed — just a feel for which era the night leans on."},
-  {k:"Outcome",     v:1, t:"Will they play a song that isn't theirs?",
-   o:["Yes","No"], a:"Yes",
-   r:"Seven Nation Army — and the whole building sang it.",
-   w:"A question that cannot fail to resolve. Every gap ends on one of these so nobody ever leaves a round void."}
+  {k:"Room", mode:"room", t:"Your section right now — sitting or standing?",
+   o:["Sitting","Standing","Half and half"],
+   r:"214 stood up early tonight.",
+   w:"The room's own answer is the truth, so this can never be wrong and never void. It is also a live heat map of the bowl that no venue has ever had."},
+  {k:"Predict", mode:"predict", settles:4, win:30, t:"Where does Where Is the Love? land?",
+   o:["First half","Second half","The encore","They skip it"], a:"Second half",
+   lock:"Sealed. The long one.", r:"Song eleven. Second half.",
+   w:"Replaces a free point. 'Did they play it' is a question everybody gets; 'where does it land' is a question you have to think about."}
  ]},
 
  {n:"Gap 02", t:"The changeover", sub:"The opener is off, the headliner is not on, and the crew is striking a drum riser. Twenty-five minutes nobody has ever monetised.",
   worth:2, songsDone:0, mins:"25 min", q:[
-  {k:"Count",       v:2, t:"How many people were on stage for the opener's last song?",
-   o:["One","Two","Three","Four or more"], a:"Four or more",
+  {k:"Room", mode:"room", t:"The opener — worth showing up early for?",
+   o:["Yes","No","I missed them"],
+   r:"The room voted. They earned it.",
+   w:"The single most sellable card in the bank. No promoter has ever had a real-time verdict on a support act from twenty thousand people who just watched them."},
+  {k:"Recall", mode:"recall", t:"How many were on stage for the opener?",
+   o:["One","Two or three","Four to six","Seven or more"], a:"Four to six",
    r:"Openers travel bigger than you think.",
-   w:"The support act finally gets measured. Three thousand people just watched them and, for the first time, we can prove it."},
-  {k:"Tally",       v:2, t:"How many times did the opener say the name of this city?",
-   o:["None","Once","Twice","Three or more"], a:"Three or more",
-   r:"Three. They always say it more than you remember.",
-   w:"Unrepeatable and un-Googleable. You had to be standing here."},
-  {k:"Which was more", v:2, t:"Right now — which line is longer, merch or the bar?",
-   o:["Merch","The bar","About even"], a:"Merch",
-   r:"Merch. It always is, and the bar staff know it.",
-   w:"A question for the fan and a live concessions signal for the building at the same time. Twenty thousand people just told the venue where the queue is."},
-  {k:"Look up",     v:2, t:"What is on the big screen right this second?",
-   o:["The tour logo","A sponsor","A countdown clock","It's dark"], a:"The tour logo",
-   r:"The tour logo — and everyone in here just looked at that wall.",
-   w:"The look-up mechanic. To answer, everyone in the room has to raise their eyes to the wall — which is the only honest way anybody has ever sold attention in an arena."}
+   w:"Three thousand people just watched them and, for the first time, we can prove somebody was looking."},
+  {k:"Room", mode:"room", t:"Right now — longer line, merch or the bar?",
+   o:["Merch","The bar","About even"],
+   r:"Merch. It always is.",
+   w:"A question for the fan and a live concessions signal for the building at the same moment."},
+  {k:"Room", mode:"room", t:"Look up. What is on the big screen?",
+   o:["The tour logo","A sponsor","A countdown","It's dark"],
+   r:"Twenty thousand heads went up.",
+   w:"The look-up mechanic, and it must be graded by consensus rather than a baked answer — the screen changes every ninety seconds across a twenty-five minute changeover, so there is no single right answer to hard-code."}
  ]},
 
- {n:"Gap 03", t:"The break", sub:"Mid-set. The band is off for a costume change, the DJ is filling, and the room is looking at its phones anyway. Four minutes, three questions.",
+ {n:"Gap 03", t:"The break", sub:"Mid-set. The band is off for a change, the DJ is filling, and the room is looking at its phones anyway.",
   worth:3, songsDone:6, mins:"4 min", heard:1, q:[
-  {k:"Count",       v:3, t:"How many dancers were on stage for Pump It?",
-   o:["Four","Six","Eight","Ten or more"], a:"Eight",
-   r:"Eight. You will never watch Pump It the same way again.",
-   w:"Nobody counts the dancers. Ask this once and every person in the building watches the dancers for the rest of the tour."},
-  {k:"The look",    v:3, t:"What was Taboo wearing when the band walked on?", look:true,
-   o:["All black, silver chain","Red jacket, black tee","White suit","Camo, sunglasses"], a:"Red jacket, black tee",
-   sw:["linear-gradient(140deg,#1a1a20,#3b3b47)","linear-gradient(140deg,#c8202f,#5a0d16)","linear-gradient(140deg,#f2f0ea,#c9c4b8)","linear-gradient(140deg,#5c6b3f,#2e3620)"],
-   r:"Red jacket. It was on stage for four minutes.",
-   w:"The answer is a picture, because the question cannot be asked in words without giving it away. It also makes people look at the wardrobe — which is the part of a tour that costs the most and gets noticed the least."},
-  {k:"First",       v:3, t:"Which came first tonight — MAMACITA or RITMO?",
+  {k:"Recall", mode:"recall", t:"Which came first — MAMACITA or RITMO?",
    o:["MAMACITA","RITMO"], a:"RITMO",
    r:"RITMO opened that stretch.",
-   w:"Set order is the one fact about a show that changes city to city. Getting it right means you were paying attention here, not reading a wiki."}
+   w:"Set order is the one fact about a show that changes city to city. Getting it right means you were here, not reading a wiki."},
+  {k:"Count", mode:"recall", t:"How many dancers came out for RITMO?",
+   o:["Four","Six","Eight","Ten or more"], a:"Eight",
+   r:"Eight. Count them next time.",
+   w:"This used to ask about Pump It, which is song nine, during a break that happens after song six — a past-tense question about something that had not happened. Same question, repointed at a song that has actually played."},
+  {k:"Room", mode:"room", t:"Loudest song so far. Room votes.",
+   o:["Boom Boom Pow","Rock That Body","MAMACITA","MABUTI / Bebot"],
+   r:"The room picked its moment.",
+   w:"Consensus is the truth, it cannot void, and it hands the tour a per-city read on which song is actually landing."}
  ]},
 
- {n:"Gap 04", t:"The encore break", sub:"The lights are down, the band is off, and twenty thousand people are chanting with their phones already out. The single best-attended ninety seconds in live music.",
-  worth:4, songsDone:11, mins:"90 sec", heard:2, q:[
-  {k:"Outcome",     v:4, t:"Did the whole band leave the stage?",
-   o:["Yes, all of them","No","Only some of them"], a:"Yes, all of them",
-   r:"All four gone. That is how you know the encore is real.",
-   w:"Cannot fail to resolve, and it is happening right now in front of you."},
-  {k:"Tally",       v:4, t:"How many times were you asked to put your hands up tonight?",
-   o:["0–2","3–5","6–8","9 or more"], a:"6–8",
-   r:"Six to eight. Nobody in this building had ever counted that.",
-   w:"A band asks this constantly and nobody has ever counted. Now the room counts."},
-  {k:"Which was more", v:4, t:"So far — more pyro hits or more confetti drops?",
-   o:["Pyro","Confetti","Even"], a:"Pyro",
-   r:"Pyro, twice over confetti.",
-   w:"Production spend, turned into a question. The people who built the show finally find out whether anybody clocked it."},
-  {k:"First",       v:4, t:"What do they come back on with?",
+ {n:"Gap 04", t:"The encore break", sub:"Lights down, band off, twenty thousand people chanting with their phones already out. Ninety seconds, and it might be sixty.",
+  worth:4, songsDone:11, mins:"90 sec", heard:2, hot:true, q:[
+  {k:"Predict", mode:"predict", settles:3, win:12, t:"What do they come back on with?",
    o:["I Gotta Feeling","Where Is the Love?","Pump It","Boom Boom Pow"], a:"I Gotta Feeling",
-   r:"I Gotta Feeling. Ninety seconds and you called it.",
-   w:"A prediction that settles in ninety seconds. There is no better-timed question in any live product anywhere."}
+   lock:"Sealed. Ninety seconds.", r:"Ninety seconds. You called it.",
+   w:"The best-timed question in any live product anywhere — a prediction that settles in front of your eyes inside ninety seconds. It was card four of four, in the position most likely never to fire. It is now first. Where Is the Love? is left in as an option on purpose: it is a free elimination for anyone who was watching, which is the whole product thesis in one distractor."},
+  {k:"Room", mode:"room", t:"Phones up — how much of your section is filming?",
+   o:["Almost nobody","About half","Nearly everyone"],
+   r:"214: everyone is filming.",
+   w:"Zero cognition, one look around. A person chanting with a phone over their head has one hand and about forty percent of a brain."},
+  {k:"Recall", mode:"recall", t:"They played someone else's song tonight. Whose?",
+   o:["The White Stripes","Guns N' Roses","Metallica","Blur"], a:"The White Stripes",
+   r:"White Stripes. You sang it too.",
+   w:"Asking for the artist rather than the title is the upgrade — unguessable from outside, and instantly known to anyone who was actually singing along."}
  ]},
 
- {n:"Gap 05", t:"House lights", sub:"The lights are up and you are not moving. Egress takes twenty-five minutes and the industry has always treated it as loss. It is the largest block of captive attention in the whole night.",
+ {n:"Gap 05", t:"House lights", sub:"The lights are up and you are not moving. Egress takes twenty-five minutes and the industry has always treated it as loss.",
   worth:5, songsDone:13, mins:"25 min", q:[
-  {k:"Last",        v:5, t:"What was the last song of the night?",
+  {k:"Recall", mode:"recall", t:"What closed it?",
    o:["Meet Me Halfway","I Gotta Feeling","Where Is the Love?","Don't Stop the Party"], a:"Meet Me Halfway",
-   r:"Meet Me Halfway closed it. Four minutes ago.",
-   w:"Asked four minutes after it ended, which is exactly when the memory is still hot and has not yet been overwritten by the walk to the car."},
-  {k:"Tally",       v:5, t:"How many songs in the encore?",
+   r:"Meet Me Halfway. Four minutes ago.",
+   w:"Asked four minutes after it ended, which is exactly when the memory is hot and has not yet been overwritten by the walk to the car."},
+  {k:"Recall", mode:"recall", t:"How many songs in the encore?",
    o:["One","Two","Three","Four or more"], a:"Two",
    r:"Two. Short encore, big one.",
    w:"You either counted or you did not. Next tour, you will count."},
-  {k:"Outcome",     v:5, t:"Did they play Where Is the Love?",
-   o:["Yes","No"], a:"Yes",
-   r:"Of course they did.",
-   w:"The one everybody came for. Everybody gets this — and a round should always end on something everybody gets."},
-  {k:"Count",       v:5, t:"How many songs did they play tonight, all in?",
+  {k:"The look", mode:"recall", look:true, t:"What was will.i.am wearing for the encore?",
+   o:["All black, silver chain","Red jacket, black tee","White suit","Camo, sunglasses"], a:"White suit",
+   sw:["linear-gradient(140deg,#1a1a20,#3b3b47)","linear-gradient(140deg,#c8202f,#5a0d16)","linear-gradient(140deg,#f2f0ea,#c9c4b8)","linear-gradient(140deg,#5c6b3f,#2e3620)"],
+   r:"The second change. Most missed it.",
+   w:"The answer is a picture, because the question cannot be asked in words without giving it away. It used to point at a costume seen ninety minutes earlier; it now points at one seen four minutes ago."},
+  {k:"Recall", mode:"recall", t:"How many songs, all in?",
    o:["Eleven","Twelve","Thirteen","Fourteen"], a:"Thirteen",
-   r:"Thirteen. That is the whole night in one number.",
-   w:"The last question of the night is the whole night in one number. Answer it and you have just rehearsed the entire set from memory — which is the thing that makes you still able to describe this show in a year."}
+   r:"Thirteen. That's the whole night.",
+   w:"The whole night in one number. Answer it and you have just rehearsed the entire set from memory, which is the thing that makes you still able to describe this show in a year."},
+  {k:"Room", mode:"room", t:"Song of the night. Room votes now.",
+   o:["I Gotta Feeling","Where Is the Love?","Pump It","Meet Me Halfway"],
+   r:"The Forum picked its song.",
+   w:"Un-Googleable, cannot void, and it prints the shareable artefact: 'Kia Forum, 26 Aug — the room voted Where Is the Love?' That sentence is the growth mechanic."}
  ]}
 ];
 
-/* HEARD IT — two all night, both on eyes-up moments, twenty seconds each,
-   and neither ever repeats. This is the rule that lets an artist say yes. */
+/* HEARD IT — two all night, both at the TOP of a gap, about the thing that
+   ended seconds ago. The old copy said "eyes up" and was written as if a
+   song were playing, which contradicted the one rule the whole product is
+   sold on. "Just now" is true for both of these. */
 var HEARD={
- 1:{t:"They just walked off mid-set. Who was last to leave?",
-    o:["will.i.am","apl.de.ap","Taboo","J. Rey Soul"], a:"Taboo", v:6},
- 2:{t:"That cover just now — what was it?",
-    o:["Seven Nation Army","Sweet Child O' Mine","Enter Sandman","Song 2"], a:"Seven Nation Army", v:8}
+ 1:{t:"That last one — what language was that?",
+    o:["Tagalog","Spanish","Portuguese","English"], a:"Tagalog", v:6,
+    r:"Tagalog. apl.de.ap's own language."},
+ 2:{t:"They just walked off. Who was last?",
+    o:["will.i.am","apl.de.ap","Taboo","J. Rey Soul"], a:"Taboo", v:8,
+    r:"Taboo, last off. Always is."}
 };
-
-var ROOM=[
- {n:"marisol_87",   s:0, tag:"Section 112"},
- {n:"pea_since_03", s:0, tag:"Floor GA"},
- {n:"YOU",          s:0, tag:"Section 214 · carried in 18", me:true},
- {n:"dtla_dave",    s:0, tag:"Section 305"},
- {n:"jrey4life",    s:0, tag:"Floor GA"}
-];
-
 
 /* ====================== STATE ======================================= */
 var S={ gap:0, qi:-1, pts:180, carry:180, earned:0, streak:0, best:0, ans:{},
-        heardDone:{}, raf:0, deadline:0, left:0, phase:'hold', locked:false };
+        heardDone:{}, raf:0, deadline:0, left:0, phase:'hold', locked:false,
+        sealed:[], settling:null };
 var BASE=10;                         /* a Gap-01 question is 10 points, not 1 */
 /* THE WINDOW SHORTENS AS THE NIGHT GETS EXPENSIVE. The encore break is
    ninety real seconds long and carries four questions; at fifteen seconds
@@ -845,7 +928,13 @@ function toggleNotes(){
    production it is a live read off the room's own submissions. --------- */
 function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0;} return h; }
 function split(q){
-  var n=q.o.length, ai=q.o.indexOf(q.a), h=hash(q.t), out=new Array(n);
+  var n=q.o.length, h=hash(q.t), out=new Array(n);
+  /* A ROOM question has no `a`. Its "winner" is whatever the building
+     picked, which here is derived from the hash and in production is a
+     live count of submissions. Without this, indexOf returned -1 and the
+     split wrote to out[-1] — a property, not a slot — and every option
+     rendered the same share. */
+  var ai = q.a ? q.o.indexOf(q.a) : (h % n);
   var right=30+(h%34), rest=100-right, others=n-1, acc=0;
   for(var i=0;i<n;i++){
     if(i===ai) continue;
@@ -858,6 +947,13 @@ function split(q){
 /* YOUR SECTION IS NOT THE ROOM. If the two numbers always agree the
    comparison says nothing — the whole point is that 214 can be smarter or
    dumber than the building. */
+/* The room's most-picked option. Deterministic here; in production it is a
+   live count of what the building actually submitted. */
+function topOf(q){
+  var sp=split(q), best=0;
+  for(var i=1;i<sp.length;i++) if(sp[i]>sp[best]) best=i;
+  return best;
+}
 function sectionPct(q){
   var room=split(q)[q.o.indexOf(q.a)];
   var d=((hash(q.t+'sec214')%37)-16);
@@ -893,8 +989,13 @@ function renderSetlist(){
       +'background:'+(played?'rgba(255,255,255,.04)':'transparent')+';border:1px solid '
       +(played?'var(--line)':'var(--line3)')+'">'
       +'<span class="num" style="font-size:10px;color:'+(played?'var(--gel-a)':'var(--dim)')+';width:18px">'+(j+1)+'</span>'
-      +'<span style="flex:1;font:'+(played?'700':'500')+' 12.5px/1.3 var(--f);color:'+(played?'var(--ink)':'var(--dim)')+'">'+esc(SHOW.set[j])+'</span>'
-      +(enc?'<span style="font:800 8px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--amb)">Encore</span>':'')
+      /* THE APP WAS LEAKING SIX OF ITS OWN ANSWERS. This tab printed all
+         thirteen titles in order, one tap away, at all times — handing over
+         the opener, the closer, the total count, the encore length and the
+         MAMACITA/RITMO order. A song has no name here until it is played. */
+      +'<span style="flex:1;font:'+(played?'700':'500')+' 12.5px/1.3 var(--f);color:'+(played?'var(--ink)':'var(--dim)')+'">'
+        +(played?esc(SHOW.set[j]):'<span style="letter-spacing:.22em">— — — —</span>')+'</span>'
+      +(enc&&played?'<span style="font:800 8px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--amb)">Encore</span>':'')
       +(played?'<span style="color:var(--gel-a);font-size:12px">✓</span>':'')+'</div>';
   }
   $('setlist').innerHTML=sl;
@@ -910,6 +1011,16 @@ function renderHud(){
   el.className='st'+(S.streak>=5?' blaze':(S.streak>=2?' hot':''));
   $('hPos').textContent=ord(pos());
   $('hPts').textContent=S.pts;
+  var open=S.sealed.filter(function(x){return !x.done});
+  var tray=$('tray');
+  if(!open.length){ tray.style.display='none'; }
+  else{
+    var next=open.map(function(x){return GAPS[x.gap].q[x.qi].settles})
+                 .sort(function(a,b){return a-b})[0];
+    tray.style.display='flex';
+    $('trayT').innerHTML='<b>'+open.length+' sealed</b> — next settles at '
+      +esc(GAPS[next].t.toLowerCase());
+  }
 }
 function bumpScore(to,green){
   var el=$('hPts'), from=Number(el.textContent)||0, t0=null, dur=460;
@@ -928,7 +1039,9 @@ function bumpScore(to,green){
 function goto(i){
   stopClock(); S.gap=i; S.qi=-1; S.phase='hold'; S.locked=false;
   for(var d=0;d<5;d++) $('d'+d).classList.toggle('on', d===i);
-  renderSetlist(); renderHold(); navGo('gametime');
+  renderSetlist();
+  if(pendingFor(i).length) renderSettle(); else renderHold();
+  navGo('gametime');
 }
 
 function renderHold(){
@@ -967,7 +1080,10 @@ function nextQ(){
 
 /* ====================== ONE QUESTION =============================== */
 function renderQ(){
-  var g=GAPS[S.gap], q=g.q[S.qi], win=WINDOW[S.gap];
+  var g=GAPS[S.gap], q=g.q[S.qi], win=q.win||WINDOW[S.gap];
+  /* A prediction gets thirty seconds. There is no urgency at doors and a
+     manufactured clock on a sealed call just cheapens the lock — locking
+     early is already worth more, and that is the only pressure it needs. */
   wash('open');
   var beads='';
   for(var i=0;i<g.q.length;i++){
@@ -1013,9 +1129,10 @@ function renderQ(){
    of a real game night. Time comes from the clock, always. */
 function startClock(win){
   stopClock();
-  S.deadline=Date.now()+win*1000; S.left=win;
+  S.win=win; S.deadline=Date.now()+win*1000; S.left=win;
   var loop=function(){
     if(S.phase!=='ask'){ S.raf=0; return; }
+    if(S.paused){ S.raf=requestAnimationFrame(loop); return; }
     var ms=S.deadline-Date.now();
     S.left=Math.max(0,ms/1000);
     paintClock(win);
@@ -1024,10 +1141,37 @@ function startClock(win){
   };
   S.raf=requestAnimationFrame(loop);
 }
-function stopClock(){ if(S.raf){cancelAnimationFrame(S.raf);S.raf=0;} }
+function stopClock(){ if(S.raf){cancelAnimationFrame(S.raf);S.raf=0;} S.paused=false; }
+
+/* THE CLOCK MUST STOP WHEN THE SCREEN DOES.
+   requestAnimationFrame is suspended in a background tab and on a locked
+   phone. So the ring froze mid-drain and the game sat there with no way
+   forward — which is exactly what "there's no place to press next" looks
+   like from the outside. Worse, when focus came back the deadline had long
+   since passed and the question was silently marked out of time, burning a
+   card the fan never saw.
+
+   A concert makes this non-optional. The fan looks UP — at the stage, which
+   is the entire point of the product — and the screen sleeps in their hand.
+   Losing the question for doing the thing we are asking them to do would be
+   the stupidest possible failure. So the deadline moves with the blackout
+   instead of running through it. */
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden){ S.paused=true; S.hidAt=Date.now(); }
+  else if(S.paused){
+    if(S.hidAt) S.deadline+=(Date.now()-S.hidAt);
+    S.paused=false; S.hidAt=0;
+  }
+});
 function worthNow(){
-  var g=GAPS[S.gap], win=WINDOW[S.gap];
-  return Math.round(g.worth*BASE*(0.4+0.6*(S.left/win)));
+  var g=GAPS[S.gap], q=g.q[S.qi], win=(q&&q.win)||WINDOW[S.gap];
+  /* A PREDICTION PAYS AT THE RATE OF THE GAP IT LANDS IN, NOT THE ONE IT
+     WAS MADE IN. Doors is worth 1 and House Lights is worth 5, so a call
+     sealed at the door and settled at the end pays fifty, not ten. That is
+     the entire reason forty-five minutes of standing around is worth
+     playing, and without it the sheet is a chore. */
+  var rate = (q&&q.mode==='predict') ? GAPS[q.settles].worth : g.worth;
+  return Math.round(rate*BASE*(0.4+0.6*(S.left/win)));
 }
 function paintClock(win){
   var t=$('ringT'), fg=$('ringFg'), w=$('worthV'), r=$('ring');
@@ -1060,8 +1204,18 @@ function paintClock(win){
 function answer(idx){
   if(S.phase!=='ask'||S.locked) return;
   S.locked=true; stopClock(); S.phase='verdict';
-  var g=GAPS[S.gap], q=g.q[S.qi], ai=q.o.indexOf(q.a);
-  var timedOut=idx<0, ok=!timedOut&&q.o[idx]===q.a;
+  var g=GAPS[S.gap], q=g.q[S.qi];
+  var timedOut=idx<0;
+
+  /* A PREDICTION IS NOT GRADED. It is sealed. */
+  if(q.mode==='predict'&&!timedOut){ return seal(idx); }
+  if(q.mode==='predict'&&timedOut){ return sealMissed(); }
+
+  /* IN A ROOM QUESTION THE ROOM IS THE ANSWER. There is nothing to be
+     wrong about — you either went with the building or you did not — so
+     the "correct" option is whatever the split says most people picked. */
+  var ai = q.mode==='room' ? topOf(q) : q.o.indexOf(q.a);
+  var ok=!timedOut&&idx===ai;
   var raw=worthNow(), m=mult(), earned=ok?Math.round(raw*m):0;
   S.ans[S.gap+':'+S.qi]= timedOut ? '—' : q.o[idx];
 
@@ -1108,10 +1262,20 @@ function answer(idx){
     $('after').innerHTML=
       '<div class="verdict '+(ok?'good':'bad')+'">'
       +'<div class="m">'+(ok?'✓':(timedOut?'⏱':'✕'))+'</div>'
-      +'<div class="x">'+(ok?('+'+earned+(m>1?'  ·  '+raw+' ×'+m+' streak':'')):(timedOut?'Out of time':'It was '+esc(q.a)))
-      +'<small>'+sp[ai]+'% of the room had it · '+sec+'% of section 214</small></div></div>'
+      +'<div class="x">'+(ok?('+'+earned+(m>1?'  ·  '+raw+' ×'+m+' streak':''))
+         :(timedOut?'Out of time':(q.mode==='room'?'The room went the other way':'It was '+esc(q.a))))
+      +'<small>'+(q.mode==='room'
+         ? sp[ai]+'% of this room said '+esc(q.o[ai])+' · you are '+(ok?'with':'against')+' the building'
+         : sp[ai]+'% of the room had it · '+sec+'% of section 214')+'</small></div></div>'
       +'<div class="reax">'+esc(q.r||'')+'</div>'
       +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
+    /* AN EXPLICIT WAY FORWARD, ALONGSIDE THE AUTO-ADVANCE.
+       The app moving itself is right; leaving the fan with nothing to press
+       while it decides to is not. Tapping it skips the remaining wait. */
+    var lastQ = S.qi+1>=GAPS[S.gap].q.length;
+    $('after').insertAdjacentHTML('beforeend',
+      '<button class="nextbtn" id="nextBtn" onclick="advance()">'
+      +(lastQ?'See the round':'Next question')+'<i></i></button>');
     var sc=$('scroller');
     if(sc) sc.scrollTo({top:sc.scrollHeight,behavior:reduced()?'auto':'smooth'});
   },720);
@@ -1133,11 +1297,19 @@ function answer(idx){
   },1000);
 
   /* 2200ms — the app moves itself. The fan's thumb never has to. */
-  setTimeout(function(){
-    var a=$('arena');
-    if(a&&!reduced()){ a.classList.add('out'); setTimeout(function(){ wash('open'); nextQ(); },230); }
-    else { wash('open'); nextQ(); }
-  },2200);
+  S.advanceAt=setTimeout(advance,2600);
+}
+
+/* ONE OWNER FOR MOVING ON. The 2.6s timer and the Next button both come
+   here, so a fan who taps early and a fan who waits cannot end up in two
+   different states — and neither can double-advance. */
+function advance(){
+  if(S.phase!=='verdict') return;
+  S.phase='moving';
+  if(S.advanceAt){ clearTimeout(S.advanceAt); S.advanceAt=0; }
+  var a=$('arena');
+  if(a&&!reduced()){ a.classList.add('out'); setTimeout(function(){ wash('open'); nextQ(); },230); }
+  else { wash('open'); nextQ(); }
 }
 
 function flash(ok){
@@ -1161,6 +1333,109 @@ function fly(idx,n){
     el.style.opacity='0';
   });
   setTimeout(function(){ try{el.remove()}catch(e){} },840);
+}
+
+
+/* ====================== SEAL AND SETTLE ============================
+   The half of the product that did not exist. A prediction locks with no
+   verdict, no colour and no celebration — the restraint IS the mechanic,
+   because an unfinished feeling is what brings the phone back out an hour
+   later. It then flips open the gap it was aimed at.
+   =================================================================== */
+function seal(idx){
+  var g=GAPS[S.gap], q=g.q[S.qi];
+  S.ans[S.gap+':'+S.qi]=q.o[idx];
+  S.sealed.push({gap:S.gap, qi:S.qi, pick:q.o[idx], at:Date.now(), rate:worthNow()});
+  buzz(12);
+  var tiles=document.querySelectorAll('.tile');
+  for(var i=0;i<tiles.length;i++){
+    tiles[i].disabled=true;
+    if(i===idx) tiles[i].classList.add('held'); else tiles[i].classList.add('faded');
+  }
+  var w=$('worthV'); if(w){ w.textContent='HELD'; w.classList.add('held'); }
+
+  /* The room's split shows, but labelled as SENTIMENT, not truth. No tick,
+     no cross, nothing green, nothing red. */
+  var sp=split(q);
+  setTimeout(function(){
+    for(var i=0;i<q.o.length;i++){
+      var c=$('c'+i), p=$('p'+i), t=$('t'+i);
+      if(c) c.style.width=sp[i]+'%';
+      if(p) p.textContent=sp[i]+'%';
+      if(t) t.classList.add('shown');
+    }
+  },180);
+
+  setTimeout(function(){ $('t'+idx).classList.add('wax'); buzz(26); },520);
+
+  setTimeout(function(){
+    var land=GAPS[q.settles];
+    $('after').innerHTML='<div class="verdict held"><div class="m">◆</div>'
+      +'<div class="x">'+esc(q.lock||'Sealed.')
+      +'<small>'+sp[idx]+'% of this room is with you · worth '+worthNow()
+      +' now, '+Math.round(land.worth*BASE)+' when it lands</small></div></div>'
+      +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
+    var lastQ=S.qi+1>=g.q.length;
+    $('after').insertAdjacentHTML('beforeend',
+      '<button class="nextbtn" id="nextBtn" onclick="advance()">'
+      +(lastQ?'See the round':'Next question')+'<i></i></button>');
+    var sc=$('scroller'); if(sc) sc.scrollTo({top:sc.scrollHeight,behavior:reduced()?'auto':'smooth'});
+    renderHud();
+  },720);
+  S.advanceAt=setTimeout(advance,2400);
+}
+function sealMissed(){
+  S.ans[S.gap+':'+S.qi]='—';
+  $('after').innerHTML='<div class="verdict bad"><div class="m">⏱</div>'
+    +'<div class="x">Never sealed<small>Nothing to settle later. The clock is the only cost at doors.</small></div></div>'
+    +'<button class="nextbtn" onclick="advance()">Next question<i></i></button>';
+  S.advanceAt=setTimeout(advance,2400);
+}
+
+/* THE SETTLE BEAT. A gap that has sealed calls landing in it does NOT open
+   on a question — it opens on the fan's own card, greyed, exactly as they
+   left it, with how long ago they left it. Then it flips. */
+function pendingFor(gap){
+  return S.sealed.filter(function(x){ return GAPS[x.gap].q[x.qi].settles===gap && !x.done; });
+}
+function renderSettle(){
+  var list=pendingFor(S.gap);
+  if(!list.length){ S.settling=null; renderHold(); return; }
+  var it=list[0]; it.done=true; S.settling=it;
+  var q=GAPS[it.gap].q[it.qi];
+  var ok=it.pick===q.a;
+  var mins=Math.max(1,Math.round((Date.now()-it.at)/60000));
+  var held=Math.max(1,Math.min(3,S.gap-it.gap));      /* the hold bonus */
+  var pay=ok?Math.round(GAPS[S.gap].worth*BASE*held):0;
+  var sp=split(q), roomPct=sp[q.o.indexOf(q.a)];
+  wash('set');
+  $('stage').innerHTML='<div class="settle" id="settleCard">'
+   +'<div class="slab">Sealed at '+esc(GAPS[it.gap].t.toLowerCase())+' · settling now</div>'
+   +'<div class="flip" id="flip"><div class="face front">'
+     +'<div class="ql">'+esc(q.t)+'</div><div class="pick">'+esc(it.pick)+'</div>'
+     +'<div class="ago">your call, '+mins+' minute'+(mins===1?'':'s')+' ago</div></div>'
+     +'<div class="face back '+(ok?'ok':'no')+'">'
+     +'<div class="ql">'+(ok?'Called it':'It was')+'</div>'
+     +'<div class="pick">'+esc(q.a)+'</div>'
+     +'<div class="ago">'+roomPct+'% of the building had it</div></div></div>'
+   +'<div class="pay" id="settlePay"></div>'
+   +'<button class="btn" id="settleGo" style="visibility:hidden" onclick="renderSettle()">Continue</button>'
+   +'</div>';
+  setTimeout(function(){ var f=$('flip'); if(f) f.classList.add('turned'); },900);
+  setTimeout(function(){
+    flash(ok); wash(ok?'hit':'miss'); buzz(ok?[10,40,18]:60);
+    if(ok){ S.pts+=pay; S.earned+=pay; bumpScore(S.pts,true); celebrate(3,$('flip')); }
+    $('settlePay').innerHTML= ok
+      ? '<b>+'+pay+'</b><span>held '+mins+' minutes · ×'+held+' hold bonus · paid at '+GAPS[S.gap].t.toLowerCase()+' rate</span>'
+      : '<b>+0</b><span>'+esc(q.r||'')+'</span>';
+    if(ok) $('settlePay').classList.add('good');
+  },1700);
+  setTimeout(function(){
+    var b=$('settleGo'); if(b){ b.style.visibility='visible';
+      b.textContent = pendingFor(S.gap).length ? 'Next sealed call' : 'Play this gap'; }
+    setTimeout(function(){ wash('set'); },600);
+  },2600);
+  renderHud();
 }
 
 /* ====================== HEARD IT =================================== */

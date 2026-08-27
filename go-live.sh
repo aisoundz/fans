@@ -60,7 +60,28 @@ if [ ! -f "$KEYFILE" ]; then
   show_manual; exit 1
 fi
 
-CRED=$(cat "$KEYFILE")
+CRED=$(tr -d " \t\r\n" < "$KEYFILE")
+
+# TWO CREDENTIAL FORMATS, BECAUSE GODADDY CHANGED THEIRS.
+# The old developer-keys system issued a KEY and a SECRET and wants
+#   Authorization: sso-key KEY:SECRET
+# The newer Personal Access Token is a single opaque string and wants
+#   Authorization: Bearer TOKEN
+# A colon in the file is the tell, but it is not worth trusting — so both
+# are tried on a harmless GET and whichever answers 200 is the one used.
+AUTH=""
+for scheme in "sso-key $CRED" "Bearer $CRED"; do
+  c=$(curl -s -o /tmp/gd.try -w '%{http_code}' \
+    "https://api.godaddy.com/v1/domains/$DOMAIN/records" -H "Authorization: $scheme")
+  if [ "$c" = "200" ]; then AUTH="$scheme"; echo "  auth: ${scheme%% *}"; break; fi
+done
+if [ -z "$AUTH" ]; then
+  echo "  Neither auth scheme was accepted. Last response:"
+  echo "  $(head -c 240 /tmp/gd.try)"
+  echo "  401 usually means the token was copied short, or it is an OTE/test key."
+  echo "  403 means the scope does not include Domains & DNS."
+  show_manual; exit 1
+fi
 
 # READ BEFORE WRITE. Prove the key works and show what is there now, so a bad
 # key or an OTE key fails on a harmless GET instead of half-writing a live
@@ -68,7 +89,7 @@ CRED=$(cat "$KEYFILE")
 echo "Checking the key against $DOMAIN..."
 code=$(curl -s -o /tmp/gd.pre -w '%{http_code}' \
   "https://api.godaddy.com/v1/domains/$DOMAIN/records" \
-  -H "Authorization: sso-key $CRED")
+  -H "Authorization: $AUTH")
 if [ "$code" != "200" ]; then
   echo "  HTTP $code — the key did not work. Nothing was changed."
   case "$code" in
@@ -92,14 +113,14 @@ print(json.dumps([{'data':ip.strip(),'ttl':600} for ip in sys.stdin if ip.strip(
 
 code=$(curl -s -o /tmp/gd.out -w '%{http_code}' -X PUT \
   "https://api.godaddy.com/v1/domains/$DOMAIN/records/A/@" \
-  -H "Authorization: sso-key $CRED" -H 'Content-Type: application/json' \
+  -H "Authorization: $AUTH" -H 'Content-Type: application/json' \
   -d "$BODY")
 echo "A @      -> HTTP $code"
 [ "$code" = "200" ] || { echo "  $(head -c 300 /tmp/gd.out)"; show_manual; exit 1; }
 
 code=$(curl -s -o /tmp/gd2.out -w '%{http_code}' -X PUT \
   "https://api.godaddy.com/v1/domains/$DOMAIN/records/CNAME/www" \
-  -H "Authorization: sso-key $CRED" -H 'Content-Type: application/json' \
+  -H "Authorization: $AUTH" -H 'Content-Type: application/json' \
   -d '[{"data":"aisoundz.github.io","ttl":3600}]')
 echo "CNAME www -> HTTP $code"
 
