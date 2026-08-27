@@ -332,32 +332,32 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
   justify-content:flex-start;padding:26px 0 20px;text-align:center;animation:tk .34s ease}
 .settle .slab{font:800 9.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
   color:var(--dim)}
-.flip{position:relative;width:100%;margin-top:18px;height:196px;
-  transform-style:preserve-3d;-webkit-transform-style:preserve-3d;
-  perspective:1000px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.flip.turned{transform:rotateX(180deg)}
+/* NOT A 3D FLIP ANY MORE, AND THAT IS DELIBERATE.
+   Two separate attempts at backface-visibility both shipped a card showing
+   its front and back at once, mirrored, on the browser this is actually used
+   in — the second time with `backface-visibility: hidden` computing correctly
+   on both faces and the engine painting them anyway. A flourish that has
+   failed twice on the target is not worth a third try.
+   This squashes to nothing, swaps its contents at the midpoint, and comes
+   back. Same beat, no 3D context, and it is structurally incapable of showing
+   two faces because there is only ever one. */
+.flip{position:relative;width:100%;margin-top:18px;min-height:186px;
+  border-radius:var(--r);border:1px solid var(--line2);background:var(--card);
+  padding:22px 18px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:9px;text-align:center;
+  transition:transform .34s cubic-bezier(.5,0,.5,1),border-color .3s,background .3s}
+.flip.squash{transform:scaleY(.02)}
 @media (prefers-reduced-motion:reduce){.flip{transition:none}}
-.flip .face{position:absolute;inset:0;backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px 18px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
-  border:1px solid var(--line2);background:var(--card)}
-/* NO `filter` HERE. A filter on a 3D-transformed element creates a
-   containing block and flattens the 3D rendering context, which silently
-   disables backface-visibility — so the front face carried on painting,
-   mirrored, straight through the back of the card. The greyed-out look is
-   done with tokens instead, which costs nothing and actually works. */
-.flip .front{background:var(--surface2,#171426);border-color:var(--line)}
-.flip .front .pick{color:var(--muted)}
-.flip .front .ql,.flip .front .ago{color:var(--dim)}
-.flip .back{transform:rotateX(180deg)}
-.flip .back.ok{border-color:var(--green);
+.flip.pre .pick{color:var(--muted)}
+.flip.pre .ql,.flip.pre .ago{color:var(--dim)}
+.flip.ok{border-color:var(--green);
   background:linear-gradient(160deg,rgba(47,230,160,.2),var(--card))}
-.flip .back.no{border-color:var(--red);
+.flip.ok .pick{color:#eafff6}
+.flip.no{border-color:var(--red);
   background:linear-gradient(160deg,rgba(255,77,94,.16),var(--card))}
 .flip .ql{font:700 12.5px/1.35 var(--f);color:var(--muted);max-width:26ch}
 .flip .pick{font-family:var(--d);font-weight:900;font-size:34px;line-height:1;
   color:var(--ink);text-wrap:balance}
-.flip .back.ok .pick{color:#eafff6}
 .flip .ago{font:600 10.5px/1 var(--mono);color:var(--dim);letter-spacing:.04em}
 .pay{margin-top:20px;min-height:52px}
 .pay b{display:block;font-family:var(--d);font-weight:900;font-size:48px;line-height:1;
@@ -379,23 +379,29 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
 
 /* ---- BETWEEN GAPS: THE ROOM, not a form -------------------------- */
 .hold{display:flex;flex-direction:column;gap:14px}
-.holdhero{border-radius:var(--r);padding:22px 18px;text-align:center;
+.holdhero{border-radius:var(--r);padding:20px 18px 22px;text-align:left;
   border:1px solid var(--line);background:linear-gradient(165deg,var(--card2),var(--card))}
 .holdhero .k{font:800 9.5px/1 var(--f);letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
-.holdhero .big{font-family:var(--d);font-weight:900;font-size:46px;line-height:.9;
-  color:var(--ink);margin:11px 0 4px;text-wrap:balance}
-.holdhero .when2{font:600 11px/1.4 var(--f);color:var(--gel-b);margin-top:7px;
+.holdhero .big{font-family:var(--d);font-weight:900;font-size:46px;line-height:.88;
+  color:var(--ink);margin:9px 0 0;text-wrap:balance;letter-spacing:.4px}
+.holdhero .when2{font:600 11.5px/1.4 var(--f);color:var(--gel-b);margin-top:8px;
   letter-spacing:.01em}
-.holdhero .cd{font:700 30px/1 var(--mono);color:var(--gel-b);font-variant-numeric:tabular-nums;
-  margin-top:10px}
-.holdhero .sub{font:500 12.5px/1.5 var(--f);color:var(--muted);margin-top:9px;
-  max-width:34ch;margin-left:auto;margin-right:auto}
+.holdhero .cd{display:inline-block;margin-top:12px;padding:6px 11px;border-radius:var(--pill);
+  font:800 11px/1 var(--f);letter-spacing:.09em;text-transform:uppercase;
+  color:var(--amb);background:color-mix(in srgb,var(--amb) 13%,transparent);
+  border:1px solid color-mix(in srgb,var(--amb) 32%,transparent)}
+.holdhero .sub{font:500 12.5px/1.55 var(--f);color:var(--muted);margin-top:11px;
+  max-width:38ch}
 .pulse{display:flex;gap:8px}
-.pulse div{flex:1;padding:12px 10px;border-radius:var(--r2);background:var(--card);
-  border:1px solid var(--line);text-align:center}
+.pulse div{flex:1;padding:13px 10px;border-radius:var(--r2);background:var(--card);
+  border:1px solid var(--line);text-align:left}
 .pulse .v{font:700 20px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
-.pulse .l{font:800 8px/1.3 var(--f);letter-spacing:.11em;text-transform:uppercase;
-  color:var(--dim);margin-top:6px}
+/* The label had picked up the card border via a sibling rule and rendered as
+   a second box under the number. One box per stat. */
+.pulse .l{display:block;font:800 8px/1.3 var(--f);letter-spacing:.11em;
+  text-transform:uppercase;color:var(--dim);margin-top:7px;
+  background:none;border:0;padding:0}
+.pulse .v{display:block;text-align:left}
 /* ---- THE SETLIST STRIP ---------------------------------------------
    THE ONE AESTHETIC RISK, AND IT IS THE RIGHT ONE.
    STATS pins a scoreboard, because a scoreboard is the instrument a game
@@ -1483,7 +1489,7 @@ function renderHold(){
    +'<div class="k">'+esc(g.n)+' · up next · '+esc(g.mins)+'</div>'
    +'<div class="big">'+esc(g.t)+'</div>'
    +(g.when?'<div class="when2">'+esc(g.when)+'</div>':'')
-   +'<div class="cd">'+(g.q.length*g.worth*BASE)+' pts</div>'
+   +'<div class="cd">'+(g.q.length*g.worth*BASE)+' points on the table</div>'
    +'<div class="sub">'+esc(g.sub)+'</div></div>'
    +'<div class="pulse">'
    +'<div><div class="v">'+g.q.length+'</div><div class="l">questions</div></div>'
@@ -1499,7 +1505,7 @@ function renderHold(){
         : g.songsDone+' of '+SHOW.set.length+' done. '+(SHOW.broadcast?'They are in a break.':'Nothing is on stage right now.')))+'</p></div>'
    +'<div class="spon"><div class="mk">LN</div><div class="tx">'
    +'<div class="l">'+esc(g.n)+' presented by</div>'
-   +'<div class="b">'+(SHOW.broadcast?'A sponsor lives in the Gametimes and nowhere else — and on a broadcast a Gametime IS the commercial break. The advertiser is already paying for this minute; now somebody is looking at it.':'A sponsor lives in the Gametimes and nowhere else. Never over a question, never during a performance.')+'</div></div></div>'
+   +'<div class="b">'+(SHOW.broadcast?'On a broadcast, a Gametime <b>is</b> the commercial break. The advertiser already paid for this minute — now somebody is looking at it.':'Between rounds and nowhere else. Never over a question, never during a song.')+'</div></div></div>'
    +'</div>';
   $('stage').innerHTML=h;
   if(pending) startHeard(g.heard);
@@ -1845,23 +1851,30 @@ function renderSettle(){
   wash('set');
   $('stage').innerHTML='<div class="settle" id="settleCard">'
    +'<div class="slab">Sealed at '+esc(GAPS[it.gap].t.toLowerCase())+' · settling now</div>'
-   +'<div class="flip" id="flip"><div class="face front">'
+   +'<div class="flip pre" id="flip">'
      +'<div class="ql">'+esc(q.t)+'</div><div class="pick">'+esc(it.pick)+'</div>'
      +'<div class="ago">your call, '+mins+' minute'+(mins===1?'':'s')+' ago</div></div>'
-     +'<div class="face back '+(ok?'ok':'no')+'">'
-     +'<div class="ql">'+(ok?'Called it':'It was')+'</div>'
-     +'<div class="pick">'+esc(q.a)+'</div>'
-     +'<div class="ago">'+roomPct+'% of the building had it</div></div></div>'
    +'<div class="pay" id="settlePay"></div>'
    +'<button class="btn" id="settleGo" style="visibility:hidden" onclick="renderSettle()">Continue</button>'
    +'</div>';
-  setTimeout(function(){ var f=$('flip'); if(f) f.classList.add('turned'); },900);
+  /* squash → swap → return. The content changes while the card is 2% tall,
+     so the two states are never on screen together. */
+  setTimeout(function(){ var f=$('flip'); if(f) f.classList.add('squash'); },900);
+  setTimeout(function(){
+    var f=$('flip'); if(!f) return;
+    f.className='flip squash '+(ok?'ok':'no');
+    f.innerHTML='<div class="ql">'+(ok?'Called it':'It was')+'</div>'
+      +'<div class="pick">'+esc(q.a)+'</div>'
+      +'<div class="ago">'+roomPct+'% of the building had it</div>';
+    requestAnimationFrame(function(){ f.classList.remove('squash'); });
+  },1250);
   setTimeout(function(){
     flash(ok); wash(ok?'hit':'miss'); buzz(ok?[10,40,18]:60);
     if(ok){ S.pts+=pay; S.earned+=pay; bumpScore(S.pts,true); celebrate(3,$('flip')); }
     $('settlePay').innerHTML= ok
       ? '<b>+'+pay+'</b><span>held '+mins+' minute'+(mins===1?'':'s')+' · ×'+held+' hold bonus · paid at '+esc(GAPS[S.gap].t)+' rate</span>'
-      : '<b>+0</b><span>'+esc(q.r||'')+'</span>';
+      : '<b>+0</b><span>Sealed at '+esc(GAPS[it.gap].t)+'. It went the other way — '
+        +roomPct+'% of the building had it.</span>';
     if(ok) $('settlePay').classList.add('good');
   },1700);
   setTimeout(function(){
