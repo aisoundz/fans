@@ -101,6 +101,20 @@ the show starts.
    counted carry-in points not earned at the show.
 9. **The room picker was a horizontal scroller with the scrollbar hidden** —
    unreachable with a desktop mouse.
+10. **The 3D flip failed twice.** `backface-visibility` computed to `hidden` on
+   both faces, the parent was `preserve-3d`, no ancestor flattened it — and the
+   browser painted both anyway, one mirrored. Replaced with a `scaleY` squash
+   that swaps its contents at the midpoint: same beat, no 3D context, and
+   structurally incapable of showing two faces.
+11. **Room questions were never counted as correct.** The reward screen compared
+   the answer to `q.a`, and a ROOM question has no `q.a` — its answer is whatever
+   the building said. A round could pay +20 and print "Nothing that round" on the
+   same screen. One owner now: `wasRight()`.
+12. **The settle screen congratulated you for being wrong** — it printed the
+   you-got-it reaction line under a red card and a +0.
+13. **The reward screen led on a grade, not a reward.** "1/4" is a report card;
+   the points earned that round appeared nowhere. It leads on `+80` now, counted
+   up, with position shown as a *change* rather than a static ordinal.
 
 ---
 
@@ -122,6 +136,14 @@ the show starts.
 
 ---
 
+## The naming, and why "Gametime 02" was wrong
+
+A serial number counts our array index at the fan. Nobody at a show thinks in
+terms of Gametime 02 — they think the band is in a break. It also buried the
+name we had gone to trouble to choose. The number is now used for the one thing
+a number is good for: **position** ("2 of 5"). Buttons name their destination —
+*Play Cutaway*, *Go to The Bridge* — never an index.
+
 ## Deliverables
 
 | | Where |
@@ -129,7 +151,7 @@ the show starts.
 | Prototype | https://fansgametime.com · artifact `d183141c-f2c5-4c48-883c-789015d430f7` |
 | Strategy & product plan — *Playing the Gaps* | artifact `be9f2f1c-ba2f-4253-ac50-0ee189d66c74` |
 | Defensibility memo — *The Grading Is the Moat* | artifact `372e8d23-6ffe-470c-b20d-a4ea6d90b0d6` |
-| Pitch deck — *Where The Show Isn't* | 14 slides, PPTX + PDF, in this folder |
+| Pitch deck — *Where The Show Isn't* | 15 slides, PPTX + PDF, in this folder |
 | Source | `~/fans/` on the Jetson, mirrored to GitHub |
 
 ---
