@@ -476,20 +476,30 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
 .marq .cd{margin-top:14px;display:flex;align-items:baseline;gap:8px}
 .marq .cd .v{font:700 30px/1 var(--mono);color:#fff;font-variant-numeric:tabular-nums}
 .marq .cd .l{font:800 9.5px/1 var(--f);letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-.rail{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.rail::-webkit-scrollbar{display:none}
-.rail .rm{flex:none;width:154px;padding:12px;border-radius:var(--r2);background:var(--card);
-  border:1px solid var(--line);cursor:pointer;text-align:left}
-.rail .rm .a{font:800 13px/1.2 var(--f);color:var(--ink)}
-.rail .rm .v{font:500 10.5px/1.35 var(--f);color:var(--dim);margin-top:4px}
+/* NOT A SCROLLER. It was a horizontal overflow rail with the scrollbar
+   hidden — swipeable on a phone, and completely unreachable with a desktop
+   mouse, which left the third room permanently cut off at the edge. Three
+   rooms fit in a column, so they get one. Nothing to discover, nothing to
+   drag, every row reachable by thumb. */
+.rail{display:flex;flex-direction:column;gap:8px}
+.rail .rm{width:100%;padding:13px 14px;border-radius:var(--r2);background:var(--card);
+  border:1px solid var(--line);cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:12px}
+.rail .rm .meta{flex:1;min-width:0}
+.rail .rm .a{font:800 14.5px/1.2 var(--f);color:var(--ink)}
+.rail .rm .v{font:500 11px/1.35 var(--f);color:var(--dim);margin-top:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rail .rm .go{flex:none;width:0;height:0;border-left:7px solid var(--dim);
+  border-top:5px solid transparent;border-bottom:5px solid transparent}
+.rail .rm.on .go{border-left-color:var(--gel-a)}
 .rail .rm .s{font:800 9px/1.3 var(--f);letter-spacing:.09em;text-transform:uppercase;
-  color:var(--gel-b);margin-top:8px;display:block}
+  color:var(--gel-b);margin-top:7px;display:block}
 .rail .rm{transition:border-color .16s,background .16s}
 .rail .rm.on{border-color:var(--gel-a);
   background:linear-gradient(160deg,color-mix(in srgb,var(--gel-a) 15%,var(--card)),var(--card))}
 .rail .rm .dm{display:block;margin-top:6px;font:800 8px/1 var(--f);letter-spacing:.12em;
   text-transform:uppercase;color:var(--dim)}
-.rail .rm{width:170px}
+
 .how{display:flex;flex-direction:column;gap:10px}
 .step{display:flex;gap:12px;align-items:flex-start}
 .step .k{flex:none;font-family:var(--d);font-weight:900;font-size:24px;line-height:.9;
@@ -1157,10 +1167,11 @@ function renderPicker(){
   for(var i=0;i<SHOWS.length;i++){
     var sh=SHOWS[i], on=i===S.showIdx;
     h+='<button class="rm'+(on?' on':'')+'" onclick="pickShow('+i+')">'
-      +'<div class="a">'+esc(sh.act)+'</div>'
+      +'<div class="meta"><div class="a">'+esc(sh.act)+(on?' <span style="color:var(--gel-a);font-size:10px;letter-spacing:.1em">· IN THIS ROOM</span>':'')+'</div>'
       +'<div class="v">'+esc(sh.venue)+' · '+esc(sh.city.split(',')[0])+'</div>'
-      +'<span class="s">'+esc(sh.scale)+' · '+sh.gaps.length+' gaps</span>'
-      +(sh.demo?'<span class="dm">demo act</span>':'')+'</button>';
+      +'<span class="s">'+esc(sh.scale)+' · '+sh.gaps.length+' gaps'
+      +(sh.demo?' · demo act':'')+'</span></div>'
+      +'<span class="go"></span></button>';
   }
   $('rail').innerHTML=h;
 }
