@@ -1,0 +1,491 @@
+<title>Playing the Gaps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Committed to a single dark treatment, deliberately. The product this
+   document describes is used in a darkened arena and its whole identity is
+   stage lighting; a light variant would be a different company's document.
+   Every colour is painted explicitly so the page holds on any host ground. */
+:root{
+  --ground:#08070e; --surface:#100e1a; --surface2:#171426; --raise:#1e1930;
+  --rule:rgba(255,255,255,.085); --rule2:rgba(255,255,255,.15); --rule3:rgba(255,255,255,.045);
+  --ink:#ffffff; --body:#d9d4e7; --muted:#9a92b5; --dim:#6b6188;
+  --mag:#ff3d9a; --amb:#ffb545; --cyan:#35e0e8; --green:#2fe6a0; --red:#ff5566;
+  --f:'Figtree',-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --d:'Big Shoulders Display','Figtree',Impact,sans-serif;
+  --m:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--body);font-family:var(--f);
+  font-size:17px;line-height:1.66;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.wrap{max-width:760px;margin:0 auto;padding:0 22px 110px}
+p{margin:0 0 18px;max-width:64ch}
+a{color:var(--cyan)}
+strong{color:var(--ink);font-weight:700}
+em{color:var(--body);font-style:italic}
+
+/* ---- masthead ---- */
+.mast{padding:60px 0 34px;border-bottom:1px solid var(--rule)}
+.mast .kick{font:700 11px/1 var(--m);letter-spacing:.22em;text-transform:uppercase;color:var(--mag)}
+.mast h1{font-family:var(--d);font-weight:900;font-size:clamp(52px,13vw,96px);line-height:.84;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--ink);margin:16px 0 0;text-wrap:balance}
+.mast .sub{font:500 19px/1.5 var(--f);color:var(--muted);margin-top:18px;max-width:52ch}
+.mast .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tag{font:700 10.5px/1 var(--m);letter-spacing:.11em;text-transform:uppercase;
+  padding:8px 11px;border-radius:999px;border:1px solid var(--rule2);color:var(--muted)}
+.tag.on{border-color:color-mix(in srgb,var(--mag) 50%,transparent);color:var(--mag)}
+
+/* ---- thesis ---- */
+.thesis{margin:34px 0 0;padding:26px 24px;border-radius:14px;
+  border:1px solid color-mix(in srgb,var(--mag) 34%,transparent);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--mag) 13%,var(--surface)),var(--surface))}
+.thesis p{font:600 20px/1.5 var(--f);color:var(--ink);margin:0;max-width:56ch;text-wrap:balance}
+.thesis p+p{margin-top:14px;font:500 16px/1.6 var(--f);color:var(--body)}
+
+/* ---- sections ---- */
+section{padding-top:58px}
+.eyebrow{font:700 10.5px/1 var(--m);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.eyebrow.mag{color:var(--mag)} .eyebrow.cy{color:var(--cyan)} .eyebrow.am{color:var(--amb)}
+h2{font-family:var(--d);font-weight:900;font-size:clamp(32px,7vw,46px);line-height:.94;
+  letter-spacing:.4px;text-transform:uppercase;color:var(--ink);margin:13px 0 20px;text-wrap:balance}
+h3{font:800 19px/1.34 var(--f);color:var(--ink);margin:34px 0 12px;text-wrap:balance}
+h4{font:800 14px/1.4 var(--f);color:var(--ink);margin:24px 0 8px;
+  letter-spacing:.02em}
+ul,ol{margin:0 0 18px;padding-left:22px;max-width:64ch}
+li{margin-bottom:9px}
+li::marker{color:var(--dim)}
+
+/* ---- pull number ---- */
+.stat{display:flex;flex-wrap:wrap;gap:2px 30px;margin:26px 0;padding:22px 0;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat div{flex:1 1 150px}
+.stat .v{font-family:var(--d);font-weight:900;font-size:clamp(34px,8vw,50px);line-height:.9;
+  color:var(--amb);font-variant-numeric:tabular-nums}
+.stat .v.c{color:var(--cyan)} .stat .v.m{color:var(--mag)} .stat .v.w{color:var(--ink)}
+.stat .l{font:600 12.5px/1.45 var(--f);color:var(--muted);margin-top:9px;max-width:24ch}
+
+/* ---- the show timeline: the one diagram that earns its place ---- */
+.tl{margin:30px 0 8px}
+.tl-bar{display:flex;gap:2px;height:74px;align-items:stretch}
+.tl-bar div{border-radius:4px;position:relative;overflow:hidden;min-width:3px}
+.tl-bar .set{background:var(--surface2);border:1px solid var(--rule)}
+.tl-bar .gap{background:linear-gradient(180deg,color-mix(in srgb,var(--mag) 62%,transparent),
+  color-mix(in srgb,var(--mag) 26%,transparent));border:1px solid color-mix(in srgb,var(--mag) 55%,transparent)}
+.tl-bar span{position:absolute;left:5px;bottom:5px;font:700 8.5px/1.15 var(--m);
+  letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tl-bar .gap span{color:#fff}
+.tl-key{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;
+  font:600 12px/1.5 var(--f);color:var(--muted)}
+.tl-key i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;
+  vertical-align:-1px}
+.tl-cap{font:500 13.5px/1.6 var(--f);color:var(--dim);margin-top:12px;max-width:62ch}
+
+/* ---- tables ---- */
+.tw{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th{text-align:left;font:700 10.5px/1.3 var(--m);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);padding:13px 14px;border-bottom:1px solid var(--rule2);background:var(--surface)}
+td{padding:13px 14px;border-bottom:1px solid var(--rule3);color:var(--body);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink)}
+td.n{font-family:var(--m);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+td.n.am{color:var(--amb)}
+tr.tot td{background:color-mix(in srgb,var(--amb) 8%,transparent);border-top:1px solid var(--rule2)}
+
+/* ---- cards / callouts ---- */
+.box{border:1px solid var(--rule);border-radius:13px;padding:20px 22px;margin:22px 0;
+  background:var(--surface)}
+.box.mag{border-color:color-mix(in srgb,var(--mag) 32%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--mag) 9%,var(--surface)),var(--surface))}
+.box.cy{border-color:color-mix(in srgb,var(--cyan) 30%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--cyan) 8%,var(--surface)),var(--surface))}
+.box.red{border-color:color-mix(in srgb,var(--red) 30%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--red) 8%,var(--surface)),var(--surface))}
+.box p:last-child{margin-bottom:0}
+.box .hd{font:800 12px/1 var(--f);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px}
+.box.mag .hd{color:var(--mag)} .box.cy .hd{color:var(--cyan)} .box.red .hd{color:var(--red)}
+
+/* ---- numbered mechanism list (real sequence, not decoration) ---- */
+.chain{display:flex;flex-direction:column;gap:0;margin:24px 0}
+.link{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule3)}
+.link:last-child{border-bottom:0}
+.link .k{flex:none;width:30px;font-family:var(--d);font-weight:900;font-size:26px;line-height:1;
+  color:color-mix(in srgb,var(--mag) 72%,var(--dim));font-variant-numeric:tabular-nums}
+.link .t{font:800 15px/1.35 var(--f);color:var(--ink)}
+.link .d{font:500 14.5px/1.6 var(--f);color:var(--muted);margin-top:5px;max-width:56ch}
+.link .d cite{font-style:normal;font-family:var(--m);font-size:12px;color:var(--dim)}
+.link .so{font:700 12px/1.5 var(--f);color:var(--amb);margin-top:8px}
+.link .so b{color:var(--amb)}
+
+/* ---- verdict rows ---- */
+.vrow{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--rule3)}
+.vrow:last-child{border-bottom:0}
+.vrow .st{flex:none;font:700 9.5px/1 var(--m);letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 9px;border-radius:5px;margin-top:2px;width:78px;text-align:center}
+.st.p{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green);
+  border:1px solid color-mix(in srgb,var(--green) 34%,transparent)}
+.st.u{background:color-mix(in srgb,var(--amb) 14%,transparent);color:var(--amb);
+  border:1px solid color-mix(in srgb,var(--amb) 32%,transparent)}
+.st.n{background:color-mix(in srgb,var(--red) 13%,transparent);color:var(--red);
+  border:1px solid color-mix(in srgb,var(--red) 30%,transparent)}
+.vrow .tx{flex:1;min-width:0}
+.vrow .tx b{display:block;color:var(--ink);font-weight:700;font-size:15px;line-height:1.35}
+.vrow .tx span{display:block;color:var(--muted);font-size:14px;line-height:1.6;margin-top:4px}
+
+.cta{display:inline-block;margin:6px 0 0;padding:15px 24px;border-radius:11px;
+  font:800 13.5px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;color:#0a0611;
+  text-decoration:none;background:linear-gradient(96deg,var(--mag),var(--cyan))}
+.foot{margin-top:70px;padding-top:26px;border-top:1px solid var(--rule);
+  font:500 13px/1.7 var(--f);color:var(--dim)}
+.foot b{color:var(--muted)}
+hr.d{border:0;border-top:1px solid var(--rule);margin:52px 0 0}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kick">Fans Gametime &middot; strategy &amp; product plan &middot; 26 August 2026</div>
+  <h1>Playing<br>the Gaps</h1>
+  <p class="sub">A live-show engagement product for Live Nation, built on an engine that already runs. What it is, why an artist says yes, what the science says it does to a fan's memory, and how it becomes a nine-figure business.</p>
+  <div class="meta">
+    <span class="tag on">Prototype built &amp; playable</span>
+    <span class="tag">fansgametime.com secured</span>
+    <span class="tag">Sibling of Stats Gametime</span>
+  </div>
+</header>
+
+<div class="thesis">
+  <p>Live Nation put 159 million people in rooms last year. For roughly 101 minutes of every one of those nights, nothing is happening on stage — and every one of those people is holding a phone.</p>
+  <p>Fans Gametime is a game that lives only in those minutes. It never interrupts a song. It asks you about the show you are standing in — what opened it, how many dancers, what he was wearing — and the artist, not a bookmaker, pays out. And because being asked is how memory is made, it does something no second-screen product has ever claimed: it makes the concert itself harder to forget.</p>
+</div>
+
+<section>
+  <div class="eyebrow mag">The opportunity</div>
+  <h2>Nearly half the night is not the show</h2>
+  <p>Take an ordinary arena date. Doors at 7:00, out by 11:15. Here is where the time actually goes.</p>
+
+  <div class="tl">
+    <div class="tl-bar" role="img" aria-label="A 221-minute concert night broken into sets and gaps: doors 45 minutes, opener 35, changeover 25, first half of the headline set 40, mid-set break 4, second half 35, encore break 2, encore 10, house lights 25.">
+      <div class="gap" style="flex:45"><span>Doors<br>45m</span></div>
+      <div class="set" style="flex:35"><span>Opener<br>35m</span></div>
+      <div class="gap" style="flex:25"><span>Change<br>25m</span></div>
+      <div class="set" style="flex:40"><span>Set<br>40m</span></div>
+      <div class="gap" style="flex:4"><span></span></div>
+      <div class="set" style="flex:35"><span>Set<br>35m</span></div>
+      <div class="gap" style="flex:2"><span></span></div>
+      <div class="set" style="flex:10"><span>Enc<br>10m</span></div>
+      <div class="gap" style="flex:25"><span>Out<br>25m</span></div>
+    </div>
+    <div class="tl-key">
+      <span><i style="background:var(--mag)"></i>Gap &mdash; nothing on stage</span>
+      <span><i style="background:var(--surface2);border:1px solid var(--rule2)"></i>Set &mdash; sacred</span>
+    </div>
+    <p class="tl-cap">The two narrow magenta slivers are the mid-set costume break (4 minutes) and the encore break (2 minutes). They are the smallest gaps and the most valuable: during the encore break the entire building is standing still, chanting, with phones already out.</p>
+  </div>
+
+  <div class="stat">
+    <div><div class="v m">101</div><div class="l">minutes of gap in a 221-minute night</div></div>
+    <div><div class="v">159M</div><div class="l">fans at Live Nation shows in 2025, across 55,000 concerts</div></div>
+    <div><div class="v w">$1.3B</div><div class="l">Live Nation sponsorship revenue in 2025, up 11% &mdash; none of it sold against the gaps</div></div>
+  </div>
+
+  <p>The industry has always treated these minutes as loss. Egress is a crowd-management problem. The changeover is a union break. Doors is a bar-spend window. Nobody has ever built a <em>product</em> for them, because until now the only thing you could do with a captive crowd and no stage activity was play a slideshow at them.</p>
+  <p><strong>That is the whole opening.</strong> We are not asking for attention that belongs to the artist. We are asking for the attention nobody wanted.</p>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow">The product</div>
+  <h2>Five gaps, twenty questions, one night</h2>
+  <p>Open the prototype on a phone and walk a whole Black Eyed Peas show at the Kia Forum in about ninety seconds. Every song, every setlist position and the encore are real data from their 2026 run.</p>
+  <p><a class="cta" href="https://claude.ai/code/artifact/d183141c-f2c5-4c48-883c-789015d430f7">Open the prototype</a></p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Gap</th><th>When</th><th>Worth</th><th>What it asks</th></tr></thead>
+    <tbody>
+      <tr><td><b>Doors</b></td><td class="n">45 min</td><td class="n am">1 pt</td><td>The prediction sheet. What opens the show. How many costume changes. Will they play a cover.</td></tr>
+      <tr><td><b>The changeover</b></td><td class="n">25 min</td><td class="n am">2 pt</td><td>About the opener you just watched &mdash; and about the room. Which line is longer, merch or the bar.</td></tr>
+      <tr><td><b>The break</b></td><td class="n">4 min</td><td class="n am">3 pt</td><td>Mid-set. How many dancers were on stage for Pump It. What was Taboo wearing when they walked on.</td></tr>
+      <tr><td><b>The encore break</b></td><td class="n">90 sec</td><td class="n am">4 pt</td><td>Did the whole band leave. What do they come back on with &mdash; a prediction that settles in ninety seconds.</td></tr>
+      <tr><td><b>House lights</b></td><td class="n">25 min</td><td class="n am">5 pt</td><td>The walk-out. What was the last song. How many all in. Then the payoff, the board and the prize.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The three rules the product is built on</h3>
+  <div class="chain">
+    <div class="link"><div class="k">1</div><div><div class="t">The set is sacred</div>
+      <div class="d">No question ever fires while a song is playing. This is enforced in the code, not in a policy document, and it is the single reason an artist lets us near their audience.</div></div></div>
+    <div class="link"><div class="k">2</div><div><div class="t">Nothing you can look up</div>
+      <div class="d">Every question resolves from something visible from where you are standing. No trivia, no discography quiz, no Wikipedia. If a person at home could answer it, it does not ship.</div></div></div>
+    <div class="link"><div class="k">3</div><div><div class="t">The artist pays, not a bookmaker</div>
+      <div class="d">Entry is free, permanently. Prizes come from the artist and cost them almost nothing: the setlist off the monitor wedge, signed. Soundcheck in the next city. Your name on the LED wall for twelve seconds. A merch code at 60 points, which pays for itself before the fan leaves the building.</div></div></div>
+  </div>
+
+  <div class="box mag">
+    <div class="hd">Heard It &mdash; the one live mechanic</div>
+    <p>Twice a night, on a moment the whole room is already looking up for &mdash; the band walking off, a cover starting &mdash; one card appears for twenty seconds and never repeats. Answer and pocket it. If you miss it, it is gone. A card that nags a fan through a song is a card that gets the product banned from a tour, so it cannot exist.</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow">The technical spine</div>
+  <h2>The setlist is the feed</h2>
+  <p>Stats Gametime works because ESPN publishes a live, machine-readable game feed and we wrote 84 resolvers against it. The first question anyone technical will ask about a concert version is the right one: <em>a show has no feed. How does a question resolve?</em></p>
+  <p>It has a feed. It is printed on paper and taped to a monitor wedge, and it exists <strong>before the show starts</strong>.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Source</th><th>Resolves</th><th>Share of questions</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td><b>The printed setlist</b><br><span style="color:var(--muted)">photographed in the production office at soundcheck</span></td><td>Song order, the opener, the closer, the encore, whether there is a cover, total song count, which era the night leans on</td><td class="n">~60%</td><td class="n">One photo</td></tr>
+      <tr><td><b>A six-button panel</b><br><span style="color:var(--muted)">run by a production assistant who is already stood at the desk</span></td><td>Dancer counts, costume changes, pyro vs confetti, hands-up tallies, the walk-on outfit &mdash; marked once, live</td><td class="n">~30%</td><td class="n">~10 taps</td></tr>
+      <tr><td><b>The crowd itself</b></td><td>Merch line vs bar line, what is on the wall right now &mdash; questions where the room's own consensus <em>is</em> the truth, and the answer is a product for the venue</td><td class="n">~10%</td><td class="n">Free</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>This is cheaper than the sports version, not harder. Stats Gametime has to grade a game nobody controls. Fans Gametime grades a show whose script is <em>handed to us in advance by the people who wrote it</em>. The Control Room that a game-night host already uses becomes a six-button panel a tour PA can learn in ninety seconds.</p>
+
+  <div class="box">
+    <div class="hd">Inherited whole from Stats Gametime</div>
+    <p>The scoring engine, the room store, the offline outbox that queues answers when 15,000 phones are fighting over one arena antenna, the celebration layer, the voice mode, the design system, the pre-deploy QA gate, and the rule that a question never ships until it has been proven to resolve from a named source. None of that is new work. <strong>The concert product is a question bank and a resolver on an engine that has already run twenty-six game nights.</strong></p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow am">The case nobody else can make</div>
+  <h2>We do not record<br>the memory. We make it.</h2>
+  <p>Every second-screen pitch Live Nation has ever heard promises engagement. This one promises something measurable and much larger: that a fan who plays remembers the show <strong>better, for longer, and more fondly</strong> than a fan who does not — and that a better-remembered show is a ticket bought again.</p>
+  <p>That is not a marketing claim. It is a stack of some of the most replicated findings in cognitive psychology, and this product happens to be shaped exactly like the intervention those findings describe.</p>
+
+  <div class="chain">
+    <div class="link"><div class="k">1</div><div><div class="t">Being asked beats watching. This is the whole product.</div>
+      <div class="d">The <strong>testing effect</strong> is one of the most robust results in memory research: retrieving information produces substantially better long-term retention than re-studying it, and the advantage <em>grows</em> as the delay lengthens. Tests enhance later retention more than additional study of the same material, even with no feedback. <cite>Roediger &amp; Karpicke, 2006</cite></div>
+      <div class="so"><b>So:</b> scrolling your own concert photos is re-study. Being asked "what opened the show" is retrieval. Only one of those makes the night stick — and the industry currently offers only the first.</div></div></div>
+
+    <div class="link"><div class="k">2</div><div><div class="t">An answer you produce outlives an answer you are handed</div>
+      <div class="d">The <strong>generation effect</strong>: material a person generates themselves is remembered better than the identical material read passively. <cite>Slamecka &amp; Graf, 1978</cite> And under <strong>levels of processing</strong>, attending to meaning encodes far more deeply than attending to surface. <cite>Craik &amp; Lockhart, 1972</cite></div>
+      <div class="so"><b>So:</b> "how many dancers were on stage for Pump It" forces effortful, semantic processing of four seconds a passive viewer would have glanced straight past. That is the mechanism, stated plainly.</div></div></div>
+
+    <div class="link"><div class="k">3</div><div><div class="t">Asked in the building, encoded with the building</div>
+      <div class="d"><strong>Encoding specificity</strong>: recall is strongest when the retrieval context matches the encoding context — demonstrated most famously with divers who learned word lists underwater and recalled them best underwater. <cite>Godden &amp; Baddeley, 1975</cite></div>
+      <div class="so"><b>So:</b> the question must be asked <em>in the room, during the show</em>. The volume, the lights, the people either side of you all get bound into the memory trace. A recap email the next morning gets none of that, which is precisely why every recap email has failed.</div></div></div>
+
+    <div class="link"><div class="k">4</div><div><div class="t">We get to write the ending &mdash; and the ending is what gets remembered</div>
+      <div class="d">The <strong>peak&ndash;end rule</strong>: people judge an experience almost entirely by its most intense moment and by how it ended, and are strikingly insensitive to how long it lasted (<em>duration neglect</em>). <cite>Kahneman, Fredrickson, Schreiber &amp; Redelmeier, 1993; Redelmeier &amp; Kahneman, 1996</cite></div>
+      <div class="so"><b>So:</b> today a great concert ends with twenty-five minutes shuffling toward a car park. That flat, mildly irritating final note is what the brain files as "the end". The walk-out round replaces it with a payoff, a leaderboard, a prize and a share. <b>We are not decorating the memory of the show &mdash; we are improving the show's remembered value, which is the number that decides whether they buy the next ticket.</b></div></div></div>
+
+    <div class="link"><div class="k">5</div><div><div class="t">Then we ask again, on a schedule, inside an app they already open</div>
+      <div class="d">Retrieval spread across time beats retrieval crammed together — the <strong>spacing effect</strong>, and repeated retrieval at expanding intervals is the single best-evidenced way to stop a memory decaying. <cite>Karpicke &amp; Roediger, 2007</cite></div>
+      <div class="so"><b>So:</b> On Repeat asks you again at day 9, day 30 and day 90, on Spotify, between two tracks. That is a textbook expanding-retrieval schedule delivered by a product hundreds of millions of people open daily &mdash; and it costs the DSP one card.</div></div></div>
+
+    <div class="link"><div class="k">6</div><div><div class="t">And the retrieval cue was already built. By the artist.</div>
+      <div class="d">Music is one of the most potent cues for autobiographical memory known, and music-evoked autobiographical memories are unusually emotional and unusually vivid. <cite>Janata et al., 2007</cite> Musical cues produce a more pronounced reminiscence bump than film cues do. <cite>Belfi &amp; Jakubowski, 2021</cite></div>
+      <div class="so"><b>So:</b> we do not need to invent a way to trigger the memory. The artist wrote it, the fan plays it fourteen times a month, and we simply attach the night to it. Nobody else in live entertainment owns both ends of that loop.</div></div></div>
+
+    <div class="link"><div class="k">7</div><div><div class="t">A concert is already the most arousing thing most people do all month</div>
+      <div class="d">Emotionally arousing events are consolidated into long-term memory more strongly than neutral ones. A small stake and a twenty-second clock, applied at the exact moment of encoding, push an already-high-arousal event higher. <cite>McGaugh, 2000</cite></div>
+      <div class="so"><b>So:</b> this is the rare intervention whose ideal laboratory conditions are the normal operating conditions of a Live Nation show.</div></div></div>
+  </div>
+
+  <div class="box mag">
+    <div class="hd">The chain, end to end</div>
+    <p><strong>Attention</strong> &rarr; you are asked something only a person in the room can answer &rarr; <strong>retrieval</strong> lays the trace down harder than watching ever could &rarr; the <strong>ending</strong> is engineered instead of accidental &rarr; the <strong>song</strong> becomes the cue &rarr; <strong>spaced retrieval</strong> on the DSP stops it fading &rarr; a year later the fan can still describe the night &rarr; <strong>they buy the next ticket.</strong></p>
+    <p>A fan who cannot remember a show has no reason to go again. That is the quiet leak in a $25 billion business, and this is the first product shaped to plug it.</p>
+  </div>
+
+  <div class="box red">
+    <div class="hd">The honest caveat &mdash; say this in the room before they say it to you</div>
+    <p>None of these studies were run at a concert. Every mechanism above is robust, replicated and general, but the <em>application</em> is a hypothesis until somebody measures it. So make measuring it part of the pilot, and make it the thing you offer Live Nation that no agency can:</p>
+    <p><strong>Unaided setlist recall at day 30 and day 90 &mdash; players versus a matched control from the same show, same section, same night.</strong> If players recall more songs, in better order, we will have the first real evidence that a live event can be made more memorable by design. That is a paper, a press cycle, a defensible moat, and a number that reprices every ticket Live Nation sells. It costs two survey emails.</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow cy">The other half</div>
+  <h2>On Repeat</h2>
+  <p>The venue is where the memory is made. The DSP is where it is kept alive — and it is also, commercially, the larger surface. Spotify and Live Nation already work together on ticket access for Premium subscribers; this is the engagement product that sits on top of that pipe.</p>
+  <p>Between two tracks, while a fan is already listening, one card: <em>"You were at the Forum on the 26th. What opened that show?"</em> Three seconds. No interruption to the music that isn't already there in the crossfade.</p>
+
+  <h3>Why the two halves need each other</h3>
+  <ul>
+    <li><strong>Carry-in points.</strong> What you earn on Spotify in the week before a show you walk into the venue holding. That is why people arrive already playing instead of having to be recruited at the door — it solves the cold-start problem that kills every venue app.</li>
+    <li><strong>Spaced retrieval.</strong> The DSP questions are what stop the show fading. Without them the venue game is a fun night; with them it is a memory system.</li>
+    <li><strong>Pre-show homework.</strong> Learn the tour's setlist shape on Spotify, arrive able to compete. The artist's catalogue becomes study material, and streams go up.</li>
+    <li><strong>Year-round retention.</strong> A fan goes to three shows a year and opens Spotify daily. The venue is the peak; the DSP is the heartbeat.</li>
+  </ul>
+
+  <div class="box cy">
+    <div class="hd">The flywheel, in one line</div>
+    <p><strong>Listen</strong> (daily, on the DSP) &rarr; <strong>buy</strong> (Ticketmaster) &rarr; <strong>play the gaps</strong> (in the room) &rarr; <strong>remember</strong> (the walk-out, then spaced retrieval) &rarr; <strong>listen more</strong> (the songs now carry a night) &rarr; <strong>buy again.</strong> Fans Gametime is the only product that touches all five, and the same engine runs every one of them.</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow">Growth</div>
+  <h2>Where the virality actually is</h2>
+  <p>Honest ranking. Two of these are structural and would work on night one. Four are plausible and unproven — treat them as hypotheses to test in the pilot, not as a plan.</p>
+
+  <div>
+    <div class="vrow"><span class="st p">Structural</span><div class="tx"><b>The parking-lot post</b>
+      <span>Twenty thousand people, standing still, twenty-five minutes, phone in hand, freshly scored, still buzzing. The share card is tonight's setlist with your score on it. There is no other moment in consumer software where that many people are simultaneously idle, emotional and holding a fresh result. Nobody has ever built for it.</span></div></div>
+    <div class="vrow"><span class="st p">Structural</span><div class="tx"><b>The wall</b>
+      <span>Top three names go up on the LED between the set and the encore. Everyone in an arena films the LED wall. Your product's user-generated content is shot by twenty thousand cameras, posted for free, and carries the artist's reach rather than yours — while the winners get twelve seconds in front of a stadium, which is a prize that costs literally nothing to produce.</span></div></div>
+    <div class="vrow"><span class="st u">Untested</span><div class="tx"><b>Section versus section</b>
+      <span>An arena is already divided into teams and no product has ever used it. Floor versus the 200s. The room mechanic already exists in Stats Gametime; here the geography comes free with the ticket.</span></div></div>
+    <div class="vrow"><span class="st u">Untested</span><div class="tx"><b>The support act finally gets measured</b>
+      <span>Three thousand people watch an opener and nobody counts. Small artists have the loudest and most under-served audiences in music, and they will talk about the first product that proved anyone was watching. This is also the cheapest place to run the first pilot.</span></div></div>
+    <div class="vrow"><span class="st u">Untested</span><div class="tx"><b>"What was he wearing"</b>
+      <span>Outfit content is already the most-posted category of concert coverage that exists. A question shaped like a screenshot gets screenshotted.</span></div></div>
+    <div class="vrow"><span class="st u">Untested</span><div class="tx"><b>The nine-day rematch</b>
+      <span>Spotify asks you again while the song is playing. A re-share trigger with no ad spend, arriving at the moment the memory is warmest.</span></div></div>
+  </div>
+
+  <div class="box">
+    <div class="hd">And the part that matters more than all six</div>
+    <p>Stats Gametime's one real problem, measured honestly, is <strong>acquisition</strong>. Retention is 2.8 nights a person with no push notifications and no streaks; the audience has never been the issue — finding it has. Live Nation is 159 million people a year walking into rooms we would already be standing in.</p>
+    <p><strong>That is the deal in one sentence: we bring an engine that works and a game people come back to; they bring the only distribution in live music that matters.</strong> Do not go into that room selling an audience. Go in selling a use for theirs.</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow am">The business</div>
+  <h2>How this becomes<br>a real company</h2>
+  <p>Five revenue lines. The first two are live on day one; the rest unlock with scale.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Line</th><th>What is sold</th><th>Who buys</th><th>Live</th></tr></thead>
+    <tbody>
+      <tr><td><b>Gap sponsorship</b></td><td>A "presented by" unit inside an existing tour sponsorship package. Between rounds only, never over a question, never during a song. New inventory in a book that already turns over $1.3B a year.</td><td>Live Nation Media &amp; Sponsorship, on behalf of the brand</td><td class="n">Day 1</td></tr>
+      <tr><td><b>Platform fee</b></td><td>Per-show flat fee to the promoter for running the game &mdash; hosting, live ops, question bank, prize coordination.</td><td>The promoter / the tour</td><td class="n">Day 1</td></tr>
+      <tr><td><b>DSP licensing</b></td><td>Artist-campaign units on Spotify, Apple Music, Amazon &mdash; the On Repeat half, sold per campaign.</td><td>Labels, artist teams, the DSPs</td><td class="n">Year 2</td></tr>
+      <tr><td><b>Venue intelligence</b></td><td>The merch-versus-bar question is a live concessions signal. Opener attention is a booking signal. Setlist engagement is a tour-routing signal. All first-party, all consented.</td><td>Venues, promoters, tour management</td><td class="n">Year 2</td></tr>
+      <tr><td><b>Ticketing attribution</b></td><td>The walk-out round ends on the next tour date. A measurable path from "played tonight" to "bought again", which is the number nobody in live music currently has.</td><td>Ticketmaster</td><td class="n">Year 3</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The per-show unit, conservatively</h3>
+  <p>One arena date, 15,000 in the building. We assume <strong>8% adoption</strong> in year one — deliberately pessimistic; a free game promoted from the LED wall in a room with nothing else happening should beat that.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Per arena show</th><th></th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Attendance</td><td class="n">15,000</td><td>Mid-size arena date</td></tr>
+      <tr><td>Players at 8%</td><td class="n">1,200</td><td>Free, no account required to start</td></tr>
+      <tr><td>Verified attention units</td><td class="n">6,000</td><td>Five gaps &times; 1,200. Not impressions &mdash; a person who answered.</td></tr>
+      <tr><td>Gap sponsorship, our 30% of an $8,000 package</td><td class="n am">$2,400</td><td>Live Nation sells it; we never touch the brand relationship</td></tr>
+      <tr><td>Platform fee to promoter</td><td class="n am">$1,500</td><td>Flat</td></tr>
+      <tr class="tot"><td><b>Revenue to us, per show</b></td><td class="n am"><b>$3,900</b></td><td>Marginal cost under $200 &mdash; the engine is built and hosting is pennies</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Three years</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Year</th><th>Shows</th><th>Live</th><th>DSP</th><th>Data</th><th>Total</th><th>What has to be true</th></tr></thead>
+    <tbody>
+      <tr><td><b>2027</b><br><span style="color:var(--muted)">pilot year</span></td><td class="n">300</td><td class="n">$1.2M</td><td class="n">&mdash;</td><td class="n">&mdash;</td><td class="n am"><b>$1.2M</b></td><td>12 tours &times; 25 dates. One believer inside Live Nation.</td></tr>
+      <tr><td><b>2028</b></td><td class="n">2,000</td><td class="n">$8.8M</td><td class="n">$1.5M</td><td class="n">$0.4M</td><td class="n am"><b>$10.7M</b></td><td>3.6% of Live Nation's shows. One DSP signed.</td></tr>
+      <tr><td><b>2029</b></td><td class="n">6,000</td><td class="n">$29.4M</td><td class="n">$6.0M</td><td class="n">$2.5M</td><td class="n am"><b>$37.9M</b></td><td>11% of shows. DSP live at scale. Data product sold.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="stat">
+    <div><div class="v">$270M</div><div class="l">Live Nation's own shows at full penetration &mdash; 55,000 &times; $4,900 &mdash; before DSPs, before other promoters, before international</div></div>
+    <div><div class="v c">~95%</div><div class="l">gross margin. The engine exists; a show costs pennies to host and the prizes are the artist's.</div></div>
+  </div>
+  <p>The nine-figure case does not require inventing a market. It requires taking a single-digit-percentage slice of an attention window Live Nation already owns and currently sells to nobody.</p>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow">Why us</div>
+  <h2>The engine is already running</h2>
+  <p>Fans Gametime is not a slide. It is a question bank and a resolver bolted onto a system that has been in production since July, and the honest ledger looks like this — put it in the room exactly this way, because they will find it anyway and finding it themselves is what kills a deal.</p>
+
+  <div>
+    <div class="vrow"><span class="st p">Proven</span><div class="tx"><b>The engine works, at multi-room scale</b>
+      <span>Stats Gametime has run twenty-six game nights across six leagues, with 84 live resolvers, an autonomous host that opens rooms on a schedule, a 100+ check pre-deploy QA gate, voice play, Spanish, and a nightly shadow backtest that graded 143 games and 1,846 resolutions with zero invalid.</span></div></div>
+    <div class="vrow"><span class="st p">Proven</span><div class="tx"><b>People who play, come back</b>
+      <span>2.8 nights per person with no push notifications, no streaks, no reminders and no marketing of any kind. The mechanic holds attention. That is the hard half and it is done.</span></div></div>
+    <div class="vrow"><span class="st p">Proven</span><div class="tx"><b>Shipping speed</b>
+      <span>Six leagues, 84 resolvers, voice, two languages and a full QA gate in about six weeks, on a single Jetson on a desk. This prototype was built in an afternoon on top of it.</span></div></div>
+    <div class="vrow"><span class="st n">Not proven</span><div class="tx"><b>Demand. Say this out loud.</b>
+      <span>Thirteen humans have ever played Stats Gametime, and an audit found that most non-basketball rooms were played by the founder alone. Quality went from 42% to 100% over eight days while the audience stayed at three. <b>Product quality and audience size are uncorrelated in this product's own data.</b> That is not a reason to be quiet — it is the exact reason this partnership is the right move rather than more building.</span></div></div>
+  </div>
+
+  <div class="box mag">
+    <div class="hd">The sentence to open the meeting with</div>
+    <p>"We built the engine and proved people come back. We have never solved distribution. You put 159 million people in rooms last year and sell nothing against the hundred minutes of every night when your stage is empty. Give us ten dates and we will show you what those minutes are worth."</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow" style="color:var(--red)">Before they ask</div>
+  <h2>What could kill it</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Risk</th><th>How real</th><th>The answer</th></tr></thead>
+    <tbody>
+      <tr><td><b>Phone-free shows</b><br><span style="color:var(--muted)">Yondr is growing &mdash; Bruno Mars, Ghost, Iron Maiden, Karol G, Erykah Badu</span></td><td class="n">Real</td><td>Concede the segment; it is a small minority of 55,000 shows. Note that the gaps model is the <em>least</em> objectionable to that camp, since we never ask for the phone during the set, and many pouch shows unlock at intermission. A wall-only mode (questions on the LED, answered by section noise) is a real fallback, not a fudge.</td></tr>
+      <tr><td><b>The artist says no</b></td><td class="n">Real</td><td>The sacred-set rule is the product, not a concession. The artist controls the prizes, keeps the data, and opts in per tour. Lead with what they get: their opener finally measured, their wardrobe noticed, their production spend noticed, and a fan who remembers the night.</td></tr>
+      <tr><td><b>Arena connectivity</b><br><span style="color:var(--muted)">15,000 phones on one antenna</span></td><td class="n">Certain</td><td>One HTML file, no build step. Questions preload at doors; answers queue offline and sync. The outbox pattern already exists in Stats Gametime because a living-room wifi drop broke a game night once and it was fixed properly.</td></tr>
+      <tr><td><b>A wrong answer burns trust</b></td><td class="n">Real</td><td>Setlist-derived questions ship first because they are provable in advance. The house rule is inherited whole: no question ships until it is proven to resolve from a named source. That rule is why the sports backtest returns zero invalid resolutions.</td></tr>
+      <tr><td><b>Prizes and the law</b></td><td class="n">Manageable</td><td>Free entry always, skill not chance, no cash, no odds, no sportsbook, standard sweepstakes terms per state. Stats Gametime already operates under an absolute not-gambling constraint and it is a brand asset, not a limitation.</td></tr>
+      <tr><td><b>Live Nation moves slowly</b></td><td class="n">Certain</td><td>We need nothing built by them. One tour, one production contact who can photograph a setlist, and permission for three names on a wall. Start on a support act or a 1,500-cap venue where a yes costs one person's approval.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow am">Next</div>
+  <h2>Ninety days<br>to that meeting</h2>
+  <p>The one thing to avoid is walking into Live Nation with a prototype and nothing else. Stats Gametime's own history is the warning: eight days of quality improvements moved the audience from three people to three people. <strong>Go into that room with a prototype and one real room, however small.</strong> That is the difference between a demo and a company.</p>
+
+  <div class="chain">
+    <div class="link"><div class="k">1</div><div><div class="t">Weeks 1&ndash;2 &mdash; make it real to touch</div>
+      <div class="d">fansgametime.com live on GitHub Pages, same path statsgametime.com took. Harden the prototype against the gamification critique. A one-page leave-behind for the introduction.</div></div></div>
+    <div class="link"><div class="k">2</div><div><div class="t">Weeks 3&ndash;4 &mdash; the resolver</div>
+      <div class="d">Setlist ingest (photograph &rarr; question bank) and a six-button live panel a tour PA can learn in ninety seconds. This is the only genuinely new engineering.</div></div></div>
+    <div class="link"><div class="k">3</div><div><div class="t">Weeks 5&ndash;6 &mdash; the first real room</div>
+      <div class="d">Run it at any show that will have you. A club night, a support slot, a friend's band, forty people. The goal is not revenue &mdash; it is the first non-founder players this operation has ever had, and a day-30 recall number.</div></div></div>
+    <div class="link"><div class="k">4</div><div><div class="t">Weeks 7&ndash;9 &mdash; arena-shaped</div>
+      <div class="d">Offline queue under load, the share card, the LED-wall feed, and a load test at 5,000 concurrent listeners. The current measured ceiling on the sports build is roughly 78 concurrent and that is the number that must move.</div></div></div>
+    <div class="link"><div class="k">5</div><div><div class="t">Weeks 10&ndash;12 &mdash; the meeting</div>
+      <div class="d">Walk in with a working product, one real pilot with real strangers in it, an honest ledger, and a recall measurement nobody else in live music is running.</div></div></div>
+  </div>
+
+  <div class="box">
+    <div class="hd">The ask in the room &mdash; keep it this small</div>
+    <ol style="margin-bottom:0">
+      <li><strong>Ten dates on one tour.</strong> Any size, no fee, no exclusivity.</li>
+      <li><strong>One production contact</strong> who can photograph the setlist at soundcheck.</li>
+      <li><strong>Three names on the LED wall</strong> between the set and the encore.</li>
+      <li><strong>Permission to measure recall</strong> at day 30 and day 90, players versus control.</li>
+    </ol>
+  </div>
+  <p style="margin-top:22px">Four things, none of which costs Live Nation money, and the fourth of which gives them a number no competitor has. That is a yes-shaped ask.</p>
+</section>
+
+<div class="foot">
+  <p><b>Sources for every figure above.</b> Live Nation 2025 full-year results (159 million fans, 55,000 concerts, $25.2B revenue, $1.3B sponsorship revenue up 11%) &mdash; Live Nation Entertainment full year 2025 results and Music Business Worldwide. Live Nation's existing AR product suite including AR Intermission &mdash; Live Nation for Brands. Phone-free touring &mdash; Billboard and Rolling Stone on Yondr. Second-screen behaviour &mdash; eMarketer. Black Eyed Peas setlist, song order and encore &mdash; setlist.fm, 2026 summer run.</p>
+  <p><b>Memory research cited.</b> Roediger &amp; Karpicke (2006) on the testing effect; Karpicke &amp; Roediger (2007) on repeated retrieval and spacing; Slamecka &amp; Graf (1978) on the generation effect; Craik &amp; Lockhart (1972) on levels of processing; Godden &amp; Baddeley (1975) on context-dependent recall; Kahneman, Fredrickson, Schreiber &amp; Redelmeier (1993) and Redelmeier &amp; Kahneman (1996) on the peak&ndash;end rule and duration neglect; Janata et al. (2007) and Belfi &amp; Jakubowski (2021) on music-evoked autobiographical memory; McGaugh (2000) on arousal and consolidation.</p>
+  <p><b>Stats Gametime figures</b> are counted from this operation's own Firestore and logs, not estimated, including the ones that are unflattering.</p>
+  <p style="margin-bottom:0"><b>Not affiliated with Live Nation Entertainment, Spotify, or any artist named.</b> Artist and setlist data is used illustratively to show what the product does. Financial projections are models built on stated assumptions, not forecasts.</p>
+</div>
+</div>

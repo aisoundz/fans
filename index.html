@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#06060b">
+<meta name="description" content="FANS GAMETIME — the game that pays to be there. Play the gaps in a live show.">
+<title>Fans Gametime</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Figtree:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* ======================================================================
+   FANS GAMETIME — PROTOTYPE, SECOND PASS
+
+   The first pass was a form. Four questions stacked in a scroll, each one a
+   list of radio rows, feedback delivered as a paragraph of prose. It had
+   good typography and no pulse. This pass is built to the opposite brief:
+
+     ONE question fills the screen.        A form shows you everything.
+     A clock is always running.            A form waits for you.
+     The points are visibly falling.       A form has no cost to hesitating.
+     The room answers with you.            A form is a private document.
+     A streak builds and can be broken.    A form has no memory of you.
+     Answering is 1200ms of theatre.       A form re-renders.
+
+   Everything visual still resolves through the token block below, and the
+   palette is unchanged — it was never the problem.
+   ====================================================================== */
+:root{
+  --house:#06060b; --deck:#0e0c17; --deck2:#141020; --card:#191325; --card2:#221936;
+  --glass:rgba(255,255,255,.05); --glass2:rgba(255,255,255,.085);
+  --chrome:rgba(8,7,15,.92);
+  --line:rgba(255,255,255,.095); --line2:rgba(255,255,255,.16); --line3:rgba(255,255,255,.05);
+  --ink:#ffffff; --body:#ded9ec; --muted:#9c93b8; --dim:#665c80;
+  --f:'Figtree',-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --d:'Big Shoulders Display','Figtree',Impact,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --mag:#ff3d9a; --amb:#ffb545; --cyan:#35e0e8; --green:#2fe6a0; --red:#ff4d5e;
+  --gel-a:#ff3d9a; --gel-b:#35e0e8;
+  --r:16px; --r2:12px; --r3:9px; --pill:999px;
+  --shadow:0 20px 56px rgba(0,0,0,.62);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--house);color:var(--body);
+  font-family:var(--f);-webkit-font-smoothing:antialiased;font-size:16px}
+body{min-height:100vh;min-height:100dvh;display:flex;justify-content:center;
+  align-items:flex-start;background:var(--house)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--gel-b);outline-offset:2px;border-radius:6px}
+
+/* ---- THE FRAME -----------------------------------------------------
+   ON A PHONE THIS IS EDGE TO EDGE. ON A LAPTOP IT IS A PHONE ON A DESK.
+   The first pass pinned the nav to the browser's bottom edge while the
+   content stopped 400px above it, so on a desktop the app read as a broken
+   column stranded in a black void. The nav belongs to the frame, not to
+   the window. -------------------------------------------------------- */
+.phone{width:100%;max-width:440px;position:relative;background:var(--deck);
+  overflow:clip;display:flex;flex-direction:column;isolation:isolate;
+  height:100vh;height:100dvh}
+@media (min-width:560px){
+  body{align-items:center;padding:26px 0;
+    background:radial-gradient(70% 55% at 50% 0%,#120e1e 0%,var(--house) 70%)}
+  .phone{height:min(880px,calc(100dvh - 52px));border-radius:30px;
+    border:1px solid rgba(255,255,255,.13);box-shadow:0 40px 100px rgba(0,0,0,.75),
+    0 0 0 9px #101018, 0 0 0 10px rgba(255,255,255,.07)}
+}
+/* The scrolling body of the app. The frame does not scroll; this does. */
+.body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;position:relative;z-index:2}
+.body::-webkit-scrollbar{width:0}
+
+#wash{position:absolute;inset:0;z-index:0;pointer-events:none;
+  transition:background 1.1s ease;
+  background:radial-gradient(130% 50% at 50% 0%,#12102a 0%,var(--deck) 60%)}
+#wash.doors{background:radial-gradient(130% 54% at 50% 0%,#2a1c12 0%,#0b0910 62%)}
+#wash.open {background:radial-gradient(130% 60% at 50% 0%,color-mix(in srgb,var(--gel-a) 34%, #14091b) 0%,#0a0710 62%)}
+#wash.hit  {background:radial-gradient(130% 62% at 50% 0%,#0d4a3c 0%,#04110d 62%)}
+#wash.miss {background:radial-gradient(130% 62% at 50% 0%,#4a1424 0%,#12060b 62%)}
+#wash.set  {background:radial-gradient(130% 44% at 50% 0%,#0d0b18 0%,#07060d 60%)}
+@media (prefers-reduced-motion:reduce){#wash{transition:none}}
+/* The whole-screen slam on an answer. One element, two keyframes. */
+#slam{position:absolute;inset:0;z-index:40;pointer-events:none;opacity:0}
+#slam.go{animation:slam .5s ease-out}
+@keyframes slam{0%{opacity:.85}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#slam.go{animation:none}}
+
+/* ---- DEMO RAIL ----------------------------------------------------- */
+.demo{position:relative;z-index:6;background:#000;border-bottom:1px solid var(--line);
+  padding:7px 10px 8px;display:flex;flex-direction:column;gap:6px;flex:none}
+.demo-lab{font:700 9.5px/1 var(--f);letter-spacing:.13em;text-transform:uppercase;color:var(--dim);
+  display:flex;justify-content:space-between;align-items:center;gap:8px}
+.demo-lab b{color:var(--amb);font-weight:800}
+.demo-lab button{background:none;border:1px solid var(--line);color:var(--dim);cursor:pointer;
+  font:700 8.5px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:20px}
+.demo-lab button.on{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 45%,transparent)}
+.demo-row{display:flex;gap:4px}
+.demo-row button{flex:1;background:var(--glass);border:1px solid var(--line);color:var(--muted);
+  font:800 8.5px/1.15 var(--f);letter-spacing:.05em;text-transform:uppercase;padding:7px 2px;
+  border-radius:var(--r3);cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.demo-row button.on{background:color-mix(in srgb,var(--gel-a) 22%,transparent);
+  border-color:color-mix(in srgb,var(--gel-a) 55%,transparent);color:#fff}
+
+/* ---- THE HUD — always on, always moving ---------------------------
+   Score, streak, position. A game tells you where you stand without being
+   asked; the first pass made you go and look at a tab. ----------------- */
+.hud{position:sticky;top:0;z-index:14;flex:none;display:flex;align-items:center;gap:10px;
+  padding:9px 13px;background:var(--chrome);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hud .who{flex:1;min-width:0}
+.hud .who .a{font-family:var(--d);font-weight:800;font-size:16px;line-height:1;
+  letter-spacing:.3px;text-transform:uppercase;color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hud .who .b{font:600 9.5px/1.3 var(--f);color:var(--dim);margin-top:3px}
+.hud .st{flex:none;display:flex;align-items:center;gap:4px;padding:5px 9px;border-radius:var(--pill);
+  border:1px solid var(--line);background:var(--glass);
+  font:800 11px/1 var(--mono);color:var(--dim);transition:all .3s}
+.hud .st.hot{border-color:color-mix(in srgb,var(--amb) 60%,transparent);
+  background:color-mix(in srgb,var(--amb) 16%,transparent);color:var(--amb)}
+.hud .st.blaze{border-color:color-mix(in srgb,var(--mag) 65%,transparent);
+  background:color-mix(in srgb,var(--mag) 20%,transparent);color:#fff;
+  box-shadow:0 0 18px color-mix(in srgb,var(--mag) 45%,transparent)}
+.hud .sc{flex:none;text-align:right;min-width:52px}
+.hud .sc .v{font:700 24px/1 var(--mono);color:var(--gel-b);font-variant-numeric:tabular-nums;
+  display:block;transition:transform .18s}
+.hud .sc .v.bump{transform:scale(1.22)}
+.hud .sc .l{font:800 8px/1 var(--f);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);margin-top:3px;display:block}
+
+.screen{position:relative;z-index:2;display:none;flex-direction:column;gap:14px;min-height:100%;
+  padding:14px 16px 26px;animation:fade .3s ease}
+.screen.active{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen{animation:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px}
+.eyebrow{font:800 10px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.eyebrow.gel{color:var(--gel-a)}
+h2.sec{font-family:var(--d);font-weight:800;font-size:23px;line-height:1;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--ink);margin:0;text-wrap:balance}
+p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
+.pill{display:inline-flex;align-items:center;gap:5px;font:800 10px/1 var(--f);letter-spacing:.11em;
+  text-transform:uppercase;padding:6px 10px;border-radius:var(--pill);
+  background:color-mix(in srgb,var(--gel-b) 12%,transparent);color:var(--gel-b);
+  border:1px solid color-mix(in srgb,var(--gel-b) 34%,transparent)}
+.btn{display:block;width:100%;border:0;border-radius:var(--r2);padding:16px 14px;cursor:pointer;
+  font:900 14px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;color:#0a0611;
+  background:linear-gradient(96deg,var(--gel-a),var(--gel-b));transition:filter .15s,transform .08s}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--body)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-weight:700}
+
+/* ====================================================================
+   THE ARENA — where a question is asked. One at a time, filling the
+   screen, with a clock on it. This is the whole difference between the
+   first pass and this one.
+   ==================================================================== */
+.arena{display:flex;flex-direction:column;gap:0;flex:1;min-height:0}
+/* THE TILES LIVE IN THE BOTTOM HALF. One hand, in the dark, standing up —
+   every target has to be reachable by thumb without shifting grip. The
+   spacer pushes the question and its answers down; nothing is ever more
+   than a thumb's travel from where the hand already is. */
+.arena .push{flex:1;min-height:8px}
+#s-gametime{flex:1;min-height:100%}
+/* #stage is the flex item, not .arena — without this the arena's flex:1
+   had nothing to grow inside and the tiles stayed pinned to the top half. */
+#stage{flex:1;min-height:0;display:flex;flex-direction:column}
+
+/* the progress bead row — four beads, not "Question 3 of 4" in prose */
+.beads{display:flex;align-items:center;gap:7px;padding:2px 0 14px}
+.beads i{height:4px;flex:1;border-radius:3px;background:var(--glass);transition:background .35s}
+.beads i.done{background:color-mix(in srgb,var(--gel-a) 60%,transparent)}
+.beads i.miss{background:color-mix(in srgb,var(--red) 45%,transparent)}
+.beads i.now{background:var(--gel-b);box-shadow:0 0 12px color-mix(in srgb,var(--gel-b) 65%,transparent)}
+.beads b{flex:none;font:800 9px/1 var(--mono);letter-spacing:.1em;color:var(--dim)}
+
+/* THE CLOCK. A ring that drains, the seconds inside it, and beside it the
+   points visibly falling — because a game must cost you something to
+   hesitate and a form never does. */
+.clockrow{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+.ring{position:relative;width:54px;height:54px;flex:none}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring circle{fill:none;stroke-width:4;stroke-linecap:round}
+.ring .bg{stroke:var(--glass2)}
+.ring .fg{stroke:var(--gel-b);transition:stroke-dashoffset .95s linear,stroke .3s}
+.ring.warn .fg{stroke:var(--amb)}
+.ring.crit .fg{stroke:var(--red)}
+.ring.crit{animation:thump .55s infinite}
+@keyframes thump{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@media (prefers-reduced-motion:reduce){.ring.crit{animation:none}}
+.ring .t{position:absolute;inset:0;display:grid;place-items:center;
+  font:700 17px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.worth{flex:1;min-width:0}
+.worth .v{font-family:var(--d);font-weight:900;font-size:34px;line-height:.9;color:var(--amb);
+  font-variant-numeric:tabular-nums;transition:color .3s}
+.worth .v.low{color:var(--dim)}
+.worth .l{font:800 9px/1.3 var(--f);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);margin-top:5px}
+.here{flex:none;text-align:right}
+.here .v{font:700 14px/1 var(--mono);color:var(--body);font-variant-numeric:tabular-nums}
+.here .l{font:800 8px/1.3 var(--f);letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim);margin-top:4px}
+
+/* THE QUESTION. Big. It is the only thing on the screen. */
+.qbig{font:800 clamp(23px,6.4vw,30px)/1.2 var(--f);color:var(--ink);margin:0 0 18px;
+  text-wrap:balance;letter-spacing:-.01em}
+.qtag{font:800 9.5px/1 var(--f);letter-spacing:.17em;text-transform:uppercase;
+  color:var(--gel-a);margin-bottom:9px}
+
+/* THE TILES. Chunky, two-up, pressable. Not a list of radio rows. */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.tiles.one{grid-template-columns:1fr}
+.tile{position:relative;overflow:hidden;min-height:88px;padding:14px 13px;cursor:pointer;
+  border-radius:var(--r);border:1.5px solid var(--line2);color:var(--ink);
+  background:linear-gradient(160deg,var(--card2),var(--card));
+  font:800 15.5px/1.28 var(--f);text-align:left;display:flex;align-items:flex-end;
+  transition:transform .09s cubic-bezier(.2,1.4,.4,1),border-color .18s,background .18s,opacity .3s,filter .3s}
+.tiles.one .tile{min-height:62px;align-items:center}
+.tile:active:not(:disabled){transform:scale(.96)}
+.tile:disabled{cursor:default}
+.tile .kk{position:absolute;top:10px;left:13px;font:800 10px/1 var(--mono);color:var(--dim);
+  letter-spacing:.08em}
+.tile .sw{position:absolute;top:0;left:0;right:0;height:46px}
+.tile.hasw{min-height:118px;padding-top:54px}
+.tile.right{border-color:var(--green);
+  background:linear-gradient(160deg,rgba(47,230,160,.26),rgba(47,230,160,.09));
+  box-shadow:0 0 30px rgba(47,230,160,.3)}
+.tile.wrong{border-color:var(--red);
+  background:linear-gradient(160deg,rgba(255,77,94,.24),rgba(255,77,94,.07))}
+.tile.faded{opacity:.28;filter:saturate(.3)}
+/* the crowd bar sits INSIDE the tile and grows — you find out what you got
+   and what the room got in the same object */
+.tile .crowd{position:absolute;left:0;bottom:0;height:3px;width:0;
+  background:color-mix(in srgb,var(--gel-b) 70%,transparent);transition:width .7s cubic-bezier(.2,.8,.3,1)}
+.tile .pctn{position:absolute;top:10px;right:12px;font:700 11px/1 var(--mono);
+  color:var(--muted);opacity:0;transition:opacity .4s}
+.tile.shown .pctn{opacity:1}
+
+/* the floating +N that flies to the score */
+.fly{position:fixed;z-index:70;pointer-events:none;font-family:var(--d);font-weight:900;
+  font-size:38px;line-height:1;color:var(--amb);text-shadow:0 4px 22px rgba(255,181,69,.6);
+  transition:transform .72s cubic-bezier(.3,.9,.3,1),opacity .72s ease}
+
+/* the verdict strip under the tiles */
+.verdict{margin-top:15px;padding:13px 14px;border-radius:var(--r2);
+  border:1px solid var(--line);background:var(--card);
+  display:flex;align-items:center;gap:11px;animation:rise .3s ease}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.verdict{animation:none}}
+.verdict.good{border-color:color-mix(in srgb,var(--green) 45%,transparent);
+  background:linear-gradient(150deg,rgba(47,230,160,.13),var(--card))}
+.verdict.bad{border-color:color-mix(in srgb,var(--red) 40%,transparent);
+  background:linear-gradient(150deg,rgba(255,77,94,.11),var(--card))}
+.verdict .m{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  font-size:17px;font-weight:900}
+.verdict.good .m{background:rgba(47,230,160,.2);color:var(--green)}
+.verdict.bad .m{background:rgba(255,77,94,.18);color:var(--red)}
+.verdict .x{flex:1;min-width:0;font:700 13.5px/1.4 var(--f);color:var(--ink)}
+.verdict .x small{display:block;font:500 11.5px/1.45 var(--f);color:var(--muted);margin-top:3px}
+
+/* streak flare — the loud bit */
+.flare{margin-top:11px;padding:12px 14px;border-radius:var(--r2);text-align:center;
+  border:1px solid color-mix(in srgb,var(--mag) 55%,transparent);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--mag) 26%,transparent),transparent);
+  animation:pop .42s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.flare{animation:none}}
+.flare .h{font-family:var(--d);font-weight:900;font-size:27px;line-height:1;letter-spacing:.1em;
+  text-transform:uppercase;color:#fff}
+.flare .s{font:700 11.5px/1.4 var(--f);color:var(--body);margin-top:5px}
+
+/* ---- BETWEEN GAPS: THE ROOM, not a form -------------------------- */
+.hold{display:flex;flex-direction:column;gap:14px}
+.holdhero{border-radius:var(--r);padding:22px 18px;text-align:center;
+  border:1px solid var(--line);background:linear-gradient(165deg,var(--card2),var(--card))}
+.holdhero .k{font:800 9.5px/1 var(--f);letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
+.holdhero .big{font-family:var(--d);font-weight:900;font-size:46px;line-height:.9;
+  color:var(--ink);margin:11px 0 4px;text-wrap:balance}
+.holdhero .cd{font:700 30px/1 var(--mono);color:var(--gel-b);font-variant-numeric:tabular-nums;
+  margin-top:10px}
+.holdhero .sub{font:500 12.5px/1.5 var(--f);color:var(--muted);margin-top:9px;
+  max-width:34ch;margin-left:auto;margin-right:auto}
+.pulse{display:flex;gap:8px}
+.pulse div{flex:1;padding:12px 10px;border-radius:var(--r2);background:var(--card);
+  border:1px solid var(--line);text-align:center}
+.pulse .v{font:700 20px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.pulse .l{font:800 8px/1.3 var(--f);letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim);margin-top:6px}
+/* ---- THE SETLIST STRIP ---------------------------------------------
+   THE ONE AESTHETIC RISK, AND IT IS THE RIGHT ONE.
+   STATS pins a scoreboard, because a scoreboard is the instrument a game
+   already has. A concert has no scoreboard. It has a SETLIST — a printed
+   sheet taped to the monitor wedge, crossed off song by song. That sheet
+   is the progress bar, the question source, the souvenir and the prize all
+   at once, so it is what gets pinned here. Every question tonight comes
+   off this strip and the fan can see it filling in. ------------------- */
+.strip{position:sticky;top:0;z-index:5;background:var(--chrome);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;
+  display:flex;flex-direction:column;gap:9px}
+.strip-top{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.strip-act{font-family:var(--d);font-weight:800;font-size:19px;line-height:1;letter-spacing:.4px;
+  text-transform:uppercase;color:var(--ink)}
+.strip-ven{font:600 10.5px/1.3 var(--f);color:var(--muted);margin-top:2px}
+.strip-pts{text-align:right}
+.strip-pts .v{font-family:var(--mono);font-weight:700;font-size:23px;line-height:1;color:var(--gel-b);
+  font-variant-numeric:tabular-nums}
+.strip-pts .l{font:800 8.5px/1 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:3px}
+/* the sheet itself — 13 marks, one per song, crossed off as the set runs */
+.sheet{display:flex;gap:3px;align-items:flex-end;height:26px}
+.sheet i{flex:1;background:var(--glass);border-radius:2px;height:9px;
+  transition:height .5s ease,background .5s ease}
+.sheet i.done{background:color-mix(in srgb,var(--gel-a) 55%,transparent);height:17px}
+.sheet i.now{background:var(--gel-b);height:26px;box-shadow:0 0 14px color-mix(in srgb,var(--gel-b) 60%,transparent)}
+.sheet i.gap{background:var(--amb);height:23px}
+.strip-now{display:flex;align-items:center;gap:7px;font:700 11px/1.25 var(--f);color:var(--body);
+  min-height:15px}
+.strip-now .k{font:800 8.5px/1 var(--f);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);flex:none}
+
+/* ---- HEARD IT — the live micro-moment ------------------------------
+   STATS calls this Caught It. Same mechanic, one hard rule added:
+   THE SET IS SACRED. It only fires on a structural, eyes-up moment (the
+   band walks off, pyro, a guest appears), it lives 20 seconds, and it
+   never repeats. If a card is still on screen when the next song starts,
+   it removes itself. The product's whole claim to an artist is that it
+   does not compete with the show — this is where that is enforced. ---- */
+.heard{border:1px solid color-mix(in srgb,var(--amb) 52%,transparent);border-radius:var(--r);
+  padding:14px;background:linear-gradient(150deg,rgba(255,181,69,.14),var(--card));
+  display:flex;flex-direction:column;gap:11px;animation:snap .3s cubic-bezier(.2,1.3,.4,1)}
+@keyframes snap{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.heard{animation:none}}
+.heard-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.heard-lab{font-family:var(--d);font-weight:900;font-size:15px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--amb)}
+.heard-clock{font:700 12px/1 var(--mono);color:var(--amb);font-variant-numeric:tabular-nums}
+.heard-bar{height:3px;border-radius:2px;background:rgba(255,181,69,.2);overflow:hidden}
+.heard-bar i{display:block;height:100%;background:var(--amb);width:100%;
+  transition:width 1s linear}
+.eyesup{font:800 9px/1.4 var(--f);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* ---- THE REWARD MOMENT ---------------------------------------------
+   In STATS the payoff was once the smallest thing on the screen and it
+   had to be rebuilt. It is not making that mistake twice: when a gap
+   closes, the number is the largest object in the room. ---------------- */
+.reward{border-radius:var(--r);padding:24px 18px;text-align:center;
+  border:1px solid color-mix(in srgb,var(--gel-a) 45%,transparent);
+  background:radial-gradient(120% 100% at 50% 0%,color-mix(in srgb,var(--gel-a) 26%,var(--card)),var(--card));
+  display:flex;flex-direction:column;align-items:center;gap:5px}
+.reward .lab{font:800 10px/1 var(--f);letter-spacing:.19em;text-transform:uppercase;color:var(--body)}
+.reward .big{font-family:var(--d);font-weight:900;font-size:82px;line-height:.82;color:#fff;
+  font-variant-numeric:tabular-nums;text-shadow:0 6px 34px color-mix(in srgb,var(--gel-a) 55%,transparent)}
+.reward .sub{font:700 14px/1.35 var(--f);color:var(--ink);margin-top:5px}
+.reward .fine{font:500 12px/1.5 var(--f);color:var(--muted);max-width:30ch}
+#celeb{position:fixed;inset:0;z-index:80;pointer-events:none}
+
+/* ---- SPONSOR SLOT --------------------------------------------------
+   Between rounds, never mid-question. That rule is inherited from STATS
+   and it is the only reason an artist lets a brand near their audience:
+   the ad lives in the gap the show already has, not in the show. ------ */
+.spon{border:1px dashed var(--line2);border-radius:var(--r);padding:13px 14px;
+  background:rgba(255,255,255,.022);display:flex;align-items:center;gap:12px}
+.spon .mk{flex:none;width:42px;height:42px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(140deg,#2b2440,#191325);border:1px solid var(--line2);
+  font-family:var(--d);font-weight:900;font-size:19px;color:var(--muted)}
+.spon .tx{flex:1;min-width:0}
+.spon .tx .l{font:800 8.5px/1 var(--f);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.spon .tx .b{font:700 13px/1.35 var(--f);color:var(--body);margin-top:4px}
+
+/* ---- BOARD --------------------------------------------------------- */
+.rows{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:var(--r2);
+  background:var(--card);border:1px solid var(--line)}
+.row.me{border-color:color-mix(in srgb,var(--gel-b) 55%,transparent);
+  background:color-mix(in srgb,var(--gel-b) 10%,var(--card))}
+.row .pos{font:700 12px/1 var(--mono);color:var(--dim);width:22px;flex:none;font-variant-numeric:tabular-nums}
+.row.me .pos{color:var(--gel-b)}
+.row .nm{flex:1;min-width:0;font:700 13.5px/1.25 var(--f);color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .nm small{display:block;font:500 10.5px/1.3 var(--f);color:var(--dim);margin-top:2px}
+.row .sc{font:700 15px/1 var(--mono);color:var(--body);font-variant-numeric:tabular-nums}
+.row .pz{font:800 9px/1 var(--f);letter-spacing:.09em;text-transform:uppercase;color:var(--amb);
+  margin-top:4px;display:block}
+.prize{display:flex;gap:11px;align-items:flex-start;padding:12px;border-radius:var(--r2);
+  background:var(--card);border:1px solid var(--line)}
+.prize .ic{flex:none;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--amb) 14%,transparent);
+  border:1px solid color-mix(in srgb,var(--amb) 34%,transparent);color:var(--amb)}
+.prize .t{font:700 13px/1.3 var(--f);color:var(--ink)}
+.prize .d{font:500 11.5px/1.45 var(--f);color:var(--muted);margin-top:3px}
+
+/* ---- ON REPEAT (DSP) ----------------------------------------------- */
+.dsp{border:1px solid color-mix(in srgb,var(--cyan) 34%,transparent);border-radius:var(--r);
+  padding:15px;background:linear-gradient(150deg,color-mix(in srgb,var(--cyan) 10%,var(--card)),var(--card));
+  display:flex;flex-direction:column;gap:11px}
+.dsp .hd{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.dsp .hd .t{font-family:var(--d);font-weight:900;font-size:21px;line-height:1;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cyan)}
+.track{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:var(--r2);
+  background:rgba(0,0,0,.28);border:1px solid var(--line3)}
+.track .art{flex:none;width:38px;height:38px;border-radius:7px;
+  background:linear-gradient(140deg,var(--gel-a),var(--gel-b))}
+.track .m{flex:1;min-width:0}
+.track .m .s{font:700 12.5px/1.25 var(--f);color:var(--ink);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.track .m .a{font:500 10.5px/1.3 var(--f);color:var(--dim);margin-top:2px}
+.track .p{font:700 10px/1 var(--mono);color:var(--cyan)}
+.carry{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:var(--r2);
+  background:color-mix(in srgb,var(--cyan) 9%,transparent);
+  border:1px solid color-mix(in srgb,var(--cyan) 28%,transparent)}
+.carry .v{font:700 21px/1 var(--mono);color:var(--cyan);flex:none;font-variant-numeric:tabular-nums}
+.carry .x{font:600 11.5px/1.45 var(--f);color:var(--body)}
+
+/* ---- HOME ---------------------------------------------------------- */
+.marq{position:relative;border-radius:var(--r);padding:20px 16px 17px;overflow:hidden;
+  border:1px solid var(--line);background:var(--card);isolation:isolate}
+.marq .rig{position:absolute;inset:0;z-index:-1;opacity:.9;
+  background:
+    radial-gradient(58% 42% at 20% 0%,color-mix(in srgb,var(--gel-a) 42%,transparent),transparent 70%),
+    radial-gradient(58% 42% at 80% 0%,color-mix(in srgb,var(--gel-b) 34%,transparent),transparent 70%),
+    linear-gradient(180deg,#171126,var(--card))}
+.marq .when{font:800 10px/1 var(--f);letter-spacing:.17em;text-transform:uppercase;color:var(--amb)}
+.marq .act{font-family:var(--d);font-weight:900;font-size:46px;line-height:.85;letter-spacing:.5px;
+  text-transform:uppercase;color:#fff;margin:9px 0 0;text-wrap:balance}
+.marq .ven{font:600 13px/1.45 var(--f);color:var(--body);margin-top:8px}
+.marq .cd{margin-top:14px;display:flex;align-items:baseline;gap:8px}
+.marq .cd .v{font:700 30px/1 var(--mono);color:#fff;font-variant-numeric:tabular-nums}
+.marq .cd .l{font:800 9.5px/1 var(--f);letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.rail{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail .rm{flex:none;width:154px;padding:12px;border-radius:var(--r2);background:var(--card);
+  border:1px solid var(--line);cursor:pointer;text-align:left}
+.rail .rm .a{font:800 13px/1.2 var(--f);color:var(--ink)}
+.rail .rm .v{font:500 10.5px/1.35 var(--f);color:var(--dim);margin-top:4px}
+.rail .rm .s{font:800 9px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--gel-b);margin-top:8px;display:block}
+.how{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step .k{flex:none;font-family:var(--d);font-weight:900;font-size:24px;line-height:.9;
+  color:color-mix(in srgb,var(--gel-a) 70%,var(--dim));width:26px}
+.step .t{font:700 13.5px/1.3 var(--f);color:var(--ink)}
+.step .d{font:500 12px/1.5 var(--f);color:var(--muted);margin-top:3px}
+
+/* ---- NAV — the wordmark is the nav ---------------------------------
+   Inherited law from STATS, where Stats · Gametime spell the product and
+   must never be renamed. Here it is Fans · Gametime. --------------------*/
+/* THE NAV BELONGS TO THE FRAME, NOT THE WINDOW. Pinned to the viewport it
+   floated at the bottom of a desktop browser while the content ended four
+   hundred pixels above it. */
+.nav{flex:none;position:relative;z-index:20;display:flex;background:var(--chrome);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav-in{display:flex;width:100%}
+.navb{flex:1;background:none;border:0;cursor:pointer;padding:10px 4px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dim);
+  font:800 9.5px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;
+  transition:color .16s}
+.navb svg{width:21px;height:21px}
+.navb.on{color:var(--gel-b)}
+.navb.on.mid{color:var(--gel-a)}
+.foot{font:500 10.5px/1.6 var(--f);color:var(--dim);text-align:center;padding:6px 4px 0}
+.foot b{color:var(--muted);font-weight:700}
+
+/* ---- DESIGNER'S NOTES ----------------------------------------------
+   The first pass shipped the design rationale to the player as a
+   paragraph under every answer. That is a pitch document leaking into a
+   game. It now lives behind a switch: OFF by default because this is a
+   game, ON for the meeting because the reasoning is the pitch. -------- */
+.q-why{font:500 11.5px/1.5 var(--f);color:var(--muted);margin:11px 0 0;
+  padding:11px 12px;border-radius:var(--r3);background:rgba(53,224,232,.06);
+  border:1px solid color-mix(in srgb,var(--cyan) 22%,transparent)}
+.q-why b{color:var(--cyan);font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;font-size:9.5px;display:block;margin-bottom:5px}
+body.nonotes .q-why{display:none}
+
+/* ---- states the beat sheet needs ---------------------------------- */
+.tile.picked{border-color:var(--gel-b);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--gel-b) 22%,var(--card2)),var(--card));
+  animation:hold 1s ease-in-out infinite}
+@keyframes hold{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--gel-b) 40%,transparent)}
+  50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--gel-b) 0%,transparent)}}
+.tile.shake{animation:shk .22s linear 3}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.tile.picked,.tile.shake{animation:none}}
+.worth .v.stamp{animation:stamp .2s cubic-bezier(.2,1.6,.4,1);color:var(--amb)}
+@keyframes stamp{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.arena{transition:transform .23s cubic-bezier(.4,0,.2,1),opacity .23s ease}
+.arena.out{transform:translateX(-34px);opacity:0}
+@media (prefers-reduced-motion:reduce){.arena{transition:none}}
+.reax{font:600 13px/1.5 var(--f);color:var(--muted);margin-top:10px;padding-left:2px}
+.flare.broke{border-color:color-mix(in srgb,var(--red) 45%,transparent);
+  background:linear-gradient(150deg,rgba(255,77,94,.2),transparent)}
+.flare.broke .h{color:var(--red)}
+
+/* ---- THE REWARD TAKEOVER ------------------------------------------ */
+.takeover{display:flex;flex-direction:column;align-items:center;gap:0;
+  padding:26px 0 8px;text-align:center;animation:tk .34s cubic-bezier(.2,1.2,.4,1)}
+@keyframes tk{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.takeover{animation:none}}
+.takeover .lab{font:800 10px/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:var(--body)}
+.takeover .big{font-family:var(--d);font-weight:900;font-size:104px;line-height:.82;color:#fff;
+  font-variant-numeric:tabular-nums;margin:14px 0 0;
+  text-shadow:0 8px 44px color-mix(in srgb,var(--gel-a) 60%,transparent)}
+.takeover .big span{font-size:44px;color:var(--muted)}
+.takeover .sub{font:700 15px/1.4 var(--f);color:var(--ink);margin-top:14px;max-width:26ch}
+.tbar{display:flex;gap:8px;width:100%;margin-top:22px}
+.tbar div{flex:1;padding:12px 8px;border-radius:var(--r2);background:var(--card);
+  border:1px solid var(--line)}
+.tbar .v{display:block;font:700 19px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.tbar .l{display:block;font:800 8px/1.3 var(--f);letter-spacing:.11em;text-transform:uppercase;
+  color:var(--dim);margin-top:6px}
+.nextup{width:100%;margin:18px 0 12px;padding:14px;border-radius:var(--r2);text-align:left;
+  border:1px solid color-mix(in srgb,var(--gel-a) 34%,transparent);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--gel-a) 12%,var(--card)),var(--card))}
+.nextup b{display:block;font:800 15px/1.3 var(--f);color:var(--ink)}
+.nextup span{display:block;font:600 12px/1.4 var(--f);color:var(--muted);margin-top:5px}
+.takeover .btn{margin-top:9px}
+.claim{width:100%;text-align:left;margin-top:22px;padding:18px;border-radius:var(--r);
+  border:1px solid color-mix(in srgb,var(--amb) 42%,transparent);background:var(--card)}
+
+/* ---- THE BOWL — the arena as the leaderboard ----------------------
+   A concert already divides its audience into sections and no product has
+   ever used it. "Section 214 is fourth in the building" is a sentence a
+   stranger says to the stranger next to them. -------------------------- */
+.bowl{display:flex;align-items:flex-end;gap:5px;height:118px;margin-top:14px}
+.bowl .seg{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;gap:6px;height:100%}
+.bowl .seg i{display:block;width:100%;height:var(--h);border-radius:4px 4px 2px 2px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--gel-a) 52%,transparent),
+  color-mix(in srgb,var(--gel-a) 14%,transparent));
+  border:1px solid color-mix(in srgb,var(--gel-a) 34%,transparent);
+  transition:height .8s cubic-bezier(.2,.8,.3,1)}
+.bowl .seg b{font:700 8.5px/1 var(--mono);color:var(--dim);letter-spacing:.02em}
+.bowl .seg.me i{background:linear-gradient(180deg,var(--gel-b),
+  color-mix(in srgb,var(--gel-b) 22%,transparent));border-color:var(--gel-b);
+  box-shadow:0 0 16px color-mix(in srgb,var(--gel-b) 50%,transparent)}
+.bowl .seg.me b{color:var(--gel-b)}
+</style>
+</head>
+<body class="nonotes">
+<canvas id="celeb" aria-hidden="true" style="position:fixed;inset:0;z-index:80;pointer-events:none"></canvas>
+<div class="phone">
+  <div id="wash"></div>
+  <div id="slam"></div>
+
+  <div class="demo">
+    <div class="demo-lab">
+      <span>Demo &mdash; you are the show clock</span>
+      <button id="notesBtn" onclick="toggleNotes()">Designer notes</button>
+    </div>
+    <div class="demo-row">
+      <button onclick="goto(0)" id="d0" class="on">Doors</button>
+      <button onclick="goto(1)" id="d1">Change</button>
+      <button onclick="goto(2)" id="d2">Break</button>
+      <button onclick="goto(3)" id="d3">Encore</button>
+      <button onclick="goto(4)" id="d4">Out</button>
+    </div>
+  </div>
+
+  <div class="hud" id="hud">
+    <div class="who"><div class="a" id="hAct">Black Eyed Peas</div>
+      <div class="b" id="hWho">Kia Forum &middot; Sec 214 &middot; <span id="hPos">7th</span> of <span id="hIn">1,204</span></div></div>
+    <div class="st" id="hStreak">&#9679; 0</div>
+    <div class="sc"><span class="v" id="hPts">18</span><span class="l">pts</span></div>
+  </div>
+
+  <div class="body" id="scroller">
+
+  <!-- ================= HOME ================= -->
+  <section class="screen active" id="s-home">
+    <div style="text-align:center;padding:6px 0 2px">
+      <div style="font-family:var(--d);font-weight:900;font-size:34px;line-height:.86;letter-spacing:.5px;text-transform:uppercase;background:linear-gradient(96deg,var(--gel-a),var(--gel-b));-webkit-background-clip:text;background-clip:text;color:transparent">Fans Gametime</div>
+      <p style="font:600 12.5px/1.4 var(--f);color:var(--body);margin:5px 0 0">the game that pays to be there</p>
+      <div style="font:700 8.5px/1.5 var(--mono);letter-spacing:.08em;color:var(--dim);text-transform:uppercase;margin-top:9px;padding:5px 8px;border:1px dashed var(--line2);border-radius:9px">Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist</div>
+    </div>
+
+    <div class="marq">
+      <div class="rig"></div>
+      <div class="when">Tonight &middot; doors 6:30</div>
+      <h1 class="act" id="mAct">Black Eyed Peas</h1>
+      <div class="ven" id="mVen">Kia Forum &middot; Inglewood, CA</div>
+      <div class="cd"><span class="v" id="mCd">14:22</span><span class="l">until doors close</span></div>
+    </div>
+
+    <button class="btn" onclick="navGo('gametime')">Take my seat &mdash; free</button>
+
+    <div class="card">
+      <div class="eyebrow gel">How it works</div>
+      <h2 class="sec" style="margin:7px 0 11px">We only play the gaps</h2>
+      <div class="how">
+        <div class="step"><div class="k">01</div><div><div class="t">The set is sacred</div>
+          <div class="d">No question ever fires while a song is playing. The game lives in the five dead spots a show already has &mdash; doors, the changeover, the costume break, the encore wait, and the walk-out.</div></div></div>
+        <div class="step"><div class="k">02</div><div><div class="t">You answer about the show you are standing in</div>
+          <div class="d">What opened it. How many dancers. What he wore. Nothing you can look up &mdash; only things you can see from where you are.</div></div></div>
+        <div class="step"><div class="k">03</div><div><div class="t">The artist pays out, not a bookmaker</div>
+          <div class="d">The setlist off the stage. Soundcheck in the next city. Your name on the wall between sets. Entry is free and always will be.</div></div></div>
+        <div class="step"><div class="k">04</div><div><div class="t">Then it follows you home</div>
+          <div class="d">The songs you answered about come back on Spotify next week and ask you again. That is not a gimmick &mdash; it is the part that makes the night stick.</div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="eyebrow" style="margin-bottom:9px">Other rooms tonight &middot; illustrative</div>
+      <div class="rail">
+        <div class="rm"><div class="a">Black Eyed Peas</div><div class="v">Kia Forum &middot; Inglewood</div><span class="s">You are here</span></div>
+        <div class="rm"><div class="a">Kacey Musgraves</div><div class="v">The Anthem &middot; DC</div><span class="s">412 in the room</span></div>
+        <div class="rm"><div class="a">Fall Out Boy</div><div class="v">Fiserv Forum &middot; Milwaukee</div><span class="s">1,104 in the room</span></div>
+        <div class="rm"><div class="a">Karol G</div><div class="v">Hard Rock &middot; Miami</div><span class="s">2,860 in the room</span></div>
+      </div>
+    </div>
+    <div class="foot">A <b>Stats Gametime</b> product. Same engine, different room.</div>
+  </section>
+
+  <!-- ================= FANS ================= -->
+  <section class="screen" id="s-fans">
+    <div class="card">
+      <div class="eyebrow gel">Tonight's sheet</div>
+      <h2 class="sec" style="margin:7px 0 4px">The setlist</h2>
+      <p class="lede">Crossed off as it happens. Every question tonight comes off this sheet &mdash; and the sheet itself is the prize at the top of the board.</p>
+      <div id="setlist" style="margin-top:13px;display:flex;flex-direction:column;gap:5px"></div>
+    </div>
+
+    <div class="dsp">
+      <div class="hd"><span class="t">On Repeat</span><span class="pill">Spotify &middot; connected</span></div>
+      <p class="lede">The half of the product that is not at the venue. Between tracks, while you are already listening, we ask you one thing about the show you went to.</p>
+      <div class="track"><div class="art"></div>
+        <div class="m"><div class="s">Pump It</div><div class="a">Black Eyed Peas &middot; played 14&times; this month</div></div><div class="p">+3</div></div>
+      <div class="track"><div class="art" style="background:linear-gradient(140deg,#ffb545,#ff3d9a)"></div>
+        <div class="m"><div class="s">Where Is the Love?</div><div class="a">Black Eyed Peas &middot; played 6&times; this month</div></div><div class="p">+3</div></div>
+      <div class="carry"><span class="v" id="carryV">18</span>
+        <span class="x"><b>Carry-in points.</b> What you earn on Spotify this week you walk into the venue holding. That is why the listening half is not a bolt-on &mdash; it is the reason people arrive already playing.</span></div>
+      <button class="btn ghost" onclick="dspAsk()">Ask me one now</button>
+      <div id="dspQ"></div>
+    </div>
+  </section>
+
+  <!-- ================= GAMETIME ================= -->
+  <section class="screen" id="s-gametime"><div id="stage"></div></section>
+
+  <!-- ================= BOARD ================= -->
+  <section class="screen" id="s-board">
+    <div class="card">
+      <div class="eyebrow gel">Kia Forum &middot; tonight</div>
+      <h2 class="sec" style="margin:7px 0 4px">The room</h2>
+      <p class="lede">One board per show. It resets at the door, so the person who has been to forty shows starts level with the person at their first.</p>
+      <div class="rows" id="board" style="margin-top:13px"></div><div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--line3)"><div class="eyebrow" style="color:var(--cyan)">The building</div><p class="lede" style="margin-top:6px">Every section is scoring against every other section. Yours is lit.</p><div id="bowl"></div></div>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="color:var(--amb)">What the artist put up</div>
+      <h2 class="sec" style="margin:7px 0 11px">Tonight's prizes</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="prize"><div class="ic">1</div><div><div class="t">The setlist off the monitor wedge</div>
+          <div class="d">The actual sheet, signed, handed over at the merch stand before you leave. One per show. Costs the artist nothing and cannot be bought.</div></div></div>
+        <div class="prize"><div class="ic">3</div><div><div class="t">Your name on the wall</div>
+          <div class="d">Top three go up on the LED between the set and the encore. Twelve seconds, twenty thousand people.</div></div></div>
+        <div class="prize"><div class="ic">10</div><div><div class="t">Soundcheck for two, next city</div>
+          <div class="d">Top ten get an offer for whichever date on this tour is closest to them.</div></div></div>
+        <div class="prize"><div class="ic">&infin;</div><div><div class="t">Merch code at 60 points</div>
+          <div class="d">Everyone who clears 60 walks to the stand with 20% in their hand. This is the one that pays for itself before you leave the building.</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="eyebrow" style="color:var(--cyan)">Your tour</div>
+      <h2 class="sec" style="margin:7px 0 4px">Six shows, one season</h2>
+      <p class="lede">A show is worth at most 100, however many rooms you open. Best room of the night is the one that counts &mdash; so going to a show beats farming a feed.</p>
+      <div class="rows" style="margin-top:13px">
+        <div class="row"><span class="pos">6</span><div class="nm">Black Eyed Peas<small>Kia Forum &middot; tonight</small></div><span class="sc" id="seasNow">&mdash;</span></div>
+        <div class="row"><span class="pos">5</span><div class="nm">Karol G<small>Crypto.com Arena &middot; 2 Aug</small></div><span class="sc">88</span></div>
+        <div class="row"><span class="pos">4</span><div class="nm">Fall Out Boy<small>Honda Center &middot; 19 Jul</small></div><span class="sc">71</span></div>
+      </div>
+    </div>
+  </section>
+  </div><!-- /.body -->
+
+  <nav class="nav"><div class="nav-in">
+    <button class="navb on" data-nav="home" onclick="navGo('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.2 10.6 12 3.4l8.8 7.2"/><path d="M5.6 9.6V20h12.8V9.6"/></svg><span>Home</span></button>
+    <button class="navb mid" data-nav="fans" onclick="navGo('fans')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20v-1.6a4.4 4.4 0 0 1 4.4-4.4h1.2A4.4 4.4 0 0 1 14 18.4V20"/><circle cx="9" cy="8.2" r="3.4"/><path d="M16 20v-1.6a4.4 4.4 0 0 0-2.2-3.8"/><path d="M15.2 5.2a3.4 3.4 0 0 1 0 6"/></svg><span>Fans</span></button>
+    <button class="navb mid" data-nav="gametime" onclick="navGo('gametime')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.6"/><path d="M10.2 8.4 16 12l-5.8 3.6z" fill="currentColor" stroke="none"/></svg><span>Gametime</span></button>
+    <button class="navb" data-nav="board" onclick="navGo('board')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.4 4h9.2v4.6a4.6 4.6 0 0 1-9.2 0z"/><path d="M7.4 5.8H5A2.4 2.4 0 0 0 7.4 9.6"/><path d="M16.6 5.8H19a2.4 2.4 0 0 1-2.4 3.8"/><path d="M12 13.2v3.4"/><path d="M8.4 20h7.2"/></svg><span>Board</span></button>
+  </div></nav>
+</div>
+<script>
+"use strict";
+var SHOW={
+  act:"Black Eyed Peas",
+  venue:"Kia Forum", city:"Inglewood, CA",
+  gelA:"#ff3d9a", gelB:"#35e0e8",     /* the artist's two — repainted per show */
+  cap:"24,000 in the room",
+  set:["Let's Get It Started","Boom Boom Pow","Rock That Body","RITMO (Bad Boys for Life)",
+       "MAMACITA","MABUTI / Bebot","#thatPOWER / Scream & Shout","Seven Nation Army",
+       "Pump It","Don't Stop the Party","Where Is the Love?","I Gotta Feeling","Meet Me Halfway"]
+};
+
+/* ---- THE GAPS -------------------------------------------------------
+   The whole product in one table. A show has exactly five dead spots and
+   this is all five. Points escalate the way STATS escalates by quarter —
+   the night gets more expensive to look away from as it goes on. -------- */
+var GAPS=[
+ {n:"Gap 01", t:"Doors", sub:"45 minutes of standing around with a drink. Nothing has happened yet, so tonight this is the prediction sheet.",
+  worth:1, songsDone:0, mins:"45 min", q:[
+  {k:"First",       v:1, t:"What opens the show tonight?",
+   o:["Let's Get It Started","Boom Boom Pow","Pump It","Where Is the Love?"], a:"Let's Get It Started",
+   r:"They open with it every night on this run. Nobody bets against it.",
+   w:"Locked in before a note. This is the question everybody in the building has an opinion about — and it settles ninety minutes later in front of them."},
+  {k:"Tally",       v:1, t:"How many full costume changes will the group make?",
+   o:["None","1","2","3 or more"], a:"2",
+   r:"Two. The second one is the one most people miss.",
+   w:"Zero to three, never more. Count something that happens twelve times and you need a notebook; count something that happens twice and you remember both."},
+  {k:"Which was more", v:1, t:"More songs tonight from Elephunk or from The E.N.D.?",
+   o:["Elephunk","The E.N.D.","Even"], a:"The E.N.D.",
+   r:"The E.N.D. carries the middle of every night.",
+   w:"Two streams tracked loosely. No exact count needed — just a feel for which era the night leans on."},
+  {k:"Outcome",     v:1, t:"Will they play a song that isn't theirs?",
+   o:["Yes","No"], a:"Yes",
+   r:"Seven Nation Army — and the whole building sang it.",
+   w:"A question that cannot fail to resolve. Every gap ends on one of these so nobody ever leaves a round void."}
+ ]},
+
+ {n:"Gap 02", t:"The changeover", sub:"The opener is off, the headliner is not on, and the crew is striking a drum riser. Twenty-five minutes nobody has ever monetised.",
+  worth:2, songsDone:0, mins:"25 min", q:[
+  {k:"Count",       v:2, t:"How many people were on stage for the opener's last song?",
+   o:["One","Two","Three","Four or more"], a:"Four or more",
+   r:"Openers travel bigger than you think.",
+   w:"The support act finally gets measured. Three thousand people just watched them and, for the first time, we can prove it."},
+  {k:"Tally",       v:2, t:"How many times did the opener say the name of this city?",
+   o:["None","Once","Twice","Three or more"], a:"Three or more",
+   r:"Three. They always say it more than you remember.",
+   w:"Unrepeatable and un-Googleable. You had to be standing here."},
+  {k:"Which was more", v:2, t:"Right now — which line is longer, merch or the bar?",
+   o:["Merch","The bar","About even"], a:"Merch",
+   r:"Merch. It always is, and the bar staff know it.",
+   w:"A question for the fan and a live concessions signal for the building at the same time. Twenty thousand people just told the venue where the queue is."},
+  {k:"Look up",     v:2, t:"What is on the big screen right this second?",
+   o:["The tour logo","A sponsor","A countdown clock","It's dark"], a:"The tour logo",
+   r:"The tour logo — and everyone in here just looked at that wall.",
+   w:"The look-up mechanic. To answer, everyone in the room has to raise their eyes to the wall — which is the only honest way anybody has ever sold attention in an arena."}
+ ]},
+
+ {n:"Gap 03", t:"The break", sub:"Mid-set. The band is off for a costume change, the DJ is filling, and the room is looking at its phones anyway. Four minutes, three questions.",
+  worth:3, songsDone:6, mins:"4 min", heard:1, q:[
+  {k:"Count",       v:3, t:"How many dancers were on stage for Pump It?",
+   o:["Four","Six","Eight","Ten or more"], a:"Eight",
+   r:"Eight. You will never watch Pump It the same way again.",
+   w:"Nobody counts the dancers. Ask this once and every person in the building watches the dancers for the rest of the tour."},
+  {k:"The look",    v:3, t:"What was Taboo wearing when the band walked on?", look:true,
+   o:["All black, silver chain","Red jacket, black tee","White suit","Camo, sunglasses"], a:"Red jacket, black tee",
+   sw:["linear-gradient(140deg,#1a1a20,#3b3b47)","linear-gradient(140deg,#c8202f,#5a0d16)","linear-gradient(140deg,#f2f0ea,#c9c4b8)","linear-gradient(140deg,#5c6b3f,#2e3620)"],
+   r:"Red jacket. It was on stage for four minutes.",
+   w:"The answer is a picture, because the question cannot be asked in words without giving it away. It also makes people look at the wardrobe — which is the part of a tour that costs the most and gets noticed the least."},
+  {k:"First",       v:3, t:"Which came first tonight — MAMACITA or RITMO?",
+   o:["MAMACITA","RITMO"], a:"RITMO",
+   r:"RITMO opened that stretch.",
+   w:"Set order is the one fact about a show that changes city to city. Getting it right means you were paying attention here, not reading a wiki."}
+ ]},
+
+ {n:"Gap 04", t:"The encore break", sub:"The lights are down, the band is off, and twenty thousand people are chanting with their phones already out. The single best-attended ninety seconds in live music.",
+  worth:4, songsDone:11, mins:"90 sec", heard:2, q:[
+  {k:"Outcome",     v:4, t:"Did the whole band leave the stage?",
+   o:["Yes, all of them","No","Only some of them"], a:"Yes, all of them",
+   r:"All four gone. That is how you know the encore is real.",
+   w:"Cannot fail to resolve, and it is happening right now in front of you."},
+  {k:"Tally",       v:4, t:"How many times were you asked to put your hands up tonight?",
+   o:["0–2","3–5","6–8","9 or more"], a:"6–8",
+   r:"Six to eight. Nobody in this building had ever counted that.",
+   w:"A band asks this constantly and nobody has ever counted. Now the room counts."},
+  {k:"Which was more", v:4, t:"So far — more pyro hits or more confetti drops?",
+   o:["Pyro","Confetti","Even"], a:"Pyro",
+   r:"Pyro, twice over confetti.",
+   w:"Production spend, turned into a question. The people who built the show finally find out whether anybody clocked it."},
+  {k:"First",       v:4, t:"What do they come back on with?",
+   o:["I Gotta Feeling","Where Is the Love?","Pump It","Boom Boom Pow"], a:"I Gotta Feeling",
+   r:"I Gotta Feeling. Ninety seconds and you called it.",
+   w:"A prediction that settles in ninety seconds. There is no better-timed question in any live product anywhere."}
+ ]},
+
+ {n:"Gap 05", t:"House lights", sub:"The lights are up and you are not moving. Egress takes twenty-five minutes and the industry has always treated it as loss. It is the largest block of captive attention in the whole night.",
+  worth:5, songsDone:13, mins:"25 min", q:[
+  {k:"Last",        v:5, t:"What was the last song of the night?",
+   o:["Meet Me Halfway","I Gotta Feeling","Where Is the Love?","Don't Stop the Party"], a:"Meet Me Halfway",
+   r:"Meet Me Halfway closed it. Four minutes ago.",
+   w:"Asked four minutes after it ended, which is exactly when the memory is still hot and has not yet been overwritten by the walk to the car."},
+  {k:"Tally",       v:5, t:"How many songs in the encore?",
+   o:["One","Two","Three","Four or more"], a:"Two",
+   r:"Two. Short encore, big one.",
+   w:"You either counted or you did not. Next tour, you will count."},
+  {k:"Outcome",     v:5, t:"Did they play Where Is the Love?",
+   o:["Yes","No"], a:"Yes",
+   r:"Of course they did.",
+   w:"The one everybody came for. Everybody gets this — and a round should always end on something everybody gets."},
+  {k:"Count",       v:5, t:"How many songs did they play tonight, all in?",
+   o:["Eleven","Twelve","Thirteen","Fourteen"], a:"Thirteen",
+   r:"Thirteen. That is the whole night in one number.",
+   w:"The last question of the night is the whole night in one number. Answer it and you have just rehearsed the entire set from memory — which is the thing that makes you still able to describe this show in a year."}
+ ]}
+];
+
+/* HEARD IT — two all night, both on eyes-up moments, twenty seconds each,
+   and neither ever repeats. This is the rule that lets an artist say yes. */
+var HEARD={
+ 1:{t:"They just walked off mid-set. Who was last to leave?",
+    o:["will.i.am","apl.de.ap","Taboo","J. Rey Soul"], a:"Taboo", v:6},
+ 2:{t:"That cover just now — what was it?",
+    o:["Seven Nation Army","Sweet Child O' Mine","Enter Sandman","Song 2"], a:"Seven Nation Army", v:8}
+};
+
+var ROOM=[
+ {n:"marisol_87",   s:0, tag:"Section 112"},
+ {n:"pea_since_03", s:0, tag:"Floor GA"},
+ {n:"YOU",          s:0, tag:"Section 214 · carried in 18", me:true},
+ {n:"dtla_dave",    s:0, tag:"Section 305"},
+ {n:"jrey4life",    s:0, tag:"Floor GA"}
+];
+
+
+/* ====================== STATE ======================================= */
+var S={ gap:0, qi:-1, pts:180, carry:180, earned:0, streak:0, best:0, ans:{},
+        heardDone:{}, raf:0, deadline:0, left:0, phase:'hold', locked:false };
+var BASE=10;                         /* a Gap-01 question is 10 points, not 1 */
+/* THE WINDOW SHORTENS AS THE NIGHT GETS EXPENSIVE. The encore break is
+   ninety real seconds long and carries four questions; at fifteen seconds
+   each plus a reveal it does not fit, and the best-attended moment of the
+   night would be the one you cannot finish. */
+var WINDOW=[15,15,12,10,14];
+var $=function(id){return document.getElementById(id)};
+var esc=function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")};
+function buzz(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+function reduced(){ try{return window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false} }
+
+/* THE CEILING, COMPUTED, NOT GUESSED. The first pass divided by 78 and 78
+   was not the maximum of anything — and it counted carry-in points, which
+   were not earned at this show, inside a number labelled "of the night".
+   Earned and total are now two different quantities and only one of them
+   is ever shown as a percentage of the show. */
+var CEILING=(function(){ var t=0;
+  for(var i=0;i<GAPS.length;i++) t+=GAPS[i].q.length*GAPS[i].worth*BASE;
+  for(var k in HEARD) t+=HEARD[k].v*BASE;
+  return t; })();
+
+function paintShow(){
+  document.documentElement.style.setProperty('--gel-a',SHOW.gelA);
+  document.documentElement.style.setProperty('--gel-b',SHOW.gelB);
+  $('mAct').textContent=SHOW.act; $('hAct').textContent=SHOW.act;
+  $('mVen').textContent=SHOW.venue+" · "+SHOW.city;
+}
+function toggleNotes(){
+  var off=document.body.classList.toggle('nonotes');
+  $('notesBtn').classList.toggle('on',!off);
+}
+
+/* ---- THE ROOM ------------------------------------------------------
+   You are never alone in an arena and you should never be alone in the
+   app. Every reveal shows what the room did and what YOUR SECTION did.
+   Deterministic from the question text so it is stable across renders; in
+   production it is a live read off the room's own submissions. --------- */
+function hash(s){ var h=2166136261; for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=(h*16777619)>>>0;} return h; }
+function split(q){
+  var n=q.o.length, ai=q.o.indexOf(q.a), h=hash(q.t), out=new Array(n);
+  var right=30+(h%34), rest=100-right, others=n-1, acc=0;
+  for(var i=0;i<n;i++){
+    if(i===ai) continue;
+    var share = others===1 ? rest : Math.max(4, Math.round(rest/others*(0.6+((h>>(i*3))%9)/10)));
+    out[i]=share; acc+=share;
+  }
+  out[ai]=Math.max(8,100-acc);
+  return out;
+}
+/* YOUR SECTION IS NOT THE ROOM. If the two numbers always agree the
+   comparison says nothing — the whole point is that 214 can be smarter or
+   dumber than the building. */
+function sectionPct(q){
+  var room=split(q)[q.o.indexOf(q.a)];
+  var d=((hash(q.t+'sec214')%37)-16);
+  return Math.max(6,Math.min(97,room+d));
+}
+
+/* ====================== NAV ========================================= */
+function navGo(k){
+  var ids={home:'s-home',fans:'s-fans',gametime:'s-gametime',board:'s-board'};
+  Object.keys(ids).forEach(function(x){ $(ids[x]).classList.toggle('active',x===k); });
+  var bs=document.querySelectorAll('.navb');
+  for(var i=0;i<bs.length;i++) bs[i].classList.toggle('on', bs[i].getAttribute('data-nav')===k);
+  $('scroller').scrollTop=0;
+  $('hud').style.display = (k==='gametime') ? 'flex' : 'flex';
+  if(k==='board') renderBoard();
+}
+
+/* ====================== THE SHEET =================================== */
+function sheetHtml(){
+  var done=GAPS[S.gap].songsDone, h='';
+  for(var i=0;i<SHOW.set.length;i++){
+    if(i===done) h+='<i class="gap"></i>';
+    h+='<i class="'+(i<done?'done':'')+'"></i>';
+  }
+  if(done>=SHOW.set.length) h+='<i class="gap"></i>';
+  return '<div class="sheet">'+h+'</div>';
+}
+function renderSetlist(){
+  var done=GAPS[S.gap].songsDone, sl='';
+  for(var j=0;j<SHOW.set.length;j++){
+    var played=j<done, enc=j>=11;
+    sl+='<div style="display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:9px;'
+      +'background:'+(played?'rgba(255,255,255,.04)':'transparent')+';border:1px solid '
+      +(played?'var(--line)':'var(--line3)')+'">'
+      +'<span class="num" style="font-size:10px;color:'+(played?'var(--gel-a)':'var(--dim)')+';width:18px">'+(j+1)+'</span>'
+      +'<span style="flex:1;font:'+(played?'700':'500')+' 12.5px/1.3 var(--f);color:'+(played?'var(--ink)':'var(--dim)')+'">'+esc(SHOW.set[j])+'</span>'
+      +(enc?'<span style="font:800 8px/1 var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--amb)">Encore</span>':'')
+      +(played?'<span style="color:var(--gel-a);font-size:12px">✓</span>':'')+'</div>';
+  }
+  $('setlist').innerHTML=sl;
+}
+
+/* ====================== HUD ======================================== */
+function pos(){ return Math.max(1,Math.round(9-S.earned/95)); }
+function ord(n){ return n+(n===1?'st':n===2?'nd':n===3?'rd':'th'); }
+function mult(){ return S.streak>=5?3:S.streak>=3?2:S.streak>=2?1.5:1; }
+function renderHud(){
+  var el=$('hStreak');
+  el.textContent=(S.streak>=2?'◆ ':'● ')+S.streak+(mult()>1?' ×'+mult():'');
+  el.className='st'+(S.streak>=5?' blaze':(S.streak>=2?' hot':''));
+  $('hPos').textContent=ord(pos());
+  $('hPts').textContent=S.pts;
+}
+function bumpScore(to,green){
+  var el=$('hPts'), from=Number(el.textContent)||0, t0=null, dur=460;
+  el.classList.add('bump');
+  if(green) el.style.color='var(--green)';
+  setTimeout(function(){ el.classList.remove('bump'); el.style.color=''; },420);
+  function step(ts){
+    if(t0===null) t0=ts; var p=Math.min(1,(ts-t0)/dur);
+    el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-p,3)));
+    if(p<1) requestAnimationFrame(step); else renderHud();
+  }
+  requestAnimationFrame(step);
+}
+
+/* ====================== GAP FLOW =================================== */
+function goto(i){
+  stopClock(); S.gap=i; S.qi=-1; S.phase='hold'; S.locked=false;
+  for(var d=0;d<5;d++) $('d'+d).classList.toggle('on', d===i);
+  renderSetlist(); renderHold(); navGo('gametime');
+}
+
+function renderHold(){
+  var g=GAPS[S.gap];
+  wash(S.gap===0?'doors':'set');
+  var pending = g.heard && !S.heardDone[g.heard];
+  var h='<div class="hold">';
+  if(pending) h+=heardHtml(g.heard);
+  h+='<div class="holdhero">'
+   +'<div class="k">'+esc(g.n)+' · up next · '+esc(g.mins)+'</div>'
+   +'<div class="big">'+esc(g.t)+'</div>'
+   +'<div class="cd">'+(g.q.length*g.worth*BASE)+' pts</div>'
+   +'<div class="sub">'+esc(g.sub)+'</div></div>'
+   +'<div class="pulse">'
+   +'<div><div class="v">'+g.q.length+'</div><div class="l">questions</div></div>'
+   +'<div><div class="v">'+WINDOW[S.gap]+'s</div><div class="l">each</div></div>'
+   +'<div><div class="v">1,204</div><div class="l">in this room</div></div></div>'
+   +'<button class="btn" onclick="startGap()">'+(S.gap>=4?'Play the walk-out':'Play this gap')+'</button>'
+   +'<div class="card"><div class="eyebrow gel">The sheet</div>'
+   +'<div style="margin:11px 0 8px">'+sheetHtml()+'</div>'
+   +'<p class="lede">'+(S.gap===0?'Nothing played yet. Doors are open.':(S.gap>=4?'Thirteen songs. That was the night.':g.songsDone+' of 13 crossed off. Nothing is on stage right now.'))+'</p></div>'
+   +'<div class="spon"><div class="mk">LN</div><div class="tx">'
+   +'<div class="l">This gap presented by</div>'
+   +'<div class="b">A sponsor lives between rounds and nowhere else. Never over a question, never during a song.</div></div></div>'
+   +'</div>';
+  $('stage').innerHTML=h;
+  if(pending) startHeard(g.heard);
+  renderHud();
+}
+
+function startGap(){ S.qi=-1; nextQ(); }
+function nextQ(){
+  if(S.qi+1>=GAPS[S.gap].q.length){ renderReward(); return; }
+  S.qi++; S.phase='ask'; S.locked=false; renderQ();
+}
+
+/* ====================== ONE QUESTION =============================== */
+function renderQ(){
+  var g=GAPS[S.gap], q=g.q[S.qi], win=WINDOW[S.gap];
+  wash('open');
+  var beads='';
+  for(var i=0;i<g.q.length;i++){
+    var a=S.ans[S.gap+':'+i];
+    var st = i<S.qi ? (a===g.q[i].a?'done':'miss') : (i===S.qi?'now':'');
+    beads+='<i class="'+st+'"></i>';
+  }
+  var tiles='';
+  for(var j=0;j<q.o.length;j++){
+    /* THE LOOK QUESTION HAS NO CAPTION. Printing "Red jacket, black tee"
+       under a red swatch answers the question for you and turns the only
+       non-verbal interaction in the app back into a word problem. */
+    tiles+='<button class="tile'+(q.look?' hasw':'')+'" id="t'+j+'" onclick="answer('+j+')">'
+      +(q.look?'<span class="sw" style="background:'+q.sw[j]+'"></span>':'')
+      +'<span class="kk">'+String.fromCharCode(65+j)+'</span>'
+      +'<span class="pctn" id="p'+j+'"></span>'
+      +(q.look?'':'<span>'+esc(q.o[j])+'</span>')
+      +'<span class="crowd" id="c'+j+'"></span></button>';
+  }
+  $('stage').innerHTML='<div class="arena" id="arena">'
+   +'<div class="beads"><b>'+(S.qi+1)+'/'+g.q.length+'</b>'+beads+'</div>'
+   +'<div class="push"></div>'
+   +'<div class="clockrow">'
+   +'<div class="ring" id="ring"><svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true">'
+   +'<circle class="bg" cx="27" cy="27" r="23"></circle>'
+   +'<circle class="fg" id="ringFg" cx="27" cy="27" r="23" stroke-dasharray="144.5" stroke-dashoffset="0"></circle>'
+   +'</svg><div class="t" id="ringT">'+win+'</div></div>'
+   +'<div class="worth"><div class="v" id="worthV">'+(g.worth*BASE)+'</div>'
+   +'<div class="l">points · falling'+(mult()>1?' · ×'+mult()+' live':'')+'</div></div>'
+   +'<div class="here"><div class="v">1,204</div><div class="l">answering<br>with you</div></div></div>'
+   +'<div class="qtag">'+esc(q.k)+(q.look?' · tap the one you saw':'')+'</div>'
+   +'<h2 class="qbig">'+esc(q.t)+'</h2>'
+   +'<div class="tiles'+(q.o.length>3||q.look?'':' one')+'" id="tiles">'+tiles+'</div>'
+   +'<div id="after"></div></div>';
+  $('scroller').scrollTop=0;
+  startClock(win);
+}
+
+/* THE CLOCK RUNS OFF A DEADLINE, NOT A COUNTER.
+   A setInterval that does `left--` drifts, and it stops dead when a phone
+   sleeps in a pocket — so a woken phone shows 14s on a card that expired
+   four minutes ago. That exact bug has cost the sports sibling a quarter
+   of a real game night. Time comes from the clock, always. */
+function startClock(win){
+  stopClock();
+  S.deadline=Date.now()+win*1000; S.left=win;
+  var loop=function(){
+    if(S.phase!=='ask'){ S.raf=0; return; }
+    var ms=S.deadline-Date.now();
+    S.left=Math.max(0,ms/1000);
+    paintClock(win);
+    if(ms<=0){ S.raf=0; answer(-1); return; }
+    S.raf=requestAnimationFrame(loop);
+  };
+  S.raf=requestAnimationFrame(loop);
+}
+function stopClock(){ if(S.raf){cancelAnimationFrame(S.raf);S.raf=0;} }
+function worthNow(){
+  var g=GAPS[S.gap], win=WINDOW[S.gap];
+  return Math.round(g.worth*BASE*(0.4+0.6*(S.left/win)));
+}
+function paintClock(win){
+  var t=$('ringT'), fg=$('ringFg'), w=$('worthV'), r=$('ring');
+  if(!t) return;
+  var secs=Math.ceil(S.left);
+  t.textContent=secs;
+  fg.setAttribute('stroke-dashoffset', String((144.5*(1-S.left/win)).toFixed(1)));
+  var cls='ring'+(secs<=3?' crit':(secs<=6?' warn':''));
+  if(r.className!==cls){ r.className=cls; if(secs===5) buzz([8,120,8]); }
+  var v=worthNow();
+  if(w.textContent!==String(v)) w.textContent=v;
+  w.classList.toggle('low', secs<=6);
+}
+
+/* ====================== THE 1200MS ================================
+   Screenshots taken 120ms and 600ms after a tap on the first pass were
+   byte-identical: the entire act of answering produced no moving pixels.
+   This is the replacement, and the held pause in the middle is the part
+   that matters most — a reveal with no anticipation in front of it is
+   just a colour change.
+
+     0ms    lock, haptic, the other tiles fall away
+     0-180  the ring freezes hard and the price is stamped
+     180-520 HELD. Nothing resolves. The room's split grows instead.
+     520    the reveal: flood, tile, haptic, confetti, score counts up
+     720    one line, six words
+     1000   the streak flares if it earned one
+     2200   the app moves itself to the next question
+   ================================================================== */
+function answer(idx){
+  if(S.phase!=='ask'||S.locked) return;
+  S.locked=true; stopClock(); S.phase='verdict';
+  var g=GAPS[S.gap], q=g.q[S.qi], ai=q.o.indexOf(q.a);
+  var timedOut=idx<0, ok=!timedOut&&q.o[idx]===q.a;
+  var raw=worthNow(), m=mult(), earned=ok?Math.round(raw*m):0;
+  S.ans[S.gap+':'+S.qi]= timedOut ? '—' : q.o[idx];
+
+  /* 0ms — felt before it is understood */
+  buzz(12);
+  var tiles=document.querySelectorAll('.tile');
+  for(var i=0;i<tiles.length;i++){
+    tiles[i].disabled=true;
+    if(i===idx) tiles[i].classList.add('picked');
+    else tiles[i].classList.add('faded');
+  }
+  var w=$('worthV'); if(w){ w.classList.add('stamp'); w.textContent=(ok?'+':'')+raw; }
+
+  /* 180ms — the room starts answering with you, and nothing resolves yet */
+  var sp=split(q);
+  setTimeout(function(){
+    for(var i=0;i<q.o.length;i++){
+      var c=$('c'+i), p=$('p'+i), t=$('t'+i);
+      if(c) c.style.width=sp[i]+'%';
+      if(p) p.textContent=sp[i]+'%';
+      if(t) t.classList.add('shown');
+    }
+  },180);
+
+  /* 520ms — the reveal */
+  setTimeout(function(){
+    var picked=$('t'+idx), right=$('t'+ai);
+    if(picked&&!ok){ picked.classList.remove('picked'); picked.classList.add('wrong','shake'); }
+    if(picked&&ok){ picked.classList.remove('picked'); picked.classList.add('right'); }
+    if(!ok&&right){ right.classList.remove('faded'); setTimeout(function(){ right.classList.add('right'); },140); }
+    flash(ok); wash(ok?'hit':'miss');
+    buzz(ok?[10,40,18]:60);
+    if(ok){
+      fly(idx,earned);
+      S.pts+=earned; S.earned+=earned;
+      bumpScore(S.pts,true);
+      if(!reduced()) celebrate(1,picked);
+    }
+  },520);
+
+  /* 720ms — six words, not a paragraph */
+  setTimeout(function(){
+    var sec=sectionPct(q);
+    $('after').innerHTML=
+      '<div class="verdict '+(ok?'good':'bad')+'">'
+      +'<div class="m">'+(ok?'✓':(timedOut?'⏱':'✕'))+'</div>'
+      +'<div class="x">'+(ok?('+'+earned+(m>1?'  ·  '+raw+' ×'+m+' streak':'')):(timedOut?'Out of time':'It was '+esc(q.a)))
+      +'<small>'+sp[ai]+'% of the room had it · '+sec+'% of section 214</small></div></div>'
+      +'<div class="reax">'+esc(q.r||'')+'</div>'
+      +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
+    var sc=$('scroller');
+    if(sc) sc.scrollTo({top:sc.scrollHeight,behavior:reduced()?'auto':'smooth'});
+  },720);
+
+  if(ok){ S.streak++; if(S.streak>S.best) S.best=S.streak; } else S.streak=0;
+
+  /* 1000ms — the streak is an event, in both directions */
+  setTimeout(function(){
+    renderHud();
+    var a=$('after'); if(!a) return;
+    if(ok&&(S.streak===2||S.streak===3||S.streak===5)){
+      a.insertAdjacentHTML('beforeend','<div class="flare"><div class="h">'+S.streak+' in a row</div>'
+        +'<div class="s">Every answer is worth ×'+mult()+' until you miss one.</div></div>');
+      celebrate(S.streak>=5?3:2);
+    } else if(!ok&&m>1){
+      a.insertAdjacentHTML('beforeend','<div class="flare broke"><div class="h">Streak gone</div>'
+        +'<div class="s">You were on ×'+m+'. Back to ×1.</div></div>');
+    }
+  },1000);
+
+  /* 2200ms — the app moves itself. The fan's thumb never has to. */
+  setTimeout(function(){
+    var a=$('arena');
+    if(a&&!reduced()){ a.classList.add('out'); setTimeout(function(){ wash('open'); nextQ(); },230); }
+    else { wash('open'); nextQ(); }
+  },2200);
+}
+
+function flash(ok){
+  var s=$('slam');
+  /* Capped well under white. A near-white flood at full brightness in a
+     dark arena is a flashlight in the face of the person behind you, which
+     is the exact behaviour that gets phones banned from tours. */
+  s.style.background='radial-gradient(120% 70% at 50% 45%,'+(ok?'rgba(47,230,160,.42)':'rgba(255,77,94,.34)')+',transparent 72%)';
+  s.classList.remove('go'); void s.offsetWidth; s.classList.add('go');
+}
+function fly(idx,n){
+  if(reduced()) return;
+  var t=$('t'+idx), sc=$('hPts'); if(!t||!sc) return;
+  var a=t.getBoundingClientRect(), b=sc.getBoundingClientRect();
+  var el=document.createElement('div');
+  el.className='fly'; el.textContent='+'+n;
+  el.style.left=(a.left+a.width/2-26)+'px'; el.style.top=(a.top+12)+'px';
+  document.body.appendChild(el);
+  requestAnimationFrame(function(){
+    el.style.transform='translate('+(b.left-a.left-a.width/2+38)+'px,'+(b.top-a.top-6)+'px) scale(.4)';
+    el.style.opacity='0';
+  });
+  setTimeout(function(){ try{el.remove()}catch(e){} },840);
+}
+
+/* ====================== HEARD IT =================================== */
+function heardHtml(id){
+  var m=HEARD[id], st=S.heardDone[id];
+  if(st==='gone') return '<div class="card" style="border-color:var(--line3)">'
+    +'<div class="eyebrow">Heard It · missed</div>'
+    +'<p class="lede" style="margin-top:7px">Twenty seconds, and it never comes back. That is the point — a card that nags you through a song is a card the artist bans.</p></div>';
+  var h='<div class="heard" id="heardCard">'
+   +'<div class="heard-top"><span class="heard-lab">Heard It</span>'
+   +'<span class="heard-clock" id="heardClock">20</span></div>'
+   +'<div class="heard-bar"><i id="heardBar"></i></div>'
+   +'<h2 class="qbig" style="font-size:21px;margin:4px 0 14px">'+esc(m.t)+'</h2>'
+   +'<div class="tiles">';
+  for(var i=0;i<m.o.length;i++)
+    h+='<button class="tile" onclick="heardAns('+id+','+i+')">'
+      +'<span class="kk">'+String.fromCharCode(65+i)+'</span><span>'+esc(m.o[i])+'</span></button>';
+  return h+'</div><div class="eyesup">Eyes up · answer and pocket it · '+(m.v*BASE)+' pts</div></div>';
+}
+var HRAF=0, HEND=0;
+function startHeard(id){
+  cancelAnimationFrame(HRAF); HEND=Date.now()+20000;
+  var loop=function(){
+    var c=$('heardClock'), b=$('heardBar');
+    if(!c){ HRAF=0; return; }
+    var ms=HEND-Date.now();
+    if(ms<=0){ HRAF=0; S.heardDone[id]='gone'; renderHold(); return; }
+    c.textContent=Math.ceil(ms/1000);
+    b.style.width=(ms/20000*100)+'%';
+    HRAF=requestAnimationFrame(loop);
+  };
+  HRAF=requestAnimationFrame(loop);
+}
+function heardAns(id,i){
+  cancelAnimationFrame(HRAF);
+  var m=HEARD[id], ok=m.o[i]===m.a, val=m.v*BASE;
+  S.heardDone[id]= ok?'hit':'miss';
+  buzz(ok?[10,40,18]:60); flash(ok); wash(ok?'hit':'miss');
+  if(ok){ S.pts+=val; S.earned+=val; bumpScore(S.pts,true); celebrate(2); }
+  var el=$('heardCard');
+  if(el) el.outerHTML='<div class="card" style="border-color:'+(ok?'rgba(47,230,160,.45)':'var(--line)')+'">'
+    +'<div class="eyebrow" style="color:'+(ok?'var(--green)':'var(--muted)')+'">Heard It · '+(ok?'+'+val:'missed it')+'</div>'
+    +'<p class="lede" style="margin-top:7px">It was <b style="color:var(--ink)">'+esc(m.a)+'</b>. Card gone, phone back in the pocket, eyes back on the stage. Two of these all night, both on a moment you were already looking up for.</p></div>';
+  setTimeout(function(){ wash('set'); renderHud(); },1200);
+}
+
+/* ====================== THE REWARD TAKEOVER ========================
+   On the first pass this was appended to the bottom of a 1932px document
+   and the confetti fired at the centre of a screen showing form fields,
+   eight hundred pixels above the number it was celebrating. It is now the
+   only thing on screen and the confetti is bound to the number itself.
+   =================================================================== */
+function renderReward(){
+  S.phase='reward';
+  var g=GAPS[S.gap], got=0, max=0, right=0;
+  for(var i=0;i<g.q.length;i++){
+    max+=g.worth*BASE;
+    if(S.ans[S.gap+':'+i]===g.q[i].a) right++;
+  }
+  got=S.earned;
+  var mine=0;
+  for(var j=0;j<g.q.length;j++) if(S.ans[S.gap+':'+j]===g.q[j].a) mine++;
+  var last=S.gap===4;
+  var line = mine===g.q.length ? 'Clean sweep. Nobody in section 214 did that.'
+           : mine===0 ? 'Nothing that round. The next gap is worth more.'
+           : 'Banked. The board moved before the band is back on.';
+  var gained=0;
+  for(var k=0;k<g.q.length;k++){} /* per-gap total is tracked live in S.earned */
+  var h='<div class="takeover">'
+   +'<div class="lab">'+esc(g.t)+' · banked</div>'
+   +'<div class="big" id="rewardBig">'+mine+'<span>/'+g.q.length+'</span></div>'
+   +'<div class="sub">'+esc(line)+'</div>'
+   +'<div class="tbar"><div><span class="v">'+S.pts+'</span><span class="l">tonight</span></div>'
+   +'<div><span class="v">'+ord(pos())+'</span><span class="l">in the room</span></div>'
+   +'<div><span class="v">'+S.best+'</span><span class="l">best streak</span></div></div>';
+  if(!last){
+    h+='<div class="nextup"><b>Next: '+esc(GAPS[S.gap+1].t)+'</b>'
+      +'<span>'+GAPS[S.gap+1].worth*BASE+' a question · '+WINDOW[S.gap+1]+' seconds each</span></div>'
+      +'<button class="btn" onclick="goto('+(S.gap+1)+')">Take me there</button>'
+      +'<button class="btn ghost" onclick="navGo(\'board\')">See the room</button>';
+  } else {
+    h+=claimHtml();
+  }
+  h+='</div>';
+  $('stage').innerHTML=h;
+  $('scroller').scrollTop=0;
+  wash('hit');
+  buzz([20,60,20,60,40]);
+  setTimeout(function(){ celebrate(mine===g.q.length?3:(mine>0?2:1), $('rewardBig')); },140);
+  setTimeout(function(){ wash('set'); },2200);
+  renderHud();
+}
+
+function claimHtml(){
+  var pct=Math.round(S.earned/CEILING*100);
+  return '<div class="claim">'
+   +'<div class="eyebrow" style="color:var(--amb)">The walk-out</div>'
+   +'<h2 class="sec" style="margin:8px 0 12px">You were there.<br>Here is the proof.</h2>'
+   +'<div class="rows"><div class="row me"><span class="pos">'+pos()+'</span>'
+   +'<div class="nm">YOU<small>Section 214 · '+esc(SHOW.venue)+' · tonight</small></div>'
+   +'<div style="text-align:right"><span class="sc">'+S.pts+'</span><span class="pz">Soundcheck offer</span></div></div></div>'
+   +'<p class="q-why" style="display:block;background:rgba(255,181,69,.07);border-color:color-mix(in srgb,var(--amb) 26%,transparent)">'
+   +'<b style="color:var(--amb)">'+pct+'% of the night, earned here</b>'
+   +'Earned tonight: '+S.earned+' of '+CEILING+' available in this room. The '+S.carry+' you carried in from Spotify counts toward your score and not toward this percentage — '
+   +'because a number labelled "of the night" has to measure the night.</p>'
+   +'<button class="btn" style="margin-top:14px" onclick="navGo(\'board\')">Claim at the merch stand</button>'
+   +'<button class="btn ghost" style="margin-top:8px" onclick="navGo(\'fans\')">See it again on Spotify next week</button>';
+}
+
+/* ====================== BOARD + THE BOWL ===========================
+   The arena bowl as the leaderboard. "Section 214 is 4th in the building
+   tonight" is a sentence that makes a stranger turn to the stranger next
+   to them, which is the only growth mechanic a concert product has.
+   =================================================================== */
+function bowlHtml(){
+  var secs=[['112',62],['118',48],['124',71],['206',35],['214',0],['222',55],
+            ['305',28],['312',44],['FLOOR',80]];
+  secs[4][1]=Math.min(99,40+Math.round(S.earned/9));
+  var h='<div class="bowl">';
+  for(var i=0;i<secs.length;i++){
+    var me=secs[i][0]==='214', v=secs[i][1];
+    h+='<div class="seg'+(me?' me':'')+'" style="--h:'+v+'%">'
+      +'<i></i><b>'+secs[i][0]+'</b></div>';
+  }
+  return h+'</div>';
+}
+function renderBoard(){
+  var mine=S.pts;
+  var rows=[{n:'marisol_87',s:Math.max(120,mine+64),t:'Section 112'},
+            {n:'pea_since_03',s:Math.max(90,mine-28),t:'Floor GA'},
+            {n:'YOU',s:mine,t:'Section 214 · carried in '+S.carry,me:true},
+            {n:'dtla_dave',s:Math.max(60,mine-96),t:'Section 305'},
+            {n:'jrey4life',s:Math.max(30,mine-150),t:'Floor GA'}]
+           .sort(function(a,b){return b.s-a.s});
+  var prizes=['The setlist','Soundcheck','Soundcheck','Merch code',''];
+  var h='';
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];
+    h+='<div class="row '+(r.me?'me':'')+'"><span class="pos">'+(i+1)+'</span>'
+      +'<div class="nm">'+esc(r.n)+'<small>'+esc(r.t)+'</small></div>'
+      +'<div style="text-align:right"><span class="sc">'+r.s+'</span>'
+      +(prizes[i]?'<span class="pz">'+prizes[i]+'</span>':'')+'</div></div>';
+  }
+  $('board').innerHTML=h;
+  $('bowl').innerHTML=bowlHtml();
+  $('seasNow').textContent=Math.round(S.earned/CEILING*100);
+}
+
+/* ====================== ON REPEAT ================================== */
+function dspAsk(){
+  $('dspQ').innerHTML='<div style="margin-top:13px">'
+   +'<div class="qtag">Nine days later · +30</div>'
+   +'<h2 class="qbig" style="font-size:20px;margin-bottom:13px">You were at the Forum on the 26th. What opened that show?</h2>'
+   +'<div class="tiles">'
+   +["Let's Get It Started",'Boom Boom Pow','Pump It','Where Is the Love?'].map(function(o,i){
+      return '<button class="tile" onclick="dspAns(this,'+i+')"><span class="kk">'+String.fromCharCode(65+i)
+        +'</span><span>'+esc(o)+'</span></button>';
+    }).join('')
+   +'</div><div id="dspAfter"></div></div>';
+}
+function dspAns(el,i){
+  var ok=i===0;
+  var ts=el.parentNode.querySelectorAll('.tile');
+  for(var k=0;k<ts.length;k++){ ts[k].disabled=true; if(k!==i&&k!==0) ts[k].classList.add('faded'); }
+  ts[0].classList.add('right'); if(!ok) el.classList.add('wrong');
+  buzz(ok?[10,40,18]:60);
+  if(ok){ S.pts+=30; bumpScore(S.pts,true); $('carryV').textContent=210; celebrate(1,el); }
+  $('dspAfter').innerHTML='<div class="verdict '+(ok?'good':'bad')+'" style="margin-top:13px">'
+   +'<div class="m">'+(ok?'✓':'✕')+'</div><div class="x">'+(ok?'+30 · still there':"It was Let's Get It Started")
+   +'<small>Nine days on, cued by the song itself.</small></div></div>'
+   +'<div class="q-why"><b>Why this card is the most valuable one</b>'
+   +'Being asked once, in the building, laid the memory down. Being asked again nine days later while the song plays is what stops it fading — that is spaced retrieval, and it costs the DSP one card between two tracks.</div>';
+}
+
+/* ====================== WASH + CELEBRATE =========================== */
+var W=null;
+function wash(k){ if(!W) W=$('wash'); W.className=k||''; }
+var CEL={parts:[],raf:0,until:0,ctx:null};
+function celebrate(level,anchor){
+  try{
+    level=Math.max(1,Math.min(3,Number(level)||1));
+    var cv=$('celeb');
+    if(reduced()) return;
+    var dpr=Math.min(2,window.devicePixelRatio||1);
+    cv.style.width='100%'; cv.style.height='100%';
+    var Wd=cv.clientWidth,H=cv.clientHeight;
+    cv.width=Math.floor(Wd*dpr); cv.height=Math.floor(H*dpr);
+    CEL.ctx=cv.getContext('2d'); CEL.ctx.setTransform(dpr,0,0,dpr,0,0);
+    /* ORIGIN IS THE THING BEING CELEBRATED, not the middle of the window. */
+    var ox=Wd*0.5, oy=H*0.44;
+    if(anchor){ var r=anchor.getBoundingClientRect(); ox=r.left+r.width/2; oy=r.top+r.height/2; }
+    var cols=[SHOW.gelA,SHOW.gelB,'#ffb545','#e8e2f5'];
+    var n=[22,64,128][level-1], power=[9,13,17][level-1];
+    for(var i=0;i<n;i++){
+      var a=(Math.PI*2)*(i/n)+(Math.random()-.5)*.6, sp=power*(.55+Math.random()*.75);
+      CEL.parts.push({x:ox+(Math.random()-.5)*30,y:oy+(Math.random()-.5)*16,
+        vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,w:4+Math.random()*5,h:6+Math.random()*8,
+        rot:Math.random()*Math.PI,vr:(Math.random()-.5)*.4,
+        col:cols[(Math.random()*cols.length)|0],life:1});
+    }
+    CEL.until=Date.now()+[1200,2000,2700][level-1];
+    if(!CEL.raf) CEL.raf=requestAnimationFrame(tick);
+  }catch(e){}
+}
+function tick(){
+  CEL.raf=0; var ctx=CEL.ctx, cv=$('celeb'); if(!ctx||!cv) return;
+  var Wd=cv.clientWidth,H=cv.clientHeight; ctx.clearRect(0,0,Wd,H);
+  var alive=0;
+  for(var i=0;i<CEL.parts.length;i++){
+    var p=CEL.parts[i]; if(p.life<=0) continue;
+    p.vy+=.34; p.vx*=.995; p.vy*=.995; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+    if(p.y>H+40){p.life=0;continue}
+    p.life-=.007; alive++;
+    ctx.save(); ctx.globalAlpha=Math.max(0,Math.min(1,p.life))*0.9;
+    ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.col;
+    ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+  }
+  if(alive>0&&Date.now()<CEL.until+2400) CEL.raf=requestAnimationFrame(tick);
+  else { CEL.parts.length=0; try{ctx.clearRect(0,0,Wd,H)}catch(e){} }
+}
+
+/* ====================== BOOT ====================================== */
+paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud();
+/* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
+   thing it was counting down to. */
+var T=862;
+setInterval(function(){
+  var el=$('mCd'); if(!el) return;
+  if(T<=0){ el.textContent='OPEN'; el.style.color='var(--gel-a)';
+    var l=el.nextElementSibling; if(l) l.textContent='the first gap is live'; return; }
+  T--; var m=Math.floor(T/60), s=T%60;
+  el.textContent=m+':'+(s<10?'0':'')+s;
+},1000);
+
+</script>
+</body>
+</html>
