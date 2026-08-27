@@ -1,0 +1,16 @@
+{
+  "name": "Fans Gametime",
+  "short_name": "Fans",
+  "description": "The game that pays to be there. Play the gaps in a live show.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08070e",
+  "theme_color": "#08070e",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
