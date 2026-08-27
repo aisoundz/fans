@@ -1065,6 +1065,145 @@ SHOWS.push({
   heard:{}
 });
 
+/* ---- SHOW 04 — A BROADCAST, AND THE FASTEST THING WE CAN ACTUALLY RUN --
+   The 2026 MTV VMAs. CBS + MTV simulcast + Paramount+, live from Los
+   Angeles, Sunday 27 September, 7:30–9:30pm ET. Nominees announced 18 Aug:
+   Madonna leads with eleven, Taylor Swift nine, Ariana Grande and Sabrina
+   Carpenter seven each.
+
+   THIS IS THE SAME ARCHITECTURE AS THE SPORTS SIBLING, WHICH PLAYS ALONG
+   WITH A LIVE TV FEED AND HAS NEVER ASKED THE NBA FOR ANYTHING. No venue,
+   no artist, no tour manager, no production contact. Nobody's permission.
+
+   AND ON A BROADCAST THE GAMETIMES ARE THE COMMERCIAL BREAKS — the one
+   moment the whole audience already reaches for a phone. The sacred-set
+   rule survives intact and gets easier: performances and award reveals are
+   untouchable, and we live in the ad breaks between them.
+
+   The other thing that makes this the right first run: RESOLUTION IS FREE.
+   No setlist to photograph, no six-button panel. Who won is announced on
+   air, in front of everybody, and cannot be disputed.
+
+   Performers were not announced when this was written, so every question
+   here resolves from either the award results or something structurally
+   true of every awards show. The performer-specific slots get filled in
+   the week of. ------------------------------------------------------- */
+SHOWS.push({
+  act:"MTV VMAs", venue:"CBS · MTV · Paramount+", city:"Live from Los Angeles",
+  scale:"Broadcast · 27 Sept", gelA:"#b14aff", gelB:"#ffd23f",
+  cap:"5,200,000 watching", broadcast:true,
+  set:["Opening performance","Best Pop","Performance","Best Hip-Hop",
+       "Best Collaboration","Performance","Song of the Year","Best New Artist",
+       "Performance","Artist of the Year","Performance","Video of the Year"],
+  gaps:[
+   {n:"Gametime 01", t:"Red Carpet", when:"Pre-show · nothing has happened yet",
+    sub:"An hour of arrivals and predictions. Nothing has been decided, so tonight this is the sheet — you seal your calls now and they pay out on air.",
+    worth:1, songsDone:0, mins:"60 min", q:[
+    {k:"Predict", mode:"predict", settles:3, win:30, t:"Who takes Video of the Year?",
+     o:["Taylor Swift","Madonna","Sabrina Carpenter","Ariana Grande"], a:"Madonna",
+     lock:"Sealed. Settles at The Envelope.", r:"Eleven nominations. One moon person.",
+     w:"The last award of the night, sealed ninety minutes before it opens. This is the single best-timed question available anywhere on television, and it costs nothing to run."},
+    {k:"Predict", mode:"predict", settles:1, win:30, t:"Who opens the show?",
+     o:["Sabrina Carpenter","Bruno Mars","LISA","Somebody not nominated"], a:"Sabrina Carpenter",
+     lock:"Sealed. Settles at the first break.", r:"She opened it. Called.",
+     w:"The teacher card — it settles first, so the room learns what a sealed call feels like before the big one lands."},
+    {k:"Room", mode:"room", t:"Where are you watching from?",
+     o:["On the couch alone","With people","A watch party","Second screen at work"],
+     r:"Most of you are not alone.",
+     w:"The room's own answer is the truth. It is also the first co-viewing measurement anybody has taken during an awards broadcast, and networks have wanted it for forty years."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"How many does Madonna win tonight?",
+     o:["None","One","Two","Three or more"], a:"Two",
+     lock:"Sealed until the credits.", r:"Two from eleven. The gap is the story.",
+     w:"Zero to three, never more — a tally you can hold in your head across a two-hour show without a notebook."},
+    {k:"Room", mode:"room", t:"Who are you actually rooting for?",
+     o:["Taylor Swift","Madonna","Sabrina Carpenter","Somebody else"],
+     r:"The room picked its horse.",
+     w:"Un-Googleable, cannot void, and it produces a live sentiment read per market that no broadcaster currently has."}
+   ]},
+
+   {n:"Gametime 02", t:"Cutaway", when:"First break · we'll be right back",
+    sub:"The opening number is done and the first award is handed out. Three minutes of advertising, and every phone in America comes up.",
+    worth:2, songsDone:2, mins:"3 min", q:[
+    {k:"Recall", mode:"recall", t:"The opening number ended on…",
+     o:["Pyro","A blackout","A costume reveal","Just the last note"], a:"A blackout",
+     r:"Blackout. Cleanest ending there is.",
+     w:"You either watched the last four seconds or you were already looking at your phone. That is the whole product in one question."},
+    {k:"Room", mode:"room", t:"That opening — better or worse than you expected?",
+     o:["Better","About what I expected","Worse"],
+     r:"The room was into it.",
+     w:"An instant audience score on a performance, from the audience, while it is still fresh. A network sells this the next morning."},
+    {k:"Recall", mode:"recall", t:"The first winner thanked…",
+     o:["Their mother","God","Their fans","Their label"], a:"Their fans",
+     r:"The fans. It usually is.",
+     w:"Structurally true of every awards show, so it needs no lineup announcement to write and it cannot fail to resolve."},
+    {k:"Room", mode:"room", t:"Are you watching live or catching up?",
+     o:["Live","Live but on delay","Catching up later"],
+     r:"This room is live.",
+     w:"Live-versus-delayed is the single most valuable number in broadcast and it is currently modelled, not measured."}
+   ]},
+
+   {n:"Gametime 03", t:"Right Back", when:"Mid-show · the long break",
+    sub:"Halfway. Three performances and four awards in, and the show goes to its longest break of the night.",
+    worth:3, songsDone:6, mins:"4 min", heard:1, q:[
+    {k:"Tally", mode:"recall", t:"How many people have thanked God so far?",
+     o:["None","One or two","Three or four","Five or more"], a:"Three or four",
+     r:"Four. Now you cannot stop counting.",
+     w:"The best question on the sheet. It runs the whole broadcast, it is asked in the middle, and to answer it you have to actually listen to every acceptance speech — a thing literally nobody does for fun."},
+    {k:"Room", mode:"room", t:"Best performance so far. The room votes.",
+     o:["The opener","The second one","The third one","None of them"],
+     r:"The room picked its moment.",
+     w:"Consensus cannot void, and it hands the broadcaster a per-segment read while the show is still on air."},
+    {k:"Recall", mode:"recall", t:"Has anything been bleeped yet?",
+     o:["Yes","No"], a:"Yes",
+     r:"Of course it has.",
+     w:"Cannot fail to resolve, everybody has an opinion, and a round should always contain one everybody can get."}
+   ]},
+
+   {n:"Gametime 04", t:"The Envelope", when:"Last break · Video of the Year is next",
+    sub:"The final break. The last award of the night is on the other side of it, and ninety minutes ago you sealed a call on it.",
+    worth:4, songsDone:10, mins:"2 min", q:[
+    {k:"Room", mode:"room", t:"Still watching, or is this on in the background?",
+     o:["Locked in","Half watching","It's just on"],
+     r:"This room stayed.",
+     w:"Attention, self-reported, at the exact moment a network most wants to know. Two minutes before the biggest award of the night."},
+    {k:"Recall", mode:"recall", t:"How many performances so far?",
+     o:["Three","Four","Five","Six or more"], a:"Four",
+     r:"Four. You were counting.",
+     w:"A count you can only hold if you were present for the whole broadcast, which is precisely what an advertiser is paying for."},
+    {k:"Predict", mode:"predict", settles:4, win:12, t:"Last call — does the winner cry?",
+     o:["Yes","No"], a:"Yes",
+     lock:"Sealed. Settles in about four minutes.", r:"They cried. They always do.",
+     w:"A prediction that settles inside the same commercial break's show segment. Ninety seconds of dead air turned into the tensest moment of somebody's night."}
+   ]},
+
+   {n:"Gametime 05", t:"Credits", when:"After · the show is over",
+    sub:"The credits are rolling and nobody has moved yet. On television this is the moment the audience is always lost — and it is the largest block of attention left in the night.",
+    worth:5, songsDone:12, mins:"20 min", q:[
+    {k:"Recall", mode:"recall", t:"Who took Artist of the Year?",
+     o:["Taylor Swift","Sabrina Carpenter","Bruno Mars","Morgan Wallen"], a:"Sabrina Carpenter",
+     r:"Sabrina. Seven nominations, one that counted.",
+     w:"Announced on air twenty minutes ago, which is exactly when the memory is hot and before it is overwritten by scrolling."},
+    {k:"Recall", mode:"recall", t:"What closed the show?",
+     o:["A performance","Video of the Year","A tribute","The host signing off"], a:"A performance",
+     r:"They always end on a song.",
+     w:"The last thing the room saw, asked four minutes later."},
+    {k:"Room", mode:"room", t:"Moment of the night. The room votes.",
+     o:["A performance","An acceptance speech","Something that went wrong","The Video of the Year win"],
+     r:"The room agreed on the moment.",
+     w:"Un-Googleable, cannot void, and it prints the shareable line: five million people voted on the moment of the night while the credits were still rolling."},
+    {k:"Room", mode:"room", t:"Would you watch this again next year?",
+     o:["Yes","Maybe","No"],
+     r:"They are coming back.",
+     w:"Asked at the emotional peak, ninety seconds after the last award. It is the highest-converting moment a broadcast has and nobody has ever occupied it."}
+   ]}
+  ],
+  heard:{
+   1:{t:"That speech just now — did they get played off?",
+      o:["Yes, the music started","No, they finished","They ignored the music"], a:"They ignored the music", v:8,
+      r:"Ignored it. Respect."}
+  }
+});
+
 /* The three live globals the whole engine reads. loadShow swaps them. */
 var SHOW, GAPS, HEARD, CEILING=0;
 /* ====================== STATE ======================================= */
@@ -1233,9 +1372,12 @@ function renderSetlist(){
    is a fine number in an arena and an absurd one in a 212-capacity club. */
 function playing(){
   var n=parseInt(String(SHOW.cap).replace(/[^0-9]/g,''),10)||1000;
-  return Math.round(n*0.09).toLocaleString();
+  /* A broadcast reaches vastly more people and converts a far smaller slice
+     of them than a room does — nobody in an arena is doing the dishes. */
+  return Math.round(n*(SHOW.broadcast?0.004:0.09)).toLocaleString();
 }
 function seatLabel(){
+  if(SHOW.broadcast) return 'watching at home';
   return SHOW.demo ? 'down the front' : 'Sec 214';
 }
 function pos(){ return Math.max(1,Math.round(9-S.earned/95)); }
@@ -1294,15 +1436,19 @@ function renderHold(){
    +'<div class="sub">'+esc(g.sub)+'</div></div>'
    +'<div class="pulse">'
    +'<div><div class="v">'+g.q.length+'</div><div class="l">questions</div></div>'
-   +'<div><div class="v">'+WINDOW[S.gap]+'s</div><div class="l">each</div></div>'
-   +'<div><div class="v">'+playing()+'</div><div class="l">in this room</div></div></div>'
+   +'<div><div class="v">'+(g.q[0]&&g.q[0].win?g.q[0].win:WINDOW[S.gap])+'s</div><div class="l">each</div></div>'
+   +'<div><div class="v">'+playing()+'</div><div class="l">'+(SHOW.broadcast?'watching along':'in this room')+'</div></div></div>'
    +'<button class="btn" onclick="startGap()">'+'Play '+esc(g.n)+'</button>'
    +'<div class="card"><div class="eyebrow gel">The sheet</div>'
    +'<div style="margin:11px 0 8px">'+sheetHtml()+'</div>'
-   +'<p class="lede">'+(S.gap===0?'Nothing played yet. Doors are open.':(S.gap>=4?'Thirteen songs. That was the night.':g.songsDone+' of 13 crossed off. Nothing is on stage right now.'))+'</p></div>'
+   +'<p class="lede">'+(S.gap===0
+     ? (SHOW.broadcast?'Nothing has happened yet. The show has not started.':'Nothing played yet. Doors are open.')
+     : (S.gap>=GAPS.length-1
+        ? (SHOW.broadcast?'That was the whole broadcast.':SHOW.set.length+' songs. That was the night.')
+        : g.songsDone+' of '+SHOW.set.length+' done. '+(SHOW.broadcast?'They are in a break.':'Nothing is on stage right now.')))+'</p></div>'
    +'<div class="spon"><div class="mk">LN</div><div class="tx">'
    +'<div class="l">'+esc(g.n)+' presented by</div>'
-   +'<div class="b">A sponsor lives in the Gametimes and nowhere else. Never over a question, never during a song.</div></div></div>'
+   +'<div class="b">'+(SHOW.broadcast?'A sponsor lives in the Gametimes and nowhere else — and on a broadcast a Gametime IS the commercial break. The advertiser is already paying for this minute; now somebody is looking at it.':'A sponsor lives in the Gametimes and nowhere else. Never over a question, never during a performance.')+'</div></div></div>'
    +'</div>';
   $('stage').innerHTML=h;
   if(pending) startHeard(g.heard);
@@ -1503,7 +1649,7 @@ function answer(idx){
          :(timedOut?'Out of time':(q.mode==='room'?'The room went the other way':'It was '+esc(q.a))))
       +'<small>'+(q.mode==='room'
          ? sp[ai]+'% of this room said '+esc(q.o[ai])+' · you are '+(ok?'with':'against')+' the building'
-         : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.demo?'the front':'section 214'))+'</small></div></div>'
+         : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.broadcast?'your area':(SHOW.demo?'the front':'section 214')))+'</small></div></div>'
       +'<div class="reax">'+esc(q.r||'')+'</div>'
       +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
     /* AN EXPLICIT WAY FORWARD, ALONGSIDE THE AUTO-ADVANCE.
