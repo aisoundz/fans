@@ -333,6 +333,8 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
 .holdhero .k{font:800 9.5px/1 var(--f);letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
 .holdhero .big{font-family:var(--d);font-weight:900;font-size:46px;line-height:.9;
   color:var(--ink);margin:11px 0 4px;text-wrap:balance}
+.holdhero .when2{font:600 11px/1.4 var(--f);color:var(--gel-b);margin-top:7px;
+  letter-spacing:.01em}
 .holdhero .cd{font:700 30px/1 var(--mono);color:var(--gel-b);font-variant-numeric:tabular-nums;
   margin-top:10px}
 .holdhero .sub{font:500 12.5px/1.5 var(--f);color:var(--muted);margin-top:9px;
@@ -670,10 +672,10 @@ body.nonotes .q-why{display:none}
 
     <div class="card">
       <div class="eyebrow gel">How it works</div>
-      <h2 class="sec" style="margin:7px 0 11px">We only play the gaps</h2>
+      <h2 class="sec" style="margin:7px 0 11px">Five Gametimes a night</h2>
       <div class="how">
         <div class="step"><div class="k">01</div><div><div class="t">The set is sacred</div>
-          <div class="d">No question ever fires while a song is playing. The game lives in the five dead spots a show already has &mdash; doors, the changeover, the costume break, the encore wait, and the walk-out.</div></div></div>
+          <div class="d">No question ever fires while a song is playing. A Gametime is one of the dead spots a show already has &mdash; Soundcheck, Crossfade, The Bridge, One More and The Outro. Five at an arena, three at a club.</div></div></div>
         <div class="step"><div class="k">02</div><div><div class="t">You answer about the show you are standing in</div>
           <div class="d">What opened it. How many dancers. What he wore. Nothing you can look up &mdash; only things you can see from where you are.</div></div></div>
         <div class="step"><div class="k">03</div><div><div class="t">The artist pays out, not a bookmaker</div>
@@ -686,7 +688,7 @@ body.nonotes .q-why{display:none}
     <div>
       <div class="eyebrow" style="margin-bottom:9px">Pick a room &middot; three scales</div>
       <div class="rail" id="rail"></div>
-      <p class="lede" style="margin-top:11px">An arena night has five gaps because it has a support act, a costume change and an encore. A 250-cap club has none of those &mdash; so it gets three, and it asks things an arena physically cannot.</p>
+      <p class="lede" style="margin-top:11px">An arena night has five Gametimes because it has a support act, a costume change and an encore. A 250-cap club has none of those &mdash; so it gets three, and it asks things an arena physically cannot.</p>
     </div>
     <div class="foot">A <b>Stats Gametime</b> product. Same engine, different room.</div>
   </section>
@@ -781,11 +783,11 @@ body.nonotes .q-why{display:none}
    ====================================================================== */
 var SHOWS=[];
 var GAPS_BEP=[
- {n:"Gap 01", t:"Doors", sub:"Forty-five minutes with a drink and nothing on stage. So tonight this is the sheet — you seal your calls now and they pay out later.",
+ {n:"Gametime 01", t:"Soundcheck", when:"Doors open · nothing on stage yet", sub:"Forty-five minutes with a drink and nothing on stage. So tonight this is the sheet — you seal your calls now and they pay out later.",
   worth:1, songsDone:0, mins:"45 min", q:[
   {k:"Predict", mode:"predict", settles:2, win:30, t:"What do they open with?",
    o:["Let's Get It Started","Boom Boom Pow","Pump It","Where Is the Love?"], a:"Let's Get It Started",
-   lock:"Sealed. Settles at the break.", r:"Called it. Song one.",
+   lock:"Sealed. Settles at the Bridge.", r:"Called it. Song one.",
    w:"The question everybody in the building has an opinion about — and the one the app used to grade forty-five minutes before it could possibly be known. It now seals, and flips in front of you an hour later."},
   {k:"Predict", mode:"predict", settles:1, win:30, t:"How many songs does the opener get?",
    o:["5 or fewer","6 to 8","9 or more"], a:"6 to 8",
@@ -805,7 +807,7 @@ var GAPS_BEP=[
    w:"Replaces a free point. 'Did they play it' is a question everybody gets; 'where does it land' is a question you have to think about."}
  ]},
 
- {n:"Gap 02", t:"The changeover", sub:"The opener is off, the headliner is not on, and the crew is striking a drum riser. Twenty-five minutes nobody has ever monetised.",
+ {n:"Gametime 02", t:"Crossfade", when:"Support off · headliner not on", sub:"The opener is off, the headliner is not on, and the crew is striking a drum riser. Twenty-five minutes nobody has ever monetised.",
   worth:2, songsDone:0, mins:"25 min", q:[
   {k:"Room", mode:"room", t:"The opener — worth showing up early for?",
    o:["Yes","No","I missed them"],
@@ -825,7 +827,7 @@ var GAPS_BEP=[
    w:"The look-up mechanic, and it must be graded by consensus rather than a baked answer — the screen changes every ninety seconds across a twenty-five minute changeover, so there is no single right answer to hard-code."}
  ]},
 
- {n:"Gap 03", t:"The break", sub:"Mid-set. The band is off for a change, the DJ is filling, and the room is looking at its phones anyway.",
+ {n:"Gametime 03", t:"The Bridge", when:"Mid-set · the band is off", sub:"Mid-set. The band is off for a change, the DJ is filling, and the room is looking at its phones anyway.",
   worth:3, songsDone:6, mins:"4 min", heard:1, q:[
   {k:"Recall", mode:"recall", t:"Which came first — MAMACITA or RITMO?",
    o:["MAMACITA","RITMO"], a:"RITMO",
@@ -841,7 +843,7 @@ var GAPS_BEP=[
    w:"Consensus is the truth, it cannot void, and it hands the tour a per-city read on which song is actually landing."}
  ]},
 
- {n:"Gap 04", t:"The encore break", sub:"Lights down, band off, twenty thousand people chanting with their phones already out. Ninety seconds, and it might be sixty.",
+ {n:"Gametime 04", t:"One More", when:"Lights down · they are chanting", sub:"Lights down, band off, twenty thousand people chanting with their phones already out. Ninety seconds, and it might be sixty.",
   worth:4, songsDone:11, mins:"90 sec", heard:2, hot:true, q:[
   {k:"Predict", mode:"predict", settles:3, win:12, t:"What do they come back on with?",
    o:["I Gotta Feeling","Where Is the Love?","Pump It","Boom Boom Pow"], a:"I Gotta Feeling",
@@ -857,7 +859,7 @@ var GAPS_BEP=[
    w:"Asking for the artist rather than the title is the upgrade — unguessable from outside, and instantly known to anyone who was actually singing along."}
  ]},
 
- {n:"Gap 05", t:"House lights", sub:"The lights are up and you are not moving. Egress takes twenty-five minutes and the industry has always treated it as loss.",
+ {n:"Gametime 05", t:"The Outro", when:"House lights · on the way out", sub:"The lights are up and you are not moving. Egress takes twenty-five minutes and the industry has always treated it as loss.",
   worth:5, songsDone:13, mins:"25 min", q:[
   {k:"Recall", mode:"recall", t:"What closed it?",
    o:["Meet Me Halfway","I Gotta Feeling","Where Is the Love?","Don't Stop the Party"], a:"Meet Me Halfway",
@@ -946,7 +948,7 @@ SHOWS.push({
        "Ivonny Bonita","Tá OK","Un gatito me llamó","OKI DOKI",
        "Amiga Mía","Mambo No.5","Tropicoqueta","S91"],
   gaps:[
-   {n:"Gap 01", t:"Doors", sub:"A stadium takes ninety minutes to fill. Nothing on the stage, sixty thousand people finding their row.",
+   {n:"Gametime 01", t:"Soundcheck", when:"Doors open · nothing on stage yet", sub:"A stadium takes ninety minutes to fill. Nothing on the stage, sixty thousand people finding their row.",
     worth:1, songsDone:0, mins:"90 min", q:[
     {k:"Predict", mode:"predict", settles:1, win:30, t:"What does she open with?",
      o:["LATINA FOREVA","QLONA","Papasito","Tropicoqueta"], a:"LATINA FOREVA",
@@ -961,7 +963,7 @@ SHOWS.push({
      lock:"Sealed until the lights come up.", r:"She did. The city got one.",
      w:"Guests are city-specific, which makes this unanswerable from outside the building and different every night of the tour."}
    ]},
-   {n:"Gap 02", t:"The break", sub:"Mid-set. The B-stage is moving and the band is off.",
+   {n:"Gametime 02", t:"The Bridge", when:"Mid-set · the B-stage is moving", sub:"Mid-set. The B-stage is moving and the band is off.",
     worth:3, songsDone:6, mins:"5 min", q:[
     {k:"Recall", mode:"recall", t:"Which came first — QLONA or Papasito?",
      o:["QLONA","Papasito"], a:"QLONA",
@@ -972,7 +974,7 @@ SHOWS.push({
      r:"Sixty thousand picked it.",
      w:"Consensus cannot void, and it hands the tour a per-city read on which song is actually landing."}
    ]},
-   {n:"Gap 03", t:"House lights", sub:"Sixty thousand people leaving one building. Forty minutes of it.",
+   {n:"Gametime 03", t:"The Outro", when:"House lights · forty minutes to get out", sub:"Sixty thousand people leaving one building. Forty minutes of it.",
     worth:5, songsDone:12, mins:"40 min", q:[
     {k:"Recall", mode:"recall", t:"What closed it?",
      o:["S91","Tropicoqueta","Mambo No.5","LATINA FOREVA"], a:"S91",
@@ -1010,7 +1012,7 @@ SHOWS.push({
   set:["Sirens on Sunset","Nothing Doing","Hold Still","Paper Radio",
        "The Long Way","Cassette 94","Static"],
   gaps:[
-   {n:"Gap 01", t:"Doors", sub:"Thirty minutes, two hundred people, and a room small enough that you can see the setlist taped to the floor from the bar.",
+   {n:"Gametime 01", t:"Soundcheck", when:"Doors open · nothing on stage yet", sub:"Thirty minutes, two hundred people, and a room small enough that you can see the setlist taped to the floor from the bar.",
     worth:1, songsDone:0, mins:"30 min", q:[
     {k:"Predict", mode:"predict", settles:1, win:30, t:"What do they open with?",
      o:["Sirens on Sunset","Paper Radio","Static","Nothing Doing"], a:"Sirens on Sunset",
@@ -1025,7 +1027,7 @@ SHOWS.push({
      r:"Most of you came for them.",
      w:"An attribution question that feels like a game. A booking agent will pay attention to this answer and a fan will never notice they answered it."}
    ]},
-   {n:"Gap 02", t:"The break", sub:"Something broke. A string, a cable, a joke that went long. In a room this size the break is whatever just happened.",
+   {n:"Gametime 02", t:"The Bridge", when:"Mid-set · something broke", sub:"Something broke. A string, a cable, a joke that went long. In a room this size the break is whatever just happened.",
     worth:3, songsDone:4, mins:"3 min", q:[
     {k:"Recall", mode:"recall", t:"They played one you can't stream yet. Which?",
      o:["Hold Still","Paper Radio","Nothing Doing","Cassette 94"], a:"Paper Radio",
@@ -1040,7 +1042,7 @@ SHOWS.push({
      r:"Packed. They'll hear about it.",
      w:"The venue's own capacity read, from the people standing in it. The promoter finds out whether to book the bigger room next time."}
    ]},
-   {n:"Gap 03", t:"Last call", sub:"The lights are up, the band is loading out through the same door you came in, and nobody has left yet.",
+   {n:"Gametime 03", t:"Last Call", when:"Lights up · last drinks, last calls", sub:"The lights are up, the band is loading out through the same door you came in, and nobody has left yet.",
     worth:5, songsDone:7, mins:"20 min", q:[
     {k:"Recall", mode:"recall", t:"What closed it?",
      o:["Static","The Long Way","Sirens on Sunset","Cassette 94"], a:"Static",
@@ -1178,7 +1180,7 @@ function renderPicker(){
     h+='<button class="rm'+(on?' on':'')+'" onclick="pickShow('+i+')">'
       +'<div class="meta"><div class="a">'+esc(sh.act)+(on?' <span style="color:var(--gel-a);font-size:10px;letter-spacing:.1em">· IN THIS ROOM</span>':'')+'</div>'
       +'<div class="v">'+esc(sh.venue)+' · '+esc(sh.city.split(',')[0])+'</div>'
-      +'<span class="s">'+esc(sh.scale)+' · '+sh.gaps.length+' gaps'
+      +'<span class="s">'+esc(sh.scale)+' · '+sh.gaps.length+' gametimes'
       +(sh.demo?' · demo act':'')+'</span></div>'
       +'<span class="go"></span></button>';
   }
@@ -1253,7 +1255,7 @@ function renderHud(){
                  .sort(function(a,b){return a-b})[0];
     tray.style.display='flex';
     $('trayT').innerHTML='<b>'+open.length+' sealed</b> — next settles at '
-      +esc(GAPS[next].t.toLowerCase());
+      +esc(GAPS[next].t);
   }
 }
 function bumpScore(to,green){
@@ -1287,19 +1289,20 @@ function renderHold(){
   h+='<div class="holdhero">'
    +'<div class="k">'+esc(g.n)+' · up next · '+esc(g.mins)+'</div>'
    +'<div class="big">'+esc(g.t)+'</div>'
+   +(g.when?'<div class="when2">'+esc(g.when)+'</div>':'')
    +'<div class="cd">'+(g.q.length*g.worth*BASE)+' pts</div>'
    +'<div class="sub">'+esc(g.sub)+'</div></div>'
    +'<div class="pulse">'
    +'<div><div class="v">'+g.q.length+'</div><div class="l">questions</div></div>'
    +'<div><div class="v">'+WINDOW[S.gap]+'s</div><div class="l">each</div></div>'
    +'<div><div class="v">'+playing()+'</div><div class="l">in this room</div></div></div>'
-   +'<button class="btn" onclick="startGap()">'+(S.gap>=4?'Play the walk-out':'Play this gap')+'</button>'
+   +'<button class="btn" onclick="startGap()">'+'Play '+esc(g.n)+'</button>'
    +'<div class="card"><div class="eyebrow gel">The sheet</div>'
    +'<div style="margin:11px 0 8px">'+sheetHtml()+'</div>'
    +'<p class="lede">'+(S.gap===0?'Nothing played yet. Doors are open.':(S.gap>=4?'Thirteen songs. That was the night.':g.songsDone+' of 13 crossed off. Nothing is on stage right now.'))+'</p></div>'
    +'<div class="spon"><div class="mk">LN</div><div class="tx">'
-   +'<div class="l">This gap presented by</div>'
-   +'<div class="b">A sponsor lives between rounds and nowhere else. Never over a question, never during a song.</div></div></div>'
+   +'<div class="l">'+esc(g.n)+' presented by</div>'
+   +'<div class="b">A sponsor lives in the Gametimes and nowhere else. Never over a question, never during a song.</div></div></div>'
    +'</div>';
   $('stage').innerHTML=h;
   if(pending) startHeard(g.heard);
@@ -1666,7 +1669,7 @@ function renderSettle(){
   },1700);
   setTimeout(function(){
     var b=$('settleGo'); if(b){ b.style.visibility='visible';
-      b.textContent = pendingFor(S.gap).length ? 'Next sealed call' : 'Play this gap'; }
+      b.textContent = pendingFor(S.gap).length ? 'Next sealed call' : 'Play this Gametime'; }
     setTimeout(function(){ wash('set'); },600);
   },2600);
   renderHud();
@@ -1734,7 +1737,7 @@ function renderReward(){
   for(var j=0;j<g.q.length;j++) if(S.ans[S.gap+':'+j]===g.q[j].a) mine++;
   var last=S.gap===4;
   var line = mine===g.q.length ? 'Clean sweep. Nobody in section 214 did that.'
-           : mine===0 ? 'Nothing that round. The next gap is worth more.'
+           : mine===0 ? 'Nothing that round. The next Gametime is worth more.'
            : 'Banked. The board moved before the band is back on.';
   var gained=0;
   for(var k=0;k<g.q.length;k++){} /* per-gap total is tracked live in S.earned */
@@ -1746,7 +1749,7 @@ function renderReward(){
    +'<div><span class="v">'+ord(pos())+'</span><span class="l">in the room</span></div>'
    +'<div><span class="v">'+S.best+'</span><span class="l">best streak</span></div></div>';
   if(!last){
-    h+='<div class="nextup"><b>Next: '+esc(GAPS[S.gap+1].t)+'</b>'
+    h+='<div class="nextup"><b>Next: '+esc(GAPS[S.gap+1].t)+' — '+esc(GAPS[S.gap+1].n)+'</b>'
       +'<span>'+GAPS[S.gap+1].worth*BASE+' a question · '+WINDOW[S.gap+1]+' seconds each</span></div>'
       +'<button class="btn" onclick="goto('+(S.gap+1)+')">Take me there</button>'
       +'<button class="btn ghost" onclick="navGo(\'board\')">See the room</button>';
@@ -1899,7 +1902,7 @@ var T=862;
 setInterval(function(){
   var el=$('mCd'); if(!el) return;
   if(T<=0){ el.textContent='OPEN'; el.style.color='var(--gel-a)';
-    var l=el.nextElementSibling; if(l) l.textContent='the first gap is live'; return; }
+    var l=el.nextElementSibling; if(l) l.textContent='the first Gametime is live'; return; }
   T--; var m=Math.floor(T/60), s=T%60;
   el.textContent=m+':'+(s<10?'0':'')+s;
 },1000);
