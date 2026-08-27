@@ -489,8 +489,14 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
   border:1px solid var(--line);cursor:pointer;text-align:left}
 .rail .rm .a{font:800 13px/1.2 var(--f);color:var(--ink)}
 .rail .rm .v{font:500 10.5px/1.35 var(--f);color:var(--dim);margin-top:4px}
-.rail .rm .s{font:800 9px/1 var(--f);letter-spacing:.1em;text-transform:uppercase;
+.rail .rm .s{font:800 9px/1.3 var(--f);letter-spacing:.09em;text-transform:uppercase;
   color:var(--gel-b);margin-top:8px;display:block}
+.rail .rm{transition:border-color .16s,background .16s}
+.rail .rm.on{border-color:var(--gel-a);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--gel-a) 15%,var(--card)),var(--card))}
+.rail .rm .dm{display:block;margin-top:6px;font:800 8px/1 var(--f);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--dim)}
+.rail .rm{width:170px}
 .how{display:flex;flex-direction:column;gap:10px}
 .step{display:flex;gap:12px;align-items:flex-start}
 .step .k{flex:none;font-family:var(--d);font-weight:900;font-size:24px;line-height:.9;
@@ -644,7 +650,7 @@ body.nonotes .q-why{display:none}
 
     <div class="marq">
       <div class="rig"></div>
-      <div class="when">Tonight &middot; doors 6:30</div>
+      <div class="when" id="mWhen">Tonight</div>
       <h1 class="act" id="mAct">Black Eyed Peas</h1>
       <div class="ven" id="mVen">Kia Forum &middot; Inglewood, CA</div>
       <div class="cd"><span class="v" id="mCd">14:22</span><span class="l">until doors close</span></div>
@@ -668,13 +674,9 @@ body.nonotes .q-why{display:none}
     </div>
 
     <div>
-      <div class="eyebrow" style="margin-bottom:9px">Other rooms tonight &middot; illustrative</div>
-      <div class="rail">
-        <div class="rm"><div class="a">Black Eyed Peas</div><div class="v">Kia Forum &middot; Inglewood</div><span class="s">You are here</span></div>
-        <div class="rm"><div class="a">Kacey Musgraves</div><div class="v">The Anthem &middot; DC</div><span class="s">412 in the room</span></div>
-        <div class="rm"><div class="a">Fall Out Boy</div><div class="v">Fiserv Forum &middot; Milwaukee</div><span class="s">1,104 in the room</span></div>
-        <div class="rm"><div class="a">Karol G</div><div class="v">Hard Rock &middot; Miami</div><span class="s">2,860 in the room</span></div>
-      </div>
+      <div class="eyebrow" style="margin-bottom:9px">Pick a room &middot; three scales</div>
+      <div class="rail" id="rail"></div>
+      <p class="lede" style="margin-top:11px">An arena night has five gaps because it has a support act, a costume change and an encore. A 250-cap club has none of those &mdash; so it gets three, and it asks things an arena physically cannot.</p>
     </div>
     <div class="foot">A <b>Stats Gametime</b> product. Same engine, different room.</div>
   </section>
@@ -749,36 +751,26 @@ body.nonotes .q-why{display:none}
 </div>
 <script>
 "use strict";
-var SHOW={
-  act:"Black Eyed Peas",
-  venue:"Kia Forum", city:"Inglewood, CA",
-  gelA:"#ff3d9a", gelB:"#35e0e8",
-  cap:"24,000 in the room",
-  set:["Let's Get It Started","Boom Boom Pow","Rock That Body","RITMO (Bad Boys for Life)",
-       "MAMACITA","MABUTI / Bebot","#thatPOWER / Scream & Shout","Seven Nation Army",
-       "Pump It","Don't Stop the Party","Where Is the Love?","I Gotta Feeling","Meet Me Halfway"]
-};
+/* ======================================================================
+   THE ARTIST IS A PARAMETER, NOT AN ASSUMPTION.
 
-/* ---- THE THREE MODES ------------------------------------------------
-   The first bank was written as if the fan were watching. They are not —
-   the set is sacred, so we only ever speak to them in a gap, and in a gap
-   nothing is happening on stage. That leaves exactly three legal questions:
+   The sports sibling learned this the expensive way and it is the reason
+   changing its flagship league costs a config row instead of a rebuild.
+   Same rule here: a show is a document, and everything below — palette,
+   setlist, gap structure, question bank, language — comes out of it.
 
-     PREDICT  locks now, is NOT graded now, and visibly settles in a later
-              gap. It pays at the rate of the gap it LANDS in, which is
-              what makes forty-five minutes of standing around worth playing.
-     RECALL   about the stretch of show that just ended. Past tense, because
-              it is in the past.
-     ROOM     about the crowd around you. The room's own answer IS the
-              truth, so it can never be wrong and never void — and it is
-              the only data in live music nobody has ever collected.
-
-   The old bank graded four predictions at DOORS, before a note was played,
-   and told the fan "the whole building sang it" while the building was
-   half empty. That is the bug the founder saw and it was structural, not
-   a wording problem.
-   ------------------------------------------------------------------- */
-var GAPS=[
+   AND THE GAP STRUCTURE IS A FUNCTION OF THE ROOM.
+   This is the part that is easy to get wrong. An arena night has five
+   gaps because it has a support act, a costume change and an encore. A
+   250-cap club has none of those: the band walks on, plays forty-five
+   minutes, and the lights come up. Three gaps, not five — and a whole
+   class of question that an arena cannot ask, because in a small room you
+   can see the setlist taped to the floor and you can see the guitarist
+   swap strings. Pretending a club is a small arena is how this product
+   would fail on the exact venues that are easiest to say yes.
+   ====================================================================== */
+var SHOWS=[];
+var GAPS_BEP=[
  {n:"Gap 01", t:"Doors", sub:"Forty-five minutes with a drink and nothing on stage. So tonight this is the sheet — you seal your calls now and they pay out later.",
   worth:1, songsDone:0, mins:"45 min", q:[
   {k:"Predict", mode:"predict", settles:2, win:30, t:"What do they open with?",
@@ -885,7 +877,7 @@ var GAPS=[
    ended seconds ago. The old copy said "eyes up" and was written as if a
    song were playing, which contradicted the one rule the whole product is
    sold on. "Just now" is true for both of these. */
-var HEARD={
+var HEARD_BEP={
  1:{t:"That last one — what language was that?",
     o:["Tagalog","Spanish","Portuguese","English"], a:"Tagalog", v:6,
     r:"Tagalog. apl.de.ap's own language."},
@@ -894,6 +886,175 @@ var HEARD={
     r:"Taboo, last off. Always is."}
 };
 
+
+var BEP={
+  scale:'Arena · 17,500',
+  act:"Black Eyed Peas",
+  venue:"Kia Forum", city:"Inglewood, CA",
+  gelA:"#ff3d9a", gelB:"#35e0e8",
+  cap:"24,000 in the room",
+  set:["Let's Get It Started","Boom Boom Pow","Rock That Body","RITMO (Bad Boys for Life)",
+       "MAMACITA","MABUTI / Bebot","#thatPOWER / Scream & Shout","Seven Nation Army",
+       "Pump It","Don't Stop the Party","Where Is the Love?","I Gotta Feeling","Meet Me Halfway"]
+};
+BEP.gaps=GAPS_BEP; BEP.heard=HEARD_BEP; SHOWS.push(BEP);
+
+
+/* ---- THE THREE MODES ------------------------------------------------
+   The first bank was written as if the fan were watching. They are not —
+   the set is sacred, so we only ever speak to them in a gap, and in a gap
+   nothing is happening on stage. That leaves exactly three legal questions:
+
+     PREDICT  locks now, is NOT graded now, and visibly settles in a later
+              gap. It pays at the rate of the gap it LANDS in, which is
+              what makes forty-five minutes of standing around worth playing.
+     RECALL   about the stretch of show that just ended. Past tense, because
+              it is in the past.
+     ROOM     about the crowd around you. The room's own answer IS the
+              truth, so it can never be wrong and never void — and it is
+              the only data in live music nobody has ever collected.
+
+   The old bank graded four predictions at DOORS, before a note was played,
+   and told the fan "the whole building sang it" while the building was
+   half empty. That is the bug the founder saw and it was structural, not
+   a wording problem.
+   ------------------------------------------------------------------- */
+
+
+
+/* ---- SHOW 02 — stadium, Spanish-language ---------------------------
+   Real data from the Viajando Por El Mundo Tropitour, which opened at
+   Soldier Field in July 2026 and opens on LATINA FOREVA. The point of
+   this entry is not the artist — it is that the same engine serves a
+   Spanish-language stadium show without a single new mechanic, the way
+   the sports sibling already ships Spanish at ?lang=es. */
+SHOWS.push({
+  act:"Karol G", venue:"SoFi Stadium", city:"Inglewood, CA",
+  scale:"Stadium · 70,000", gelA:"#ff2d55", gelB:"#ffd23f",
+  cap:"64,000 in the room", lang:"es",
+  set:["LATINA FOREVA","Si Antes Te Hubiera Conocido","QLONA","Papasito",
+       "Ivonny Bonita","Tá OK","Un gatito me llamó","OKI DOKI",
+       "Amiga Mía","Mambo No.5","Tropicoqueta","S91"],
+  gaps:[
+   {n:"Gap 01", t:"Doors", sub:"A stadium takes ninety minutes to fill. Nothing on the stage, sixty thousand people finding their row.",
+    worth:1, songsDone:0, mins:"90 min", q:[
+    {k:"Predict", mode:"predict", settles:1, win:30, t:"What does she open with?",
+     o:["LATINA FOREVA","QLONA","Papasito","Tropicoqueta"], a:"LATINA FOREVA",
+     lock:"Sellado. Settles at the break.", r:"LATINA FOREVA. Every night.",
+     w:"A tour that opens on the same song every night is not a weak question — it is the one everybody has an opinion about, and half the stadium still gets it wrong."},
+    {k:"Room", mode:"room", t:"Your section — how many are in the tour merch?",
+     o:["Hardly anyone","About a quarter","Half or more"],
+     r:"This section came dressed.",
+     w:"A merch-penetration read per section, live, which is a number a stadium tour has never had."},
+    {k:"Predict", mode:"predict", settles:2, win:30, t:"Does she bring a guest out tonight?",
+     o:["Yes","No"], a:"Yes",
+     lock:"Sealed until the lights come up.", r:"She did. The city got one.",
+     w:"Guests are city-specific, which makes this unanswerable from outside the building and different every night of the tour."}
+   ]},
+   {n:"Gap 02", t:"The break", sub:"Mid-set. The B-stage is moving and the band is off.",
+    worth:3, songsDone:6, mins:"5 min", q:[
+    {k:"Recall", mode:"recall", t:"Which came first — QLONA or Papasito?",
+     o:["QLONA","Papasito"], a:"QLONA",
+     r:"QLONA opened that run.",
+     w:"Set order is the fact that changes city to city, so it can only be answered by someone who was here."},
+    {k:"Room", mode:"room", t:"Loudest so far. The stadium votes.",
+     o:["LATINA FOREVA","QLONA","Ivonny Bonita","Un gatito me llamó"],
+     r:"Sixty thousand picked it.",
+     w:"Consensus cannot void, and it hands the tour a per-city read on which song is actually landing."}
+   ]},
+   {n:"Gap 03", t:"House lights", sub:"Sixty thousand people leaving one building. Forty minutes of it.",
+    worth:5, songsDone:12, mins:"40 min", q:[
+    {k:"Recall", mode:"recall", t:"What closed it?",
+     o:["S91","Tropicoqueta","Mambo No.5","LATINA FOREVA"], a:"S91",
+     r:"S91. Four minutes ago.",
+     w:"Asked while the memory is still hot and before the walk to the car overwrites it."},
+    {k:"Room", mode:"room", t:"Song of the night. Stadium votes.",
+     o:["LATINA FOREVA","QLONA","Si Antes Te Hubiera Conocido","S91"],
+     r:"SoFi picked its song.",
+     w:"Un-Googleable, cannot void, and it prints the shareable line: SoFi, 26 Aug — the stadium voted."}
+   ]}
+  ],
+  heard:{}
+});
+
+/* ---- SHOW 03 — THE WEDGE, and the most important entry in this file --
+   A 250-cap room, a band nobody has heard of, and a promoter who is one
+   person. This is the show you can run this month without asking Live
+   Nation, a venue or a tour manager for anything.
+
+   THREE GAPS, NOT FIVE. There is no support changeover worth 25 minutes,
+   no costume change, and often no encore break — the band walks off and
+   walks back on in eleven seconds. Forcing an arena's five-gap shape onto
+   a club is how this product would break on the exact venues that are
+   easiest to say yes to.
+
+   And a club can ask what an arena never can. At this range you can see
+   the setlist taped to the floor, you can see a string break, you can see
+   the drummer count it in. Proximity is a question type.
+
+   Wednesday Static is a made-up band. The shape is not.  */
+SHOWS.push({
+  act:"Wednesday Static", venue:"The Echo", city:"Los Angeles, CA",
+  scale:"Club · 250 cap", gelA:"#7c5cff", gelB:"#4be08a",
+  cap:"212 in the room", demo:true,
+  set:["Sirens on Sunset","Nothing Doing","Hold Still","Paper Radio",
+       "The Long Way","Cassette 94","Static"],
+  gaps:[
+   {n:"Gap 01", t:"Doors", sub:"Thirty minutes, two hundred people, and a room small enough that you can see the setlist taped to the floor from the bar.",
+    worth:1, songsDone:0, mins:"30 min", q:[
+    {k:"Predict", mode:"predict", settles:1, win:30, t:"What do they open with?",
+     o:["Sirens on Sunset","Paper Radio","Static","Nothing Doing"], a:"Sirens on Sunset",
+     lock:"Sealed. Settles when they're done.", r:"Sirens. Same as Tuesday.",
+     w:"A developing band plays roughly the same set every night, which makes this the easiest question in the world for a regular and a coin flip for a first-timer. That gap between the two is the whole reason a regular keeps playing."},
+    {k:"Room", mode:"room", t:"First time seeing this band?",
+     o:["First time","Second or third","I've lost count"],
+     r:"Half this room is new tonight.",
+     w:"The single most valuable question in the file for an artist at this size. Nobody playing a 250-cap room has any idea what share of the audience is new — and this answers it live, in a game, without a survey."},
+    {k:"Room", mode:"room", t:"How did you end up here tonight?",
+     o:["I follow the band","A friend dragged me","I like the venue","I walked past"],
+     r:"Most of you came for them.",
+     w:"An attribution question that feels like a game. A booking agent will pay attention to this answer and a fan will never notice they answered it."}
+   ]},
+   {n:"Gap 02", t:"The break", sub:"Something broke. A string, a cable, a joke that went long. In a room this size the break is whatever just happened.",
+    worth:3, songsDone:4, mins:"3 min", q:[
+    {k:"Recall", mode:"recall", t:"They played one you can't stream yet. Which?",
+     o:["Hold Still","Paper Radio","Nothing Doing","Cassette 94"], a:"Paper Radio",
+     r:"Paper Radio. Not out yet.",
+     w:"An unreleased song is a fact that exists only in the room. It cannot be looked up, it rewards the regular, and it is free for the band to give us."},
+    {k:"Recall", mode:"recall", t:"Who counted that last one in?",
+     o:["The drummer","The singer","The bass player","Nobody — it just started"], a:"The drummer",
+     r:"The drummer. Always is.",
+     w:"You can only see this from thirty feet away. This is the class of question a club can ask and an arena physically cannot, and it is why the small room is not a downgraded version of the big one."},
+    {k:"Room", mode:"room", t:"Right now — how full does this room feel?",
+     o:["Room to move","Comfortably full","Packed"],
+     r:"Packed. They'll hear about it.",
+     w:"The venue's own capacity read, from the people standing in it. The promoter finds out whether to book the bigger room next time."}
+   ]},
+   {n:"Gap 03", t:"Last call", sub:"The lights are up, the band is loading out through the same door you came in, and nobody has left yet.",
+    worth:5, songsDone:7, mins:"20 min", q:[
+    {k:"Recall", mode:"recall", t:"What closed it?",
+     o:["Static","The Long Way","Sirens on Sunset","Cassette 94"], a:"Static",
+     r:"Static. Named after them.",
+     w:"Four minutes old, and the last thing the room heard."},
+    {k:"Recall", mode:"recall", t:"How many songs, all in?",
+     o:["Five","Six","Seven","Eight"], a:"Seven",
+     r:"Seven. That's the whole set.",
+     w:"The whole night in one number, and at this length it is genuinely countable — which it is not at an arena."},
+    {k:"Room", mode:"room", t:"Would you come back?",
+     o:["Yes","Maybe","Not for me"],
+     r:"This room is coming back.",
+     w:"Asked ninety seconds after the last chord, at the emotional peak, which is the highest-converting moment in live music and nobody occupies it. For a developing band this one answer is the entire value of the product."},
+    {k:"Room", mode:"room", t:"Song of the night. Room votes.",
+     o:["Sirens on Sunset","Paper Radio","The Long Way","Static"],
+     r:"The Echo picked its song.",
+     w:"Two hundred people just told the band which song to lead the next single with. No focus group, no cost, and it is a post the band can put up before they finish loading out."}
+   ]}
+  ],
+  heard:{}
+});
+
+/* The three live globals the whole engine reads. loadShow swaps them. */
+var SHOW, GAPS, HEARD, CEILING=0;
 /* ====================== STATE ======================================= */
 var S={ gap:0, qi:-1, pts:180, carry:180, earned:0, streak:0, best:0, ans:{},
         heardDone:{}, raf:0, deadline:0, left:0, phase:'hold', locked:false,
@@ -914,16 +1075,22 @@ function reduced(){ try{return window.matchMedia('(prefers-reduced-motion: reduc
    were not earned at this show, inside a number labelled "of the night".
    Earned and total are now two different quantities and only one of them
    is ever shown as a percentage of the show. */
-var CEILING=(function(){ var t=0;
+function computeCeiling(){ var t=0;
   for(var i=0;i<GAPS.length;i++) t+=GAPS[i].q.length*GAPS[i].worth*BASE;
   for(var k in HEARD) t+=HEARD[k].v*BASE;
-  return t; })();
+  return t; }
 
 function paintShow(){
   document.documentElement.style.setProperty('--gel-a',SHOW.gelA);
   document.documentElement.style.setProperty('--gel-b',SHOW.gelB);
   $('mAct').textContent=SHOW.act; $('hAct').textContent=SHOW.act;
+  $('hWho').innerHTML=esc(SHOW.venue)+' · '+seatLabel()+' · <span id="hPos">7th</span> of <span id="hIn">'
+    +playing()+'</span>';
   $('mVen').textContent=SHOW.venue+" · "+SHOW.city;
+  $('mWhen').textContent = SHOW.demo
+    ? 'Tonight · '+SHOW.scale.split(' · ')[0].toLowerCase()+' · doors 8:00'
+    : 'Tonight · '+SHOW.scale;
+
 }
 function toggleNotes(){
   var off=document.body.classList.toggle('nonotes');
@@ -969,6 +1136,44 @@ function sectionPct(q){
   return Math.max(6,Math.min(97,room+d));
 }
 
+
+/* ====================== LOADING A SHOW =============================
+   Everything the engine reads about tonight comes from one document. The
+   sports sibling proved this is worth the discipline: changing its
+   flagship league costs a config row, not a rebuild. Same here — swapping
+   from an arena to a 250-cap club changes the palette, the setlist, the
+   NUMBER OF GAPS and the whole question bank, and touches no logic.
+   =================================================================== */
+function loadShow(i){
+  stopClock();
+  SHOW=SHOWS[i]; GAPS=SHOW.gaps; HEARD=SHOW.heard||{};
+  CEILING=computeCeiling();
+  S.gap=0; S.qi=-1; S.phase='hold'; S.locked=false;
+  S.ans={}; S.sealed=[]; S.heardDone={}; S.streak=0; S.best=0;
+  S.earned=0; S.carry=SHOW.demo?0:180; S.pts=S.carry;
+  S.showIdx=i;
+  paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud(); renderPicker();
+  for(var d=0;d<5;d++){ var b=$('d'+d); if(b){ b.style.display = d<GAPS.length?'':'none';
+    var lb=GAPS[d]?GAPS[d].t.replace(/^The /,''):''; b.textContent=lb.charAt(0).toUpperCase()+lb.slice(1); b.classList.toggle('on',d===0); } }
+}
+function pickShow(i){ loadShow(i); navGo('gametime'); }
+
+/* THE PICKER. Three rooms at three scales, and the point of it is the
+   third one: a club show is not a small arena. It has three gaps, not
+   five, and it asks things an arena physically cannot. */
+function renderPicker(){
+  var h='';
+  for(var i=0;i<SHOWS.length;i++){
+    var sh=SHOWS[i], on=i===S.showIdx;
+    h+='<button class="rm'+(on?' on':'')+'" onclick="pickShow('+i+')">'
+      +'<div class="a">'+esc(sh.act)+'</div>'
+      +'<div class="v">'+esc(sh.venue)+' · '+esc(sh.city.split(',')[0])+'</div>'
+      +'<span class="s">'+esc(sh.scale)+' · '+sh.gaps.length+' gaps</span>'
+      +(sh.demo?'<span class="dm">demo act</span>':'')+'</button>';
+  }
+  $('rail').innerHTML=h;
+}
+
 /* ====================== NAV ========================================= */
 function navGo(k){
   var ids={home:'s-home',fans:'s-fans',gametime:'s-gametime',board:'s-board'};
@@ -1011,6 +1216,15 @@ function renderSetlist(){
 }
 
 /* ====================== HUD ======================================== */
+/* How many are actually playing tonight. It was hard-coded at 1,204, which
+   is a fine number in an arena and an absurd one in a 212-capacity club. */
+function playing(){
+  var n=parseInt(String(SHOW.cap).replace(/[^0-9]/g,''),10)||1000;
+  return Math.round(n*0.09).toLocaleString();
+}
+function seatLabel(){
+  return SHOW.demo ? 'down the front' : 'Sec 214';
+}
 function pos(){ return Math.max(1,Math.round(9-S.earned/95)); }
 function ord(n){ return n+(n===1?'st':n===2?'nd':n===3?'rd':'th'); }
 function mult(){ return S.streak>=5?3:S.streak>=3?2:S.streak>=2?1.5:1; }
@@ -1067,7 +1281,7 @@ function renderHold(){
    +'<div class="pulse">'
    +'<div><div class="v">'+g.q.length+'</div><div class="l">questions</div></div>'
    +'<div><div class="v">'+WINDOW[S.gap]+'s</div><div class="l">each</div></div>'
-   +'<div><div class="v">1,204</div><div class="l">in this room</div></div></div>'
+   +'<div><div class="v">'+playing()+'</div><div class="l">in this room</div></div></div>'
    +'<button class="btn" onclick="startGap()">'+(S.gap>=4?'Play the walk-out':'Play this gap')+'</button>'
    +'<div class="card"><div class="eyebrow gel">The sheet</div>'
    +'<div style="margin:11px 0 8px">'+sheetHtml()+'</div>'
@@ -1122,7 +1336,7 @@ function renderQ(){
    +'</svg><div class="t" id="ringT">'+win+'</div></div>'
    +'<div class="worth"><div class="v" id="worthV">'+(g.worth*BASE)+'</div>'
    +'<div class="l">points · falling'+(mult()>1?' · ×'+mult()+' live':'')+'</div></div>'
-   +'<div class="here"><div class="v">1,204</div><div class="l">answering<br>with you</div></div></div>'
+   +'<div class="here"><div class="v">'+playing()+'</div><div class="l">answering<br>with you</div></div></div>'
    +'<div class="qtag">'+esc(q.k)+(q.look?' · tap the one you saw':'')+'</div>'
    +'<h2 class="qbig">'+esc(q.t)+'</h2>'
    +'<div class="tiles'+(q.o.length>3||q.look?'':' one')+'" id="tiles">'+tiles+'</div>'
@@ -1275,7 +1489,7 @@ function answer(idx){
          :(timedOut?'Out of time':(q.mode==='room'?'The room went the other way':'It was '+esc(q.a))))
       +'<small>'+(q.mode==='room'
          ? sp[ai]+'% of this room said '+esc(q.o[ai])+' · you are '+(ok?'with':'against')+' the building'
-         : sp[ai]+'% of the room had it · '+sec+'% of section 214')+'</small></div></div>'
+         : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.demo?'the front':'section 214'))+'</small></div></div>'
       +'<div class="reax">'+esc(q.r||'')+'</div>'
       +(q.w?'<div class="q-why"><b>Why this question exists</b>'+esc(q.w)+'</div>':'');
     /* AN EXPLICIT WAY FORWARD, ALONGSIDE THE AUTO-ADVANCE.
@@ -1667,7 +1881,7 @@ function tick(){
 }
 
 /* ====================== BOOT ====================================== */
-paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud();
+loadShow(0);
 /* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
    thing it was counting down to. */
 var T=862;
