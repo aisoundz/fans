@@ -1,0 +1,302 @@
+<title>The Grading Is the Moat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800;900&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* Committed to a single dark treatment, deliberately. The product this
+   document describes is used in a darkened arena and its whole identity is
+   stage lighting; a light variant would be a different company's document.
+   Every colour is painted explicitly so the page holds on any host ground. */
+:root{
+  --ground:#08070e; --surface:#100e1a; --surface2:#171426; --raise:#1e1930;
+  --rule:rgba(255,255,255,.085); --rule2:rgba(255,255,255,.15); --rule3:rgba(255,255,255,.045);
+  --ink:#ffffff; --body:#d9d4e7; --muted:#9a92b5; --dim:#6b6188;
+  --mag:#ff3d9a; --amb:#ffb545; --cyan:#35e0e8; --green:#2fe6a0; --red:#ff5566;
+  --f:'Figtree',-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --d:'Big Shoulders Display','Figtree',Impact,sans-serif;
+  --m:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--body);font-family:var(--f);
+  font-size:17px;line-height:1.66;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.wrap{max-width:760px;margin:0 auto;padding:0 22px 110px}
+p{margin:0 0 18px;max-width:64ch}
+a{color:var(--cyan)}
+strong{color:var(--ink);font-weight:700}
+em{color:var(--body);font-style:italic}
+
+/* ---- masthead ---- */
+.mast{padding:60px 0 34px;border-bottom:1px solid var(--rule)}
+.mast .kick{font:700 11px/1 var(--m);letter-spacing:.22em;text-transform:uppercase;color:var(--mag)}
+.mast h1{font-family:var(--d);font-weight:900;font-size:clamp(52px,13vw,96px);line-height:.84;
+  letter-spacing:.5px;text-transform:uppercase;color:var(--ink);margin:16px 0 0;text-wrap:balance}
+.mast .sub{font:500 19px/1.5 var(--f);color:var(--muted);margin-top:18px;max-width:52ch}
+.mast .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tag{font:700 10.5px/1 var(--m);letter-spacing:.11em;text-transform:uppercase;
+  padding:8px 11px;border-radius:999px;border:1px solid var(--rule2);color:var(--muted)}
+.tag.on{border-color:color-mix(in srgb,var(--mag) 50%,transparent);color:var(--mag)}
+
+/* ---- thesis ---- */
+.thesis{margin:34px 0 0;padding:26px 24px;border-radius:14px;
+  border:1px solid color-mix(in srgb,var(--mag) 34%,transparent);
+  background:linear-gradient(150deg,color-mix(in srgb,var(--mag) 13%,var(--surface)),var(--surface))}
+.thesis p{font:600 20px/1.5 var(--f);color:var(--ink);margin:0;max-width:56ch;text-wrap:balance}
+.thesis p+p{margin-top:14px;font:500 16px/1.6 var(--f);color:var(--body)}
+
+/* ---- sections ---- */
+section{padding-top:58px}
+.eyebrow{font:700 10.5px/1 var(--m);letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.eyebrow.mag{color:var(--mag)} .eyebrow.cy{color:var(--cyan)} .eyebrow.am{color:var(--amb)}
+h2{font-family:var(--d);font-weight:900;font-size:clamp(32px,7vw,46px);line-height:.94;
+  letter-spacing:.4px;text-transform:uppercase;color:var(--ink);margin:13px 0 20px;text-wrap:balance}
+h3{font:800 19px/1.34 var(--f);color:var(--ink);margin:34px 0 12px;text-wrap:balance}
+h4{font:800 14px/1.4 var(--f);color:var(--ink);margin:24px 0 8px;
+  letter-spacing:.02em}
+ul,ol{margin:0 0 18px;padding-left:22px;max-width:64ch}
+li{margin-bottom:9px}
+li::marker{color:var(--dim)}
+
+/* ---- pull number ---- */
+.stat{display:flex;flex-wrap:wrap;gap:2px 30px;margin:26px 0;padding:22px 0;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.stat div{flex:1 1 150px}
+.stat .v{font-family:var(--d);font-weight:900;font-size:clamp(34px,8vw,50px);line-height:.9;
+  color:var(--amb);font-variant-numeric:tabular-nums}
+.stat .v.c{color:var(--cyan)} .stat .v.m{color:var(--mag)} .stat .v.w{color:var(--ink)}
+.stat .l{font:600 12.5px/1.45 var(--f);color:var(--muted);margin-top:9px;max-width:24ch}
+
+/* ---- the show timeline: the one diagram that earns its place ---- */
+.tl{margin:30px 0 8px}
+.tl-bar{display:flex;gap:2px;height:74px;align-items:stretch}
+.tl-bar div{border-radius:4px;position:relative;overflow:hidden;min-width:3px}
+.tl-bar .set{background:var(--surface2);border:1px solid var(--rule)}
+.tl-bar .gap{background:linear-gradient(180deg,color-mix(in srgb,var(--mag) 62%,transparent),
+  color-mix(in srgb,var(--mag) 26%,transparent));border:1px solid color-mix(in srgb,var(--mag) 55%,transparent)}
+.tl-bar span{position:absolute;left:5px;bottom:5px;font:700 8.5px/1.15 var(--m);
+  letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tl-bar .gap span{color:#fff}
+.tl-key{display:flex;gap:20px;flex-wrap:wrap;margin-top:14px;
+  font:600 12px/1.5 var(--f);color:var(--muted)}
+.tl-key i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;
+  vertical-align:-1px}
+.tl-cap{font:500 13.5px/1.6 var(--f);color:var(--dim);margin-top:12px;max-width:62ch}
+
+/* ---- tables ---- */
+.tw{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+th{text-align:left;font:700 10.5px/1.3 var(--m);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);padding:13px 14px;border-bottom:1px solid var(--rule2);background:var(--surface)}
+td{padding:13px 14px;border-bottom:1px solid var(--rule3);color:var(--body);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td b{color:var(--ink)}
+td.n{font-family:var(--m);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink)}
+td.n.am{color:var(--amb)}
+tr.tot td{background:color-mix(in srgb,var(--amb) 8%,transparent);border-top:1px solid var(--rule2)}
+
+/* ---- cards / callouts ---- */
+.box{border:1px solid var(--rule);border-radius:13px;padding:20px 22px;margin:22px 0;
+  background:var(--surface)}
+.box.mag{border-color:color-mix(in srgb,var(--mag) 32%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--mag) 9%,var(--surface)),var(--surface))}
+.box.cy{border-color:color-mix(in srgb,var(--cyan) 30%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--cyan) 8%,var(--surface)),var(--surface))}
+.box.red{border-color:color-mix(in srgb,var(--red) 30%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--red) 8%,var(--surface)),var(--surface))}
+.box p:last-child{margin-bottom:0}
+.box .hd{font:800 12px/1 var(--f);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px}
+.box.mag .hd{color:var(--mag)} .box.cy .hd{color:var(--cyan)} .box.red .hd{color:var(--red)}
+
+/* ---- numbered mechanism list (real sequence, not decoration) ---- */
+.chain{display:flex;flex-direction:column;gap:0;margin:24px 0}
+.link{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--rule3)}
+.link:last-child{border-bottom:0}
+.link .k{flex:none;width:30px;font-family:var(--d);font-weight:900;font-size:26px;line-height:1;
+  color:color-mix(in srgb,var(--mag) 72%,var(--dim));font-variant-numeric:tabular-nums}
+.link .t{font:800 15px/1.35 var(--f);color:var(--ink)}
+.link .d{font:500 14.5px/1.6 var(--f);color:var(--muted);margin-top:5px;max-width:56ch}
+.link .d cite{font-style:normal;font-family:var(--m);font-size:12px;color:var(--dim)}
+.link .so{font:700 12px/1.5 var(--f);color:var(--amb);margin-top:8px}
+.link .so b{color:var(--amb)}
+
+/* ---- verdict rows ---- */
+.vrow{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--rule3)}
+.vrow:last-child{border-bottom:0}
+.vrow .st{flex:none;font:700 9.5px/1 var(--m);letter-spacing:.1em;text-transform:uppercase;
+  padding:6px 9px;border-radius:5px;margin-top:2px;width:78px;text-align:center}
+.st.p{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green);
+  border:1px solid color-mix(in srgb,var(--green) 34%,transparent)}
+.st.u{background:color-mix(in srgb,var(--amb) 14%,transparent);color:var(--amb);
+  border:1px solid color-mix(in srgb,var(--amb) 32%,transparent)}
+.st.n{background:color-mix(in srgb,var(--red) 13%,transparent);color:var(--red);
+  border:1px solid color-mix(in srgb,var(--red) 30%,transparent)}
+.vrow .tx{flex:1;min-width:0}
+.vrow .tx b{display:block;color:var(--ink);font-weight:700;font-size:15px;line-height:1.35}
+.vrow .tx span{display:block;color:var(--muted);font-size:14px;line-height:1.6;margin-top:4px}
+
+.cta{display:inline-block;margin:6px 0 0;padding:15px 24px;border-radius:11px;
+  font:800 13.5px/1 var(--f);letter-spacing:.05em;text-transform:uppercase;color:#0a0611;
+  text-decoration:none;background:linear-gradient(96deg,var(--mag),var(--cyan))}
+.foot{margin-top:70px;padding-top:26px;border-top:1px solid var(--rule);
+  font:500 13px/1.7 var(--f);color:var(--dim)}
+.foot b{color:var(--muted)}
+hr.d{border:0;border-top:1px solid var(--rule);margin:52px 0 0}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kick">Fans Gametime &middot; the defensibility question &middot; 27 August 2026</div>
+  <h1>The Grading<br>Is the Moat</h1>
+  <p class="sub">You said it yourself: right now anyone can do this. You're right, and the answer is not to build a better quiz. It's to own the thing that is genuinely hard &mdash; and to start at the bottom of the market, not the top.</p>
+  <div class="meta">
+    <span class="tag on">Three rooms live at fansgametime.com</span>
+    <span class="tag">Arena &middot; stadium &middot; club</span>
+  </div>
+</header>
+
+<div class="thesis">
+  <p>Anyone can build the quiz. A competent developer ships the game loop in a weekend.</p>
+  <p>Almost nobody can answer <em>"how many dancers came out for RITMO at the Forum on the 26th"</em> &mdash; correctly, at six thousand venues, every night, before the fan gets bored. That is not software. It is an operating network, a proven question corpus, and a dataset that only exists after you have run a lot of shows. <strong>The mechanic is the demo. The grading is the company.</strong></p>
+</div>
+
+<section>
+  <div class="eyebrow mag">The defensibility</div>
+  <h2>Five things that<br>are not copyable</h2>
+  <p>Ranked by how hard they are to catch. For each, the honest test: <em>what would a well-funded competitor actually have to do?</em></p>
+
+  <div class="chain">
+    <div class="link"><div class="k">1</div><div><div class="t">The resolution network</div>
+      <div class="d">A setlist photographed in a production office at soundcheck. A trained operator tapping six buttons from the desk. A relationship with the one person on each tour who can hand you both. This is unglamorous, it is per-tour, and it compounds &mdash; every show you run makes the next one cheaper.</div>
+      <div class="so"><b>The test:</b> a competitor with $20M has to build the same relationships one tour at a time. Money does not shorten it. It is the same reason nobody replicated a box office by writing better ticketing software.</div></div></div>
+
+    <div class="link"><div class="k">2</div><div><div class="t">A question corpus proven to resolve <em>and</em> proven to be fun</div>
+      <div class="d">Most questions you would write about a concert are dead on arrival &mdash; ungradable, free points, or answerable from a sofa at home. An outside read of our own first bank killed six of twenty-one and fixed eight more. After five hundred shows you have a bank sorted by genre, by venue scale, and by whether it actually landed.</div>
+      <div class="so"><b>The test:</b> a competitor starts at zero and can only learn by burning real shows in front of real audiences. That is a public, expensive education. The sports sibling needed six weeks and 84 resolvers to learn it once.</div></div></div>
+
+    <div class="link"><div class="k">3</div><div><div class="t">The memory dataset &mdash; and this is the one an investor buys</div>
+      <div class="d">Run the day-30 and day-90 recall measurement from show one and you accumulate the only dataset in the world linking live-event engagement to memory retention to repeat ticket purchase. It cannot be bought, cannot be scraped, and cannot be built retroactively.</div>
+      <div class="so"><b>The test:</b> a competitor needs three years of shows and a control group they never collected. Meanwhile you can tell a promoter what a remembered show is worth in tickets &mdash; a number nobody in live music currently has.</div></div></div>
+
+    <div class="link"><div class="k">4</div><div><div class="t">The room's own verdict</div>
+      <div class="d">Every ROOM question generates data that has never existed: a live verdict on a support act from the people who just watched them, merch-versus-bar demand by the minute, a section heat map, song-of-the-night per city, and what share of a club's room is seeing the band for the first time.</div>
+      <div class="so"><b>The test:</b> it only exists if you already have the audience in the building, which is the cold start the copier still faces. It also makes the venue and the promoter your customers, not just the artist &mdash; two more parties who do not want you replaced.</div></div></div>
+
+    <div class="link"><div class="k">5</div><div><div class="t">The fan's own record across shows</div>
+      <div class="d">A season that spans venues, artists and years. Six shows, one tour history, a streak. It is the Duolingo mechanic pointed at live music.</div>
+      <div class="so"><b>The test:</b> switching means abandoning three years of nights you were actually at. Weak on day one, very strong by year two &mdash; which is exactly why the cross-show record has to ship early, while nobody needs it yet.</div></div></div>
+  </div>
+
+  <div class="box mag">
+    <div class="hd">And one nobody else can assemble at all</div>
+    <p><strong>You already own the sports half.</strong> Stats Gametime and Fans Gametime are one engine &mdash; same scoring, same room store, same offline queue, same QA gate. A brand, a broadcaster or a rights-holder buying "live play-along" gets basketball and Black Eyed Peas from one vendor. Nobody else in this category has both, and building the second one is exactly as hard as building the first was.</p>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow am">The wedge</div>
+  <h2>Start at the bottom<br>of the market</h2>
+  <p>Your instinct about local shows and new artists is right, and it is not a smaller version of the Live Nation plan &mdash; it is a better plan that happens to be available now.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th></th><th>A Live Nation arena tour</th><th>A 250-cap club show</th></tr></thead>
+    <tbody>
+      <tr><td><b>Time to yes</b></td><td>90 days, several approvals, legal</td><td class="n">One text</td></tr>
+      <tr><td><b>Who says yes</b></td><td>Tour management, production, the promoter, sometimes the label</td><td>The artist</td></tr>
+      <tr><td><b>Getting the setlist</b></td><td>A production contact you do not have yet</td><td>The artist wrote it this afternoon</td></tr>
+      <tr><td><b>Who taps the panel</b></td><td>A production assistant you have to train</td><td>Their merch friend, or the artist's partner</td></tr>
+      <tr><td><b>Cost of it going badly</b></td><td>Your one shot at the relationship</td><td>An evening. Nobody sees it.</td></tr>
+      <tr><td><b>What you learn</b></td><td>Everything, once</td><td>Everything, every week</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box">
+    <div class="hd">And the thing you actually need</div>
+    <p>Stats Gametime has had <strong>thirteen humans play it, ever</strong>, and an audit found most rooms were the founder alone. <strong>One club show could beat that in a single night.</strong> That is the real prize here &mdash; not revenue, not a logo. Strangers in the room, and a number you do not have to caveat.</p>
+  </div>
+
+  <h3>What a developing artist actually wants &mdash; and it is not gamification</h3>
+  <p>Do not pitch engagement. Pitch the three things they lie awake about.</p>
+
+  <div>
+    <div class="vrow"><span class="st p">The ask</span><div class="tx"><b>A list of who was actually there</b>
+      <span>A 250-cap show today produces <em>nothing</em>. Ticketing gives you a buyer, not an attendee, and at the door it gives you not even that. Fans Gametime hands them a named list of people who were in the room, what share had never seen them before, how those people found out, and which song the room voted for. No artist at that level has ever had any of it. This alone closes the deal.</span></div></div>
+    <div class="vrow"><span class="st p">The ask</span><div class="tx"><b>Proof for a booking agent</b>
+      <span>"212 in the room, 138 played along, 61% first-timers, they voted Paper Radio" is a slide in a pitch for a bigger room. Right now a developing artist argues for their next booking with a feeling.</span></div></div>
+    <div class="vrow"><span class="st p">The ask</span><div class="tx"><b>A post they can put up before load-out is finished</b>
+      <span>"The Echo voted Paper Radio song of the night" is content, it is true, and it came from the audience rather than the band. It is the rare thing an artist can post about their own show that is not a photo of themselves.</span></div></div>
+    <div class="vrow"><span class="st n">Not the ask</span><div class="tx"><b>Money, engagement metrics, or a partnership</b>
+      <span>Charge nothing, promise nothing, ask for nothing but the setlist and twenty minutes. The first ten shows are free and you should say so in the first sentence.</span></div></div>
+  </div>
+
+  <div class="box cy">
+    <div class="hd">Who to approach, in order</div>
+    <ol style="margin-bottom:0">
+      <li><strong>A support act.</strong> The most under-served audience in music. Nobody has ever measured whether anyone watched them, and the headliner's crowd is standing there with nothing to do. The lowest possible bar to a yes.</li>
+      <li><strong>A residency or a weekly night.</strong> Same room, same crew, every week &mdash; you get repetition, which is what turns a demo into an operation.</li>
+      <li><strong>A local promoter, not an artist.</strong> One promoter books four bands a week. A yes from them is four shows, not one, and they already own the venue relationship you would otherwise have to build.</li>
+      <li><strong>A tribute or covers act.</strong> The setlist is entirely known in advance, so resolution is free and you can prove the mechanic before solving anything hard.</li>
+    </ol>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow cy">The bigger answer</div>
+  <h2>No, it does not<br>have to be a concert</h2>
+  <p>What the product needs is not a venue. It is <strong>a shared timed event with structural gaps, watched by a lot of people at once, about something they cannot look up.</strong> A concert is one instance of that. It is not the fastest one.</p>
+
+  <div class="chain">
+    <div class="link"><div class="k">1</div><div><div class="t">A televised music moment &mdash; and this needs nobody's permission</div>
+      <div class="d">Same architecture Stats Gametime already runs: play along with a live broadcast, without asking the league. The VMAs simulcast on CBS, MTV and Paramount+ from Los Angeles on <strong>Sunday 27 September, 8&ndash;10pm ET</strong> &mdash; a month out, a fixed start, natural gaps between every performance and every envelope, and an audience already asking each other the same questions in real time. The Grammys, a Super Bowl halftime show and a livestreamed festival set are the same shape.</div>
+      <div class="so"><b>Why it is the move:</b> zero permissions, a real date, and it produces the one asset you cannot buy &mdash; real strangers playing, before you walk into any meeting.</div></div></div>
+
+    <div class="link"><div class="k">2</div><div><div class="t">Release day</div>
+      <div class="d">An album drops at midnight and millions hear it once, together, with fresh ears &mdash; a thing that never happens again. The gaps are between tracks. No venue, no production contact, and the artist's team is already running a launch campaign they would love to make interactive.</div></div></div>
+
+    <div class="link"><div class="k">3</div><div><div class="t">The tour as the room, instead of the building</div>
+      <div class="d">Somebody at the Forum tonight and somebody who saw the same tour in Phoenix last night compete on the same sheet, because the shared object is the <em>setlist</em>, not the venue. This quietly removes the hardest constraint in the product &mdash; that everyone has to be in one place &mdash; and turns a tour into a season instead of a series of unconnected nights.</div></div></div>
+
+    <div class="link"><div class="k">4</div><div><div class="t">Self-serve, for every artist there is</div>
+      <div class="d">The answer to "can we do this for all artists" is that you do not sell to all artists &mdash; you let them make a room themselves. Paste a setlist, get a link, put it on the merch table. The bank generates from the setlist, which is the resolution source we already rely on.</div>
+      <div class="so"><b>The strategic point:</b> self-serve is also how the corpus grows without you working every show. Every room an artist makes teaches the bank something, which is moat number two building itself while you sleep.</div></div></div>
+  </div>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow">The recommendation</div>
+  <h2>Do one thing<br>in September</h2>
+  <p>Not four. One, and it is the play-along.</p>
+  <div class="box mag">
+    <p><strong>Run the VMAs on 27 September as a free public room.</strong> No permission, no artist to convince, no venue, no panel operator &mdash; the show is on television and the gaps are between performances. It is exactly what Stats Gametime already does every game night, pointed at music instead of basketball.</p>
+    <p>Then run <strong>two club shows in October</strong> &mdash; a support act and a local promoter &mdash; because that is where you learn the resolution problem for real, and where you get an artist saying on the record that the list was worth more than the game.</p>
+    <p>Walk into Live Nation in November with a broadcast room, two live rooms, a recall number and an artist quote. Not a prototype.</p>
+  </div>
+  <p>Everything above is deliberately ordered by what costs least and teaches most. The arena is the destination. It is a terrible place to start.</p>
+</section>
+
+<hr class="d">
+
+<section>
+  <div class="eyebrow am">Investability</div>
+  <h2>What is actually<br>being underwritten</h2>
+  <p>An investor is not buying a quiz, and pitching the quiz is how this gets passed on. Three things are underwritable:</p>
+  <ol>
+    <li><strong>A resolution network with near-zero marginal cost per show.</strong> The engine is built and hosting is pennies; the cost is a relationship and ten button taps. Gross margin sits around 95%, and every show makes the next one cheaper.</li>
+    <li><strong>A dataset that cannot be bought.</strong> Live engagement, mapped to memory retention, mapped to repeat ticket purchase. Three years of accumulation, no shortcut, and it reprices the asset the entire $25B live business sells.</li>
+    <li><strong>Two verticals, one engine.</strong> Sports and music from the same codebase, which halves the cost of the second category and doubles what a single brand relationship is worth.</li>
+  </ol>
+  <p>And the thing to keep saying out loud, because it is what makes the rest credible: <strong>the mechanic is not defensible and we know it.</strong> Anyone who tells you their game loop is a moat has not thought about it. The moat is the boring half &mdash; and the boring half is the half we have already built once, in sport.</p>
+</section>
+
+<div class="foot">
+  <p><b>Sources.</b> VMAs date, networks and location &mdash; Billboard and TVInsider, 2026. Karol G tour and setlist data &mdash; Billboard and setlist.fm, Viajando Por El Mundo Tropitour 2026. Black Eyed Peas setlist &mdash; setlist.fm, 2026 summer run. Live Nation 2025 results &mdash; Live Nation Entertainment full-year 2025. Stats Gametime figures are counted from this operation's own database and logs, including the unflattering ones.</p>
+  <p style="margin-bottom:0"><b>Wednesday Static is a fictional band</b> used in the prototype to demonstrate the club-scale shape. Real artists are named only where real, public setlist data was used. Not affiliated with Live Nation Entertainment, Spotify, or any artist named.</p>
+</div>
+</div>
