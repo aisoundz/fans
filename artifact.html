@@ -73,6 +73,7 @@ button{font-family:inherit}
 #wash.set  {background:radial-gradient(130% 44% at 50% 0%,#0d0b18 0%,#07060d 60%)}
 @media (prefers-reduced-motion:reduce){#wash{transition:none}}
 /* The whole-screen slam on an answer. One element, two keyframes. */
+#celeb{position:absolute;inset:0;z-index:80;pointer-events:none}
 #slam{position:absolute;inset:0;z-index:40;pointer-events:none;opacity:0}
 #slam.go{animation:slam .5s ease-out}
 @keyframes slam{0%{opacity:.85}100%{opacity:0}}
@@ -283,14 +284,22 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
 .settle .slab{font:800 9.5px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;
   color:var(--dim)}
 .flip{position:relative;width:100%;margin-top:18px;height:196px;
-  transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+  transform-style:preserve-3d;-webkit-transform-style:preserve-3d;
+  perspective:1000px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
 .flip.turned{transform:rotateX(180deg)}
 @media (prefers-reduced-motion:reduce){.flip{transition:none}}
 .flip .face{position:absolute;inset:0;backface-visibility:hidden;
   -webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px 18px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
   border:1px solid var(--line2);background:var(--card)}
-.flip .front{filter:grayscale(1) brightness(.72)}
+/* NO `filter` HERE. A filter on a 3D-transformed element creates a
+   containing block and flattens the 3D rendering context, which silently
+   disables backface-visibility — so the front face carried on painting,
+   mirrored, straight through the back of the card. The greyed-out look is
+   done with tokens instead, which costs nothing and actually works. */
+.flip .front{background:var(--surface2,#171426);border-color:var(--line)}
+.flip .front .pick{color:var(--muted)}
+.flip .front .ql,.flip .front .ago{color:var(--dim)}
 .flip .back{transform:rotateX(180deg)}
 .flip .back.ok{border-color:var(--green);
   background:linear-gradient(160deg,rgba(47,230,160,.2),var(--card))}
@@ -404,7 +413,7 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
   font-variant-numeric:tabular-nums;text-shadow:0 6px 34px color-mix(in srgb,var(--gel-a) 55%,transparent)}
 .reward .sub{font:700 14px/1.35 var(--f);color:var(--ink);margin-top:5px}
 .reward .fine{font:500 12px/1.5 var(--f);color:var(--muted);max-width:30ch}
-#celeb{position:fixed;inset:0;z-index:80;pointer-events:none}
+/* the viewport-pinned #celeb rule lived here and overrode the framed one */
 
 /* ---- SPONSOR SLOT --------------------------------------------------
    Between rounds, never mid-question. That rule is inherited from STATS
@@ -614,8 +623,8 @@ body.nonotes .q-why{display:none}
   box-shadow:0 0 16px color-mix(in srgb,var(--gel-b) 50%,transparent)}
 .bowl .seg.me b{color:var(--gel-b)}
 </style>
-<canvas id="celeb" aria-hidden="true" style="position:fixed;inset:0;z-index:80;pointer-events:none"></canvas>
 <div class="phone">
+  <canvas id="celeb" aria-hidden="true"></canvas>
   <div id="wash"></div>
   <div id="slam"></div>
 
@@ -1654,7 +1663,7 @@ function renderSettle(){
     flash(ok); wash(ok?'hit':'miss'); buzz(ok?[10,40,18]:60);
     if(ok){ S.pts+=pay; S.earned+=pay; bumpScore(S.pts,true); celebrate(3,$('flip')); }
     $('settlePay').innerHTML= ok
-      ? '<b>+'+pay+'</b><span>held '+mins+' minutes · ×'+held+' hold bonus · paid at '+GAPS[S.gap].t.toLowerCase()+' rate</span>'
+      ? '<b>+'+pay+'</b><span>held '+mins+' minute'+(mins===1?'':'s')+' · ×'+held+' hold bonus · paid at '+esc(GAPS[S.gap].t)+' rate</span>'
       : '<b>+0</b><span>'+esc(q.r||'')+'</span>';
     if(ok) $('settlePay').classList.add('good');
   },1700);
