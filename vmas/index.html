@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#06060b">
+<title>The VMAs, but you're playing — FANS GAMETIME</title>
+<meta name="description" content="Sunday 27 September. Call Video of the Year before the show starts, and watch it settle live in the last break. Free, no account, and it only plays in the ad breaks.">
+<link rel="icon" href="/icon-32.png?v=1" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FANS GAMETIME">
+<meta property="og:title" content="The VMAs, but you're playing">
+<meta property="og:description" content="Call Video of the Year before the show starts. It settles live, ninety minutes later, in the last break. Sunday 27 September.">
+<meta property="og:url" content="https://fansgametime.com/vmas">
+<meta property="og:image" content="https://fansgametime.com/og.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The VMAs, but you're playing">
+<meta name="twitter:description" content="Call Video of the Year before the show starts. It settles live in the last break.">
+<meta name="twitter:image" content="https://fansgametime.com/og.png?v=1">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Figtree:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+
+<!-- ===================== ANALYTICS SLOT =============================
+     One script tag goes here and nothing else. Cloudflare Web
+     Analytics or GoatCounter — both free, both cookieless, so no
+     consent banner is owed. Until it is filled, this page is
+     uncounted and every claim about how it performed is a guess.
+================================================================== -->
+
+<style>
+:root{
+  --house:#06060b; --deck:#0e0c17; --deck2:#141020; --card:#191325; --card2:#221936;
+  --line:rgba(255,255,255,.095); --line2:rgba(255,255,255,.16);
+  --ink:#ffffff; --body:#ded9ec; --muted:#9c93b8; --dim:#665c80;
+  --f:'Figtree',-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif;
+  --d:'Big Shoulders Display','Figtree',Impact,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --mag:#ff3d9a; --amb:#ffb545; --cyan:#35e0e8; --green:#2fe6a0; --red:#ff4d5e;
+  --r:16px; --r2:12px; --r3:9px; --pill:999px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--house);color:var(--body);
+  font-family:var(--f);-webkit-font-smoothing:antialiased;font-size:16px;line-height:1.6}
+img{max-width:100%}
+.wrap{max-width:640px;margin:0 auto;padding:0 22px 72px}
+
+/* ---------- chrome ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:20px 0 26px;border-bottom:1px solid var(--line)}
+.mark{font-family:var(--d);font-weight:900;font-size:19px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink);text-decoration:none;line-height:1}
+.mark span{color:var(--amb)}
+.bar .back{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);text-decoration:none}
+.bar .back:hover{color:var(--amb)}
+
+/* ---------- hero ---------- */
+.hero{padding:38px 0 4px;display:flex;flex-direction:column;gap:16px}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--mag)}
+h1{font-family:var(--d);font-weight:900;text-transform:uppercase;
+  font-size:clamp(46px,13vw,74px);line-height:.9;margin:0;color:var(--ink);text-wrap:balance}
+h1 em{font-style:normal;color:var(--amb)}
+.lede{font-size:18px;line-height:1.5;color:var(--body);margin:0}
+.lede b{color:var(--ink);font-weight:700}
+
+/* ---------- countdown ---------- */
+.cd{margin:30px 0 0;padding:20px 4px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cd div{display:flex;flex-direction:column;align-items:center;gap:5px}
+.cd .v{font-family:var(--d);font-weight:900;font-size:clamp(34px,9vw,46px);line-height:.85;
+  color:var(--ink);font-variant-numeric:tabular-nums}
+.cd .l{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.cd.live .v{color:var(--green)}
+.when{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;
+  padding-top:12px;letter-spacing:.03em}
+
+/* ---------- capture ---------- */
+.capture{margin:30px 0 0;background:var(--card);border:1px solid var(--line2);
+  border-radius:var(--r);padding:24px 22px 22px;display:flex;flex-direction:column;gap:14px}
+.capture h2{font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:26px;
+  line-height:1;margin:0;color:var(--ink)}
+.capture p{margin:0;font-size:15px;color:var(--muted);line-height:1.5}
+form{display:flex;flex-direction:column;gap:10px}
+input[type=email]{
+  font-family:var(--f);font-size:16px;padding:15px 16px;border-radius:var(--r2);
+  border:1px solid var(--line2);background:var(--deck);color:var(--ink);width:100%}
+input[type=email]::placeholder{color:var(--dim)}
+input[type=email]:focus{outline:2px solid var(--amb);outline-offset:1px;border-color:transparent}
+button{
+  font-family:var(--d);font-weight:900;text-transform:uppercase;font-size:21px;letter-spacing:.04em;
+  padding:15px 18px;border-radius:var(--r2);border:0;background:var(--amb);color:#1a1005;
+  cursor:pointer;line-height:1}
+button:hover:not(:disabled){filter:brightness(1.08)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button:disabled{background:var(--card2);color:var(--dim);cursor:not-allowed}
+.fine{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.02em;line-height:1.55}
+.note{font-size:14px;line-height:1.5;padding:12px 14px;border-radius:var(--r3);margin:0}
+.note.ok{background:rgba(47,230,160,.1);border:1px solid rgba(47,230,160,.35);color:var(--green)}
+.note.bad{background:rgba(255,77,94,.1);border:1px solid rgba(255,77,94,.35);color:var(--red)}
+.note.warn{background:rgba(255,181,69,.09);border:1px solid rgba(255,181,69,.32);color:var(--amb)}
+[hidden]{display:none !important}
+
+/* ---------- sections ---------- */
+section{padding:38px 0 0;display:flex;flex-direction:column;gap:16px}
+h2.sec{font-family:var(--d);font-weight:800;text-transform:uppercase;font-size:24px;
+  line-height:1;margin:0;color:var(--ink);letter-spacing:.02em}
+section p{margin:0;font-size:16px;color:var(--body);line-height:1.6}
+section p.q{color:var(--muted);font-size:15px}
+b.hi{color:var(--amb);font-weight:700}
+
+/* the five gametimes, as the setlist strip this product already uses */
+.gts{display:flex;flex-direction:column;gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:var(--r2);overflow:hidden}
+.gt{background:var(--deck);padding:13px 16px;display:grid;
+  grid-template-columns:34px 1fr auto;gap:14px;align-items:center}
+.gt .n{font-family:var(--mono);font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+.gt .t{font-family:var(--d);font-weight:700;text-transform:uppercase;font-size:18px;
+  line-height:1;color:var(--ink)}
+.gt .w{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap;letter-spacing:.08em}
+.gt.key{background:var(--card)}
+.gt.key .t{color:var(--amb)}
+.gt .sub{grid-column:2 / -1;font-size:13px;color:var(--muted);line-height:1.45;margin-top:2px}
+
+ul.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+ul.rules li{padding-left:26px;position:relative;font-size:15.5px;color:var(--body);line-height:1.5}
+ul.rules li::before{content:'▸';position:absolute;left:0;color:var(--amb);font-size:13px;top:2px}
+ul.rules li b{color:var(--ink)}
+
+.demo{margin-top:8px;display:flex;flex-direction:column;gap:12px;
+  background:var(--deck2);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.demo a.cta{font-family:var(--d);font-weight:900;text-transform:uppercase;font-size:19px;
+  letter-spacing:.04em;color:var(--cyan);text-decoration:none;border:1px solid var(--cyan);
+  border-radius:var(--r2);padding:13px 16px;text-align:center;line-height:1}
+.demo a.cta:hover{background:rgba(53,224,232,.1)}
+.demo a.cta:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+footer{padding:40px 0 0;margin-top:34px;border-top:1px solid var(--line)}
+footer p{margin:0 0 10px;font-family:var(--mono);font-size:11px;line-height:1.7;color:var(--dim)}
+footer a{color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){
+  .cd .v{transition:color .3s ease}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <a class="mark" href="/">FANS <span>GAMETIME</span></a>
+    <a class="back" href="/">See the game →</a>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Game Night Zero · Sunday 27 September</div>
+    <h1>The VMAs,<br>but <em>you're playing</em></h1>
+    <p class="lede">Call <b>Video of the Year</b> before the show even starts. Your call locks, goes quiet, and settles <b>live on air</b> ninety minutes later — in the last break, right before they open the envelope.</p>
+  </div>
+
+  <div class="cd" id="cd" aria-live="off">
+    <div><span class="v" id="cdD">--</span><span class="l">Days</span></div>
+    <div><span class="v" id="cdH">--</span><span class="l">Hours</span></div>
+    <div><span class="v" id="cdM">--</span><span class="l">Mins</span></div>
+    <div><span class="v" id="cdS">--</span><span class="l">Secs</span></div>
+  </div>
+  <p class="when" id="when">Red Carpet opens 3:30<span style="letter-spacing:0">pm</span> PT · 6:30<span style="letter-spacing:0">pm</span> ET</p>
+
+  <div class="capture">
+    <h2>Get the link on the night</h2>
+    <p>One email, sent an hour before the first question. Nothing else, ever — and there is no account to make.</p>
+    <form id="f" novalidate>
+      <input type="email" id="em" name="email" placeholder="you@example.com" autocomplete="email"
+             inputmode="email" required aria-label="Your email address">
+      <button type="submit" id="go">Send me the link</button>
+    </form>
+    <p class="note warn" id="unset" hidden>Sign-ups are not switched on yet. Nothing you type here would be saved, so the form is off rather than pretending.</p>
+    <p class="note ok" id="ok" hidden></p>
+    <p class="note bad" id="bad" hidden></p>
+    <p class="fine">Free. No account. We email you once, on 27 September, and once more thirty days later to ask what you remember. Unsubscribe in one tap.</p>
+  </div>
+
+  <section>
+    <h2 class="sec">It plays in the ad breaks</h2>
+    <p>The whole point of this game is that it <b class="hi">never interrupts the thing you came for</b>. No question fires during a performance or an award. It lives in the five breaks the broadcast already has — the moments the entire audience is reaching for a phone anyway.</p>
+    <div class="gts">
+      <div class="gt key">
+        <span class="n">01</span>
+        <span class="t">Red Carpet</span>
+        <span class="w">×1</span>
+        <span class="sub">Before air. Nothing is decided yet — this is where you seal Video of the Year.</span>
+      </div>
+      <div class="gt">
+        <span class="n">02</span><span class="t">Cutaway</span><span class="w">×2</span>
+        <span class="sub">First break, after the opener and the first award.</span>
+      </div>
+      <div class="gt">
+        <span class="n">03</span><span class="t">Right Back</span><span class="w">×3</span>
+        <span class="sub">Mid-show. The longest break of the night.</span>
+      </div>
+      <div class="gt key">
+        <span class="n">04</span><span class="t">The Envelope</span><span class="w">×4</span>
+        <span class="sub">The last break. Your Red Carpet call flips here, live, before they announce it.</span>
+      </div>
+      <div class="gt">
+        <span class="n">05</span><span class="t">Credits</span><span class="w">×5</span>
+        <span class="sub">After. Nobody has moved yet.</span>
+      </div>
+    </div>
+    <p class="q">A call is worth what the break it lands in is worth — so a prediction sealed at Red Carpet and settled at The Envelope pays four times what it was worth when you made it. That is the whole reason the waiting is fun.</p>
+  </section>
+
+  <section>
+    <h2 class="sec">The rules, all of them</h2>
+    <ul class="rules">
+      <li><b>It is free</b>, and there is nothing to buy. Not a betting product — nobody takes a stake and there is no house.</li>
+      <li><b>No account.</b> Open the link, pick a name, play.</li>
+      <li><b>Nothing fires during the show itself.</b> Performances and reveals are untouchable.</li>
+      <li><b>You can join late.</b> Turn up at Right Back and you still play the last three.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="demo">
+      <p class="q">That is a long time to wait to find out whether you like something.</p>
+      <a class="cta" href="/?room=vmas&amp;src=vmas-page" id="demoLink">Play the VMA room now →</a>
+      <p class="fine">The room is already built. Play it against the nominees today, then come back on the night when it counts.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>FANS GAMETIME is not affiliated with, endorsed by, or connected to MTV, CBS, Paramount, or any artist, label or venue named on this page. Award nominees are as published on 18 August 2026.</p>
+    <p><a href="/">fansgametime.com</a> · the game that pays to be there</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ============ THE ONE LINE THAT TURNS THIS PAGE ON =================
+     MailerLite embedded-form endpoint. Get it from the MailerLite
+     dashboard: Forms → Embedded form → copy the action URL. It looks
+     like
+        https://assets.mailerlite.com/jsonp/123456/forms/789012/subscribe
+
+     USE THE FORM URL, NEVER THE API KEY. The form endpoint is public
+     by design; an API key pasted into this file would be readable by
+     anyone who views source and would hand them the whole mailing list.
+
+     WHILE THIS IS EMPTY THE FORM IS DISABLED ON PURPOSE. A form that
+     swallows an address and says "thanks" is worse than no form: it
+     costs you the person AND reports a number that is not true.
+  =================================================================== */
+  var CAPTURE_ENDPOINT  = '';
+  /* Optional. If you add a custom field in MailerLite to record where
+     someone came from, put its name here (e.g. 'source'). Leave empty
+     and nothing extra is sent — an unknown field makes the whole
+     submission fail, which would lose the address. */
+  var CAPTURE_SRC_FIELD = '';
+
+  /* ---- first-touch attribution, same read order as the game -------- */
+  var SRC = (function(){
+    try{
+      var q = new URLSearchParams(location.search);
+      var v = q.get('src') || q.get('utm_source') || q.get('ref') || '';
+      if(!v){
+        var r = String(document.referrer || '');
+        if(r && r.indexOf(location.host) < 0){
+          var h = r.split('/')[2]; if(h) v = 'ref:' + h;
+        }
+      }
+      if(v && !localStorage.getItem('fg.src')){
+        localStorage.setItem('fg.src', v.slice(0,64));
+        localStorage.setItem('fg.src.at', new Date().toISOString());
+      }
+      return localStorage.getItem('fg.src') || 'direct';
+    }catch(e){ return 'direct'; }
+  })();
+
+  /* carry where they came from into the game, so a click from this
+     page is not laundered into "direct" on the other side */
+  var dl = document.getElementById('demoLink');
+  if(dl){ dl.href = '/?room=vmas&src=' + encodeURIComponent(SRC === 'direct' ? 'vmas-page' : SRC); }
+
+  /* ---- the countdown ----------------------------------------------
+     Red Carpet opens 2026-09-27 15:30 PT = 22:30 UTC. Driven off
+     Date.now(), never a frame clock — a phone that locks must not
+     freeze the number, which is a bug this project has already had. */
+  var TARGET = Date.parse('2026-09-27T22:30:00Z');
+  var E = {
+    d: document.getElementById('cdD'), h: document.getElementById('cdH'),
+    m: document.getElementById('cdM'), s: document.getElementById('cdS'),
+    box: document.getElementById('cd'), when: document.getElementById('when')
+  };
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function tick(){
+    var ms = TARGET - Date.now();
+    if(ms <= 0){
+      E.box.classList.add('live');
+      E.d.textContent = E.h.textContent = E.m.textContent = E.s.textContent = '00';
+      E.when.textContent = 'Red Carpet is open — the game is live.';
+      return;
+    }
+    var t = Math.floor(ms / 1000);
+    E.d.textContent = pad(Math.floor(t / 86400));
+    E.h.textContent = pad(Math.floor(t / 3600) % 24);
+    E.m.textContent = pad(Math.floor(t / 60) % 60);
+    E.s.textContent = pad(t % 60);
+  }
+  tick();
+  setInterval(tick, 1000);
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) tick(); });
+
+  /* ---- the form ---------------------------------------------------- */
+  var f    = document.getElementById('f'),
+      em   = document.getElementById('em'),
+      go   = document.getElementById('go'),
+      ok   = document.getElementById('ok'),
+      bad  = document.getElementById('bad'),
+      unset= document.getElementById('unset');
+
+  if(!CAPTURE_ENDPOINT){
+    go.disabled = true;
+    em.disabled = true;
+    go.textContent = 'Not switched on yet';
+    unset.hidden = false;
+  }
+
+  function say(el, msg){
+    ok.hidden = true; bad.hidden = true;
+    el.textContent = msg; el.hidden = false;
+  }
+
+  function submitJSONP(email, done){
+    var cb = 'fgcb_' + Date.now() + '_' + Math.floor(Math.random()*1e6);
+    var script, timer, settled = false;
+
+    function finish(saved){
+      if(settled) return;
+      settled = true;
+      clearTimeout(timer);
+      try{ delete window[cb]; }catch(e){ window[cb] = undefined; }
+      if(script && script.parentNode) script.parentNode.removeChild(script);
+      done(saved);
+    }
+
+    window[cb] = function(res){ finish(!!(res && (res.success === true || res.data))); };
+    timer = setTimeout(function(){ finish(false); }, 12000);
+
+    var q = CAPTURE_ENDPOINT
+          + (CAPTURE_ENDPOINT.indexOf('?') < 0 ? '?' : '&')
+          + 'callback=' + cb
+          + '&fields[email]=' + encodeURIComponent(email);
+    if(CAPTURE_SRC_FIELD){
+      q += '&fields[' + encodeURIComponent(CAPTURE_SRC_FIELD) + ']=' + encodeURIComponent(SRC);
+    }
+
+    script = document.createElement('script');
+    script.src = q;
+    script.onerror = function(){ finish(false); };
+    document.head.appendChild(script);
+  }
+
+  f.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    if(!CAPTURE_ENDPOINT) return;
+
+    var v = String(em.value || '').trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){
+      say(bad, 'That does not look like an email address. Check it and try again.');
+      em.focus();
+      return;
+    }
+
+    go.disabled = true;
+    go.textContent = 'Sending…';
+
+    /* JSONP, because MailerLite's form endpoint does not send CORS
+       headers — and a no-cors fetch can never read the response, which
+       would mean saying "you're on the list" without knowing. A
+       callback that never fires, or a script that fails to load, is
+       reported as a failure rather than quietly counted as a win. */
+    submitJSONP(v, function(saved){
+      if(saved){
+        f.hidden = true;
+        say(ok, "You're on the list. We'll send the link at 3:30pm PT on 27 September, and nothing before it.");
+      } else {
+        go.disabled = false;
+        go.textContent = 'Send me the link';
+        say(bad, "That didn't save — the fault is ours, not yours. Try again in a moment.");
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

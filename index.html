@@ -2366,10 +2366,52 @@ function showFromUrl(){
   }catch(e){ return null; }
 }
 
+/* ---- WHERE DID THIS PERSON COME FROM -----------------------------
+   Read ONCE, at boot. Read it later and document.referrer is whichever
+   tab they wandered in from, not the link they actually clicked.
+   FIRST TOUCH WINS: the value is written once and never overwritten,
+   so a person who arrives from Reddit and comes back direct on the
+   night is still a Reddit acquisition.
+   NO NETWORK CALL IS MADE WITH THIS. The game stays offline by design.
+   It is stamped onto the links the game hands out, and it is here so
+   that the day a counter exists it has something to count by.
+   Read order matches the sports sibling: ?src, utm_source, ?ref, then
+   the referring host. */
+var SRC = (function(){
+  try{
+    var q = new URLSearchParams(location.search);
+    var v = q.get('src') || q.get('utm_source') || q.get('ref') || '';
+    if(!v){
+      var r = String(document.referrer || '');
+      if(r && r.indexOf(location.host) < 0){
+        var h = r.split('/')[2]; if(h) v = 'ref:' + h;
+      }
+    }
+    if(v && !localStorage.getItem('fg.src')){
+      localStorage.setItem('fg.src', v.slice(0,64));
+      localStorage.setItem('fg.src.at', new Date().toISOString());
+    }
+    return localStorage.getItem('fg.src') || '';
+  }catch(e){ return ''; }
+})();
+
+/* ---- A CAMPAIGN LINK HAS TO LAND IN THE ROOM IT PROMISED ----------
+   Every link we post names a room. Without this, a stranger who was
+   told "the VMAs, but you're playing" arrives at a Black Eyed Peas
+   demo and leaves. An unknown or missing ?room= falls through to the
+   default show, exactly as before. */
+var ROOMS = { bep:0, peas:0, karolg:1, 'karol-g':1, static:2, echo:2, club:2,
+              vmas:3, vma:3, mtv:3 };
+
 /* ====================== BOOT ====================================== */
 var URLSHOW = showFromUrl();
 if(URLSHOW){ SHOWS.unshift(URLSHOW); loadShow(0); }
-else loadShow(0);
+else {
+  var _rq = '';
+  try{ _rq = String(new URLSearchParams(location.search).get('room') || '').toLowerCase(); }catch(e){}
+  var _ri = ROOMS[_rq];
+  loadShow((typeof _ri === 'number' && SHOWS[_ri]) ? _ri : 0);
+}
 /* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
    thing it was counting down to. */
 var T=862;
