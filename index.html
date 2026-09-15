@@ -740,6 +740,20 @@ body.nonotes .q-why{display:none}
   line-height:1.15}
 #hostpanel .hp-b.on{background:var(--green);border-color:var(--green);color:#04150e;font-weight:700}
 #hostpanel .hp-b:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
+
+/* a Gametime that has not opened yet reads as shut, not as missing */
+#gbar button.shut, .dbar button.shut{opacity:.34}
+#hostpanel .hp-ctl{display:flex;flex-direction:column;gap:7px;padding:11px 0 12px;
+  border-bottom:1px solid var(--line);margin-bottom:4px}
+#hostpanel .hp-now{color:var(--muted);letter-spacing:.06em}
+#hostpanel .hp-now b{color:var(--ink)}
+#hostpanel .hp-go{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;
+  padding:11px 12px;border-radius:8px;border:0;background:var(--amb);color:#1a1005;cursor:pointer}
+#hostpanel .hp-go:disabled{background:var(--card2);color:var(--dim);cursor:not-allowed}
+#hostpanel .hp-rs{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  padding:8px 12px;border-radius:8px;border:1px solid var(--line2);
+  background:transparent;color:var(--muted);cursor:pointer}
+#hostpanel .hp-go:focus-visible,#hostpanel .hp-rs:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
 </style>
 </head>
 <body class="nonotes">
@@ -1578,6 +1592,7 @@ function loadShow(i){
     ? 'Shadow run &middot; real results &middot; not affiliated with NBC, Peacock or the Television Academy'
     : 'Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist';
   paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud(); renderPicker();
+  renderGapButtons();
   for(var d=0;d<5;d++){ var b=$('d'+d); if(b){ b.style.display = d<GAPS.length?'':'none';
     var lb=GAPS[d]?GAPS[d].t.replace(/^The /,''):''; b.textContent=lb.charAt(0).toUpperCase()+lb.slice(1); b.classList.toggle('on',d===0); } }
 }
@@ -1643,12 +1658,33 @@ function renderHostPanel(){
     }
   }
   var wasOpen = el.classList.contains('open');
+  /* THE NIGHT'S PACE LIVES HERE TOO. Same hand, same panel: the person
+     watching the broadcast opens the next Gametime when the break
+     starts, and grades the award when it is read out. */
+  var ctl = '';
+  if(paced()){
+    var op = openedGap(), last = op >= GAPS.length-1;
+    ctl = '<div class="hp-ctl">'
+        + '<div class="hp-now">OPEN: <b>' + esc(GAPS[op].t) + '</b> · ' + (op+1) + ' of ' + GAPS.length + '</div>'
+        + '<button type="button" class="hp-go"' + (last?' disabled':'')
+        +   ' onclick="setOpenedGap(' + (op+1) + ')">'
+        +   (last ? 'ALL OPEN' : 'OPEN ' + esc(GAPS[op+1].t).toUpperCase()) + '</button>'
+        + '<button type="button" class="hp-rs" onclick="resetNight()">RESET NIGHT</button>'
+        + '</div>';
+  }
   el.innerHTML =
       '<button type="button" class="hp-h" onclick="toggleHost()">'
     +   '<span>RESOLUTION PANEL · ' + (pending ? pending + ' UNSET' : 'ALL SET') + '</span>'
     +   '<span class="hp-caret">' + (wasOpen ? 'CLOSE ▾' : 'OPEN ▴') + '</span>'
     + '</button>'
-    + '<div class="hp-body">' + h + '</div>';
+    + '<div class="hp-body">' + ctl + h + '</div>';
+}
+/* Start the night again. It clears the pace and the play, and KEEPS the
+   answers the host has already called — those are facts about the
+   broadcast, not part of anybody's game. */
+function resetNight(){
+  try{ localStorage.removeItem('fg.open.' + (SHOW.key || 's'+S.showIdx)); }catch(e){}
+  location.reload();
 }
 function toggleHost(){
   var el = document.getElementById('hostpanel');
@@ -1770,12 +1806,63 @@ function bumpScore(to,green){
 }
 
 /* ====================== GAP FLOW =================================== */
+/* ====================== LIVE PACING ================================
+   A broadcast room let a player run the whole night in ten minutes while
+   ninety minutes of show were still to air. On the 27th somebody could
+   finish Game Night Zero before the VMAs went on air, and every sealed
+   prediction — the entire point of the product — would settle against a
+   result that had not happened.
+
+   So a Gametime is SHUT until the person running the night opens it.
+   That is the real operating model anyway: a host watching the broadcast
+   taps when the break starts. It is the same hand that works the
+   resolution panel. */
+function openedGap(){
+  try{
+    var v = localStorage.getItem('fg.open.' + (SHOW.key || 's'+S.showIdx));
+    return v === null ? 0 : Math.max(0, Math.min(GAPS.length-1, +v));
+  }catch(e){ return 0; }
+}
+function setOpenedGap(n){
+  n = Math.max(0, Math.min(GAPS.length-1, n));
+  try{ localStorage.setItem('fg.open.' + (SHOW.key || 's'+S.showIdx), String(n)); }catch(e){}
+  renderGapButtons(); renderHostPanel();
+  if(S.gap > openedGap()) goto(openedGap()); else goto(S.gap);
+}
+/* Only a room carrying real results is paced. The demo rooms are
+   illustrations and must stay walkable end to end. */
+function paced(){ return !!(SHOW && SHOW.real); }
+function gapOpen(i){ return !paced() || i <= openedGap(); }
+function renderGapButtons(){
+  for(var d=0; d<5; d++){
+    var b=$('d'+d); if(!b) continue;
+    var shut = d<GAPS.length && !gapOpen(d);
+    b.classList.toggle('shut', shut);
+    b.setAttribute('aria-disabled', shut ? 'true' : 'false');
+  }
+}
+
 function goto(i){
+  if(!gapOpen(i)){ renderShut(i); navGo('gametime'); return; }
   stopClock(); S.gap=i; S.qi=-1; S.phase='hold'; S.locked=false;
   for(var d=0;d<5;d++) $('d'+d).classList.toggle('on', d===i);
   renderSetlist();
   if(pendingFor(i).length) renderSettle(); else renderHold();
   navGo('gametime');
+}
+
+function renderShut(i){
+  var g=GAPS[i];
+  for(var d=0;d<5;d++){ var b=$('d'+d); if(b) b.classList.toggle('on', d===i); }
+  $('stage').innerHTML='<div class="hold"><div class="holdhero">'
+   +'<div class="k">Not open yet</div>'
+   +'<div class="big">'+esc(g.t)+'</div>'
+   +(g.when?'<div class="when2">'+esc(g.when)+'</div>':'')
+   +'<div class="sub">This Gametime opens when the break actually comes. '
+   +'You cannot play ahead of the show &mdash; a call you seal now would settle '
+   +'against something that has not happened.</div>'
+   +'</div></div>';
+  renderHud();
 }
 
 function renderHold(){
@@ -2320,21 +2407,37 @@ function renderReward(){
 }
 
 function claimHtml(){
-  var pct=Math.round(S.earned/CEILING*100);
+  /* THE DENOMINATOR HAS TO MEASURE THE SAME THING AS THE NUMERATOR.
+     This printed "312 of 210 in this room · 149% of the night" — because
+     the streak multiplier inflates what is earned and computeCeiling()
+     never knew about it. A percentage over 100 is a label that does not
+     describe its own number. Cap it, and say so plainly. */
+  var pct=Math.min(100, Math.round(S.earned/CEILING*100));
+  var real=!showsCrowd();
   return '<div class="claim">'
-   +'<div class="eyebrow" style="color:var(--amb)">The walk-out</div>'
+   +'<div class="eyebrow" style="color:var(--amb)">'+(SHOW.broadcast?'The credits':'The walk-out')+'</div>'
    +'<h2 class="sec" style="margin:8px 0 12px">You were there.<br>Here is the proof.</h2>'
-   +'<div class="rows"><div class="row me"><span class="pos">'+pos()+'</span>'
-   +'<div class="nm">YOU<small>Section 214 · '+esc(SHOW.venue)+' · tonight</small></div>'
-   +'<div style="text-align:right"><span class="sc">'+S.pts+'</span><span class="pz">Soundcheck offer</span></div></div></div>'
+   /* No invented placing, no invented seat, no prize nobody offered. */
+   +'<div class="rows"><div class="row me">'
+   +(real?'':'<span class="pos">'+pos()+'</span>')
+   +'<div class="nm">YOU<small>'+esc(SHOW.venue)
+   +(real?'':' · Section 214')+' · tonight</small></div>'
+   +'<div style="text-align:right"><span class="sc">'+S.pts+'</span>'
+   +(real?'':'<span class="pz">Soundcheck offer</span>')+'</div></div></div>'
    /* THE PLAYER GETS THE NUMBER. The accounting note behind it was written
       to the founder, not to somebody standing in a car park, so it moved to
       the designer notes where the rest of the reasoning lives. */
-   +'<div class="earned"><b>'+S.earned+'</b><span>of '+CEILING+' in this room &middot; '+pct+'% of the night</span></div>'
+   +'<div class="earned"><b>'+S.earned+'</b><span>of '+CEILING+(real?'':' in this room')+' &middot; '+pct+'% of the night</span></div>'
    +'<div class="q-why"><b>Why the carry-in is excluded</b>'
    +'The '+S.carry+' carried in from Spotify counts toward the score and not toward this percentage, because a number labelled "of the night" has to measure the night. Earned and total are two quantities and only one is ever shown as a percentage.</div>'
-   +'<button class="btn" style="margin-top:14px" onclick="navGo(\'board\')">Claim at the merch stand</button>'
-   +'<button class="btn ghost" style="margin-top:8px" onclick="navGo(\'fans\')">See it again on Spotify next week</button>';
+   /* There is no merch stand at a broadcast you watched from a sofa, and
+      nothing comes back on Spotify from an awards show with no songs.
+      This slot is where an advocate reward or a sponsor goes; until one
+      is actually sold it says nothing. */
+   +(real
+     ? '<button class="btn" style="margin-top:14px" onclick="navGo(\'board\')">See the board</button>'
+     : '<button class="btn" style="margin-top:14px" onclick="navGo(\'board\')">Claim at the merch stand</button>'
+       +'<button class="btn ghost" style="margin-top:8px" onclick="navGo(\'fans\')">See it again on Spotify next week</button>');
 }
 
 /* ====================== BOARD + THE BOWL ===========================
