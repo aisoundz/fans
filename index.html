@@ -708,13 +708,27 @@ body.nonotes .q-why{display:none}
 /* ---- THE RESOLUTION PANEL (?host=1 only) -------------------------
    Inside .phone, never position:fixed — a fixed overlay here once
    sprayed confetti across the whole desktop browser. */
-#hostpanel{position:absolute;left:0;right:0;bottom:0;z-index:70;max-height:56%;
-  overflow-y:auto;background:rgba(6,6,11,.975);border-top:2px solid var(--amb);
-  padding:10px 12px 16px;font-family:var(--mono);font-size:11px}
-#hostpanel .hp-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;
-  color:var(--amb);letter-spacing:.14em;font-weight:700;padding:2px 0 9px;
-  border-bottom:1px solid var(--line);margin-bottom:9px;position:sticky;top:-10px;
-  background:rgba(6,6,11,.985)}
+/* IT SITS ABOVE THE NAV, NEVER ON IT. The nav is the wordmark — Home,
+   Fans, Gametime, Board — and a host tool that covers the way out of a
+   screen is a worse bug than the one it was built to fix. */
+#hostpanel{position:absolute;left:0;right:0;z-index:70;
+  bottom:calc(var(--navh,58px) + env(safe-area-inset-bottom));
+  background:var(--house);border-top:2px solid var(--amb);
+  box-shadow:0 -18px 40px rgba(0,0,0,.72);
+  font-family:var(--mono);font-size:11px}
+/* CLOSED BY DEFAULT. The host needs it for a few seconds an hour; the
+   game needs the screen for the rest of the night. A panel that sits
+   open over half the phone is not a tool, it is an obstruction. */
+#hostpanel .hp-body{display:none;max-height:52vh;overflow-y:auto;padding:0 12px 16px}
+#hostpanel.open .hp-body{display:block}
+#hostpanel .hp-h{display:flex;justify-content:space-between;gap:8px;align-items:center;
+  width:100%;text-align:left;cursor:pointer;
+  font-family:var(--mono);font-size:11px;
+  color:var(--amb);letter-spacing:.14em;font-weight:700;padding:11px 12px;
+  background:var(--house);border:0;border-bottom:1px solid var(--line)}
+#hostpanel .hp-h:focus-visible{outline:2px solid var(--amb);outline-offset:-3px}
+#hostpanel .hp-caret{color:var(--muted);font-weight:700}
+#hostpanel.open .hp-caret{color:var(--amb)}
 #hostpanel .hp-h span{color:var(--muted);letter-spacing:.06em;font-weight:500;
   text-align:right;font-size:10px}
 #hostpanel .hp-q{padding:7px 0;border-bottom:1px solid var(--line3)}
@@ -764,7 +778,7 @@ body.nonotes .q-why{display:none}
     <div style="text-align:center;padding:6px 0 2px">
       <div style="font-family:var(--d);font-weight:900;font-size:34px;line-height:.86;letter-spacing:.5px;text-transform:uppercase;background:linear-gradient(96deg,var(--gel-a),var(--gel-b));-webkit-background-clip:text;background-clip:text;color:transparent">Fans Gametime</div>
       <p style="font:600 12.5px/1.4 var(--f);color:var(--body);margin:5px 0 0">the game that pays to be there</p>
-      <div style="font:700 8.5px/1.5 var(--mono);letter-spacing:.08em;color:var(--dim);text-transform:uppercase;margin-top:9px;padding:5px 8px;border:1px dashed var(--line2);border-radius:9px">Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist</div>
+      <div style="font:700 8.5px/1.5 var(--mono);letter-spacing:.08em;color:var(--dim);text-transform:uppercase;margin-top:9px;padding:5px 8px;border:1px dashed var(--line2);border-radius:9px" id="discl">Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist</div>
     </div>
 
     <div class="marq">
@@ -1540,6 +1554,13 @@ function loadShow(i){
   S.earned=0; S.carry=SHOW.demo?0:180; S.pts=S.carry;
   S.showIdx=i;
   applyTruth();
+  /* THE WORDS HAVE TO BE TRUE IN EVERY ROOM. A room carrying real
+     results must not call itself demo data, and the Emmys have nothing
+     to do with Live Nation. One line, because the banner is one fact. */
+  var _d=document.getElementById('discl');
+  if(_d) _d.innerHTML = SHOW.real
+    ? 'Shadow run &middot; real results &middot; not affiliated with NBC, Peacock or the Television Academy'
+    : 'Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist';
   paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud(); renderPicker();
   for(var d=0;d<5;d++){ var b=$('d'+d); if(b){ b.style.display = d<GAPS.length?'':'none';
     var lb=GAPS[d]?GAPS[d].t.replace(/^The /,''):''; b.textContent=lb.charAt(0).toUpperCase()+lb.slice(1); b.classList.toggle('on',d===0); } }
@@ -1588,7 +1609,7 @@ function hostOn(){
 function renderHostPanel(){
   var el = document.getElementById('hostpanel');
   if(!el) return;
-  var h = '<div class="hp-h">RESOLUTION PANEL<span>' + (SHOW.act||'') + '</span></div>', pending = 0;
+  var h = '', pending = 0;
   for(var gi=0; gi<GAPS.length; gi++){
     for(var qi=0; qi<GAPS[gi].q.length; qi++){
       var q = GAPS[gi].q[qi];
@@ -1605,8 +1626,19 @@ function renderHostPanel(){
       h += '</div></div>';
     }
   }
-  h = h.replace('</span>', ' · ' + (pending ? pending + ' UNSET' : 'all set') + '</span>');
-  el.innerHTML = h;
+  var wasOpen = el.classList.contains('open');
+  el.innerHTML =
+      '<button type="button" class="hp-h" onclick="toggleHost()">'
+    +   '<span>RESOLUTION PANEL · ' + (pending ? pending + ' UNSET' : 'ALL SET') + '</span>'
+    +   '<span class="hp-caret">' + (wasOpen ? 'CLOSE ▾' : 'OPEN ▴') + '</span>'
+    + '</button>'
+    + '<div class="hp-body">' + h + '</div>';
+}
+function toggleHost(){
+  var el = document.getElementById('hostpanel');
+  if(!el) return;
+  el.classList.toggle('open');
+  renderHostPanel();
 }
 
 /* THE PICKER. Three rooms at three scales, and the point of it is the
@@ -2585,7 +2617,17 @@ else {
    it is rendered AFTER loadShow so it reflects the room actually up. */
 if(hostOn()){
   var _hp = document.getElementById('hostpanel');
-  if(_hp){ _hp.hidden = false; renderHostPanel(); }
+  if(_hp){
+    /* measure the nav rather than hardcoding its height — it carries a
+       safe-area inset that differs on every phone */
+    var _nv = document.querySelector('.nav');
+    if(_nv) document.documentElement.style.setProperty('--navh', _nv.offsetHeight + 'px');
+    _hp.hidden = false; renderHostPanel();
+    window.addEventListener('resize', function(){
+      var n = document.querySelector('.nav');
+      if(n) document.documentElement.style.setProperty('--navh', n.offsetHeight + 'px');
+    });
+  }
 }
 /* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
    thing it was counting down to. */
