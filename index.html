@@ -1708,6 +1708,25 @@ function toggleHost(){
   if(!el) return;
   el.classList.toggle('open');
   renderHostPanel();
+  fitScroller();
+}
+
+/* ====================== NOTHING MAY SIT UNDER THE PANEL ============
+   The panel is absolutely positioned over the bottom of the scroller,
+   and nothing padded for it — so the last strip of every screen was
+   unreachable. You could scroll to the end and still not see the last
+   button, which is how "See the board" and half of "Go to The Envelope"
+   disappeared on a laptop.
+
+   This is the rail bug from the sports side, again: "the page scrolls"
+   is not "nothing is hidden". The only honest check measures whether the
+   LAST element clears the panel after scrolling to the bottom. */
+function fitScroller(){
+  var sc = document.getElementById('scroller'),
+      hp = document.getElementById('hostpanel');
+  if(!sc) return;
+  var pad = (hp && !hp.hidden) ? hp.offsetHeight : 0;
+  sc.style.paddingBottom = pad ? (pad + 14) + 'px' : '';
 }
 
 /* THE PICKER. Three rooms at three scales, and the point of it is the
@@ -1943,6 +1962,7 @@ function renderHold(){
      : '')
    +'</div>';
   $('stage').innerHTML=h;
+  fitScroller();
   if(pending) startHeard(g.heard);
   renderHud();
 }
@@ -2501,6 +2521,7 @@ function renderReward(){
   h+='</div>';
   $('stage').innerHTML=h;
   $('scroller').scrollTop=0;
+  fitScroller();
   wash('hit');
   buzz([20,60,20,60,40]);
   /* Count the number up rather than printing it. The reward is the one place
@@ -2876,10 +2897,11 @@ if(hostOn()){
        safe-area inset that differs on every phone */
     var _nv = document.querySelector('.nav');
     if(_nv) document.documentElement.style.setProperty('--navh', _nv.offsetHeight + 'px');
-    _hp.hidden = false; renderHostPanel();
+    _hp.hidden = false; renderHostPanel(); fitScroller();
     window.addEventListener('resize', function(){
       var n = document.querySelector('.nav');
       if(n) document.documentElement.style.setProperty('--navh', n.offsetHeight + 'px');
+      fitScroller();
     });
   }
 }
