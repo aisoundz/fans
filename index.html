@@ -719,7 +719,10 @@ body.nonotes .q-why{display:none}
 /* CLOSED BY DEFAULT. The host needs it for a few seconds an hour; the
    game needs the screen for the rest of the night. A panel that sits
    open over half the phone is not a tool, it is an obstruction. */
-#hostpanel .hp-body{display:none;max-height:52vh;overflow-y:auto;padding:0 12px 16px}
+/* 52vh is half the DESKTOP WINDOW, which is far taller than the phone
+   frame the panel lives in — on a laptop it swallowed the whole game
+   again. Cap it in pixels so it is the same slice on every screen. */
+#hostpanel .hp-body{display:none;max-height:min(46vh,330px);overflow-y:auto;padding:0 12px 16px}
 #hostpanel.open .hp-body{display:block}
 #hostpanel .hp-h{display:flex;justify-content:space-between;gap:8px;align-items:center;
   width:100%;text-align:left;cursor:pointer;
@@ -754,6 +757,11 @@ body.nonotes .q-why{display:none}
   padding:8px 12px;border-radius:8px;border:1px solid var(--line2);
   background:transparent;color:var(--muted);cursor:pointer}
 #hostpanel .hp-go:focus-visible,#hostpanel .hp-rs:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
+
+.waitfor{margin:14px 0 10px;padding:14px 16px;border:1px dashed var(--line2);
+  border-radius:var(--r2);background:rgba(255,181,69,.05);color:var(--muted);
+  font:500 14px/1.5 var(--f)}
+.waitfor b{color:var(--amb)}
 </style>
 </head>
 <body class="nonotes">
@@ -1888,7 +1896,13 @@ function renderShut(i){
    +'<div class="sub">This Gametime opens when the break actually comes. '
    +'You cannot play ahead of the show &mdash; a call you seal now would settle '
    +'against something that has not happened.</div>'
-   +'</div></div>';
+   +'</div>'
+   /* The big shut headline looked like you had arrived somewhere. Say
+      plainly which Gametime you are still standing in, and give a way
+      back to it. */
+   +'<div class="waitfor">You are still in <b>'+esc(GAPS[S.gap].t)+'</b>.</div>'
+   +'<button class="btn ghost" onclick="goto('+S.gap+')">Back to '+esc(GAPS[S.gap].t)+'</button>'
+   +'</div>';
   renderHud();
 }
 
@@ -2134,7 +2148,10 @@ function answer(idx){
       +'<div class="x">'+(ok?('+'+earned+(m>1?'  ·  '+raw+' ×'+m+' streak':''))
          :(timedOut?'Out of time':(q.mode==='room'?'The room went the other way':'It was '+esc(q.a))))
       +'<small>'+(!sp
-         ? 'worth '+raw+' at '+esc(GAPS[S.gap].t.toLowerCase())+' · your score is yours alone tonight'
+         /* "worth 19 at right back" printed next to a red cross reads as
+            though 19 were banked. Say what actually happened. */
+         ? (ok ? 'banked '+earned+' at '+esc(GAPS[S.gap].t.toLowerCase())
+               : 'nothing banked · it was worth '+raw+' at '+esc(GAPS[S.gap].t.toLowerCase()))
          : (q.mode==='room'
          ? sp[ai]+'% of this room said '+esc(q.o[ai])+' · you are '+(ok?'with':'against')+' the building'
          : sp[ai]+'% of the room had it · '+sec+'% of '+(SHOW.broadcast?'your area':(SHOW.demo?'the front':'section 214'))))+'</small></div></div>'
@@ -2445,23 +2462,38 @@ function renderReward(){
    /* Position CHANGE, not a static ordinal. "9th" tells you nothing; "9th to
       6th" is the reward. */
    +'<div class="delta">'
-     +(moved>0
+     /* NOBODY IS RANKED IN A ROOM OF ONE. "still 9th · 23 more to take a
+        place" was the last invented crowd left in the app — the final
+        screen was cleaned and this one was missed, because it is a
+        different function that reaches the same fiction by a different
+        road. Fourth instance tonight. */
+     +(!showsCrowd()
+       ? '<b class="fl">&#8212;</b><span>'+won+' this Gametime &middot; <b>'
+         +S.earned+'</b> earned so far</span>'
+       : (moved>0
        ? '<b class="up">&#9650; '+moved+'</b><span>'+ord(was)+' to <b>'+ord(now)+'</b> '+(SHOW.broadcast?'watching along':'in the room')+'</span>'
        : (moved<0
           ? '<b class="dn">&#9660; '+Math.abs(moved)+'</b><span>'+ord(was)+' to <b>'+ord(now)+'</b> '+(SHOW.broadcast?'watching along':'in the room')+'</span>'
           : '<b class="fl">&#8212;</b><span>still <b>'+ord(now)+'</b> &middot; '
             +Math.max(10,Math.round(CEILING/9-(S.earned%Math.round(CEILING/9))))
-            +' more to take a place</span>'))
+            +' more to take a place</span>')))
      +'<span class="tot">'+S.pts+' tonight</span>'
    +'</div>';
 
   if(!last){
-    var nx=GAPS[S.gap+1];
+    var nx=GAPS[S.gap+1], nxOpen=gapOpen(S.gap+1);
     h+='<div class="nextup"><b>Next: '+esc(nx.t)+'</b>'
       +'<span>'+esc(nx.when||'')+' &middot; '+nx.worth*BASE+' a question</span></div>'
-      /* Name the destination. "Take me there" is a button that does not say
-         where, which is the same failure as "Play Gametime 02". */
-      +'<button class="btn" onclick="goto('+(S.gap+1)+')">Go to '+esc(nx.t)+'</button>'
+      /* THE ROUND ENDED, THE APP SAID "GO TO THE ENVELOPE", AND THE
+         ENVELOPE WAS SHUT. A button that names a destination and then
+         hits a wall is worse than no button: it reads as broken, and it
+         was the first thing a real person said was "not intuitive".
+         If the next Gametime has not opened, say what is true and offer
+         the way back instead. */
+      +(nxOpen
+        ? '<button class="btn" onclick="goto('+(S.gap+1)+')">Go to '+esc(nx.t)+'</button>'
+        : '<div class="waitfor">'+esc(nx.t)+' opens when the break comes. '
+          +'Nothing to do until then &mdash; go back and watch.</div>')
       +'<button class="btn ghost" onclick="navGo(\'board\')">See the board</button>';
   } else {
     h+=claimHtml();
