@@ -1834,7 +1834,14 @@ function setOpenedGap(n){
   n = Math.max(0, Math.min(GAPS.length-1, n));
   try{ localStorage.setItem('fg.open.' + (SHOW.key || 's'+S.showIdx), String(n)); }catch(e){}
   renderGapButtons(); renderHostPanel();
-  if(S.gap > openedGap()) goto(openedGap()); else goto(S.gap);
+  /* OPENING A GAMETIME MEANS GOING TO IT. This read
+        if(S.gap > openedGap()) goto(openedGap()); else goto(S.gap);
+     which, from Right Back with The Envelope newly opened, is goto(0) —
+     it re-entered the round you were already standing in. The host
+     pressed OPEN THE ENVELOPE, the screen still said "Play Right Back",
+     and the player replayed the same round. The button exists to say
+     "the break has started"; it has to move the night. */
+  goto(n);
 }
 /* Only a room carrying real results is paced. The demo rooms are
    illustrations and must stay walkable end to end. */
@@ -2203,6 +2210,12 @@ function fly(idx,n){
 function seal(idx){
   var g=GAPS[S.gap], q=g.q[S.qi];
   S.ans[S.gap+':'+S.qi]=q.o[idx];
+  /* Replaying a Gametime sealed a SECOND card for the same question, so
+     one call settled twice and the tray showed work nobody did. One
+     question, one seal — the later answer replaces the earlier. */
+  for(var _z=S.sealed.length-1; _z>=0; _z--){
+    if(S.sealed[_z].gap===S.gap && S.sealed[_z].qi===S.qi) S.sealed.splice(_z,1);
+  }
   S.sealed.push({gap:S.gap, qi:S.qi, pick:q.o[idx], at:Date.now(), rate:worthNow()});
   savePlay();
   buzz(12);
