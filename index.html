@@ -793,16 +793,16 @@ body.nonotes .q-why{display:none}
 
     <div class="card">
       <div class="eyebrow gel">How it works</div>
-      <h2 class="sec" style="margin:7px 0 11px">Five Gametimes a night</h2>
+      <h2 class="sec" style="margin:7px 0 11px" id="howH">Five Gametimes a night</h2>
       <div class="how">
         <div class="step"><div class="k">01</div><div><div class="t">The set is sacred</div>
-          <div class="d">No question ever fires while a song is playing. A Gametime is one of the dead spots a show already has &mdash; Soundcheck, Crossfade, The Bridge, One More and The Outro. Five at an arena, three at a club.</div></div></div>
+          <div class="d" id="howD">No question ever fires while a song is playing. A Gametime is one of the dead spots a show already has &mdash; Soundcheck, Crossfade, The Bridge, One More and The Outro. Five at an arena, three at a club.</div></div></div>
         <div class="step"><div class="k">02</div><div><div class="t">You answer about the show you are standing in</div>
           <div class="d">What opened it. How many dancers. What he wore. Nothing you can look up &mdash; only things you can see from where you are.</div></div></div>
         <div class="step"><div class="k">03</div><div><div class="t">The artist pays out, not a bookmaker</div>
           <div class="d">The setlist off the stage. Soundcheck in the next city. Your name on the wall between sets. Entry is free and always will be.</div></div></div>
         <div class="step"><div class="k">04</div><div><div class="t">Then it follows you home</div>
-          <div class="d">The songs you answered about come back on Spotify next week and ask you again. That is not a gimmick &mdash; it is the part that makes the night stick.</div></div></div>
+          <div class="d" id="howHome">The songs you answered about come back on Spotify next week and ask you again. That is not a gimmick &mdash; it is the part that makes the night stick.</div></div></div>
       </div>
     </div>
 
@@ -1557,6 +1557,22 @@ function loadShow(i){
   /* THE WORDS HAVE TO BE TRUE IN EVERY ROOM. A room carrying real
      results must not call itself demo data, and the Emmys have nothing
      to do with Live Nation. One line, because the banner is one fact. */
+  /* THE EXPLAINER HAS TO DESCRIBE THE ROOM YOU ARE IN. It counted five
+     Gametimes and named the arena's five at a three-Gametime broadcast,
+     and promised songs coming back on Spotify at an awards show that has
+     no songs. Same law as the banner: check the words, in every room. */
+  var _n=['One','Two','Three','Four','Five'][GAPS.length-1]||GAPS.length;
+  var _hh=document.getElementById('howH');
+  if(_hh) _hh.textContent=_n+' Gametimes a night';
+  var _hd=document.getElementById('howD');
+  if(_hd) _hd.innerHTML='No question ever fires while the show is on. A Gametime is one of the dead spots '
+    +(SHOW.broadcast?'a broadcast already has &mdash; the commercial breaks. Tonight they are '
+       :'a show already has &mdash; ')
+    +GAPS.map(function(g){return g.t;}).join(', ').replace(/, ([^,]*)$/,' and $1')+'.';
+  var _hm=document.getElementById('howHome');
+  if(_hm) _hm.innerHTML=SHOW.broadcast
+    ? 'What you were asked comes back and asks you again days later. That is not a gimmick &mdash; it is the part that makes the night stick.'
+    : 'The songs you answered about come back on Spotify next week and ask you again. That is not a gimmick &mdash; it is the part that makes the night stick.';
   var _d=document.getElementById('discl');
   if(_d) _d.innerHTML = SHOW.real
     ? 'Shadow run &middot; real results &middot; not affiliated with NBC, Peacock or the Television Academy'
@@ -1703,6 +1719,14 @@ function renderSetlist(){
 /* How many are actually playing tonight. It was hard-coded at 1,204, which
    is a fine number in an arena and an absurd one in a 212-capacity club. */
 function playing(){
+  /* NOTHING IS COUNTING A REAL ROOM, SO IT RETURNS NOTHING. The Emmys
+     shadow run carried cap:"" — which fell through this function's
+     default of 1000, times the broadcast rate, and printed "4 WATCHING"
+     at a founder sitting alone on his sofa. An invented audience is the
+     one thing this product is not allowed to show, and showsCrowd() was
+     already the owner of that rule; this function simply was not asking
+     it. Same one-fact-many-copies disease as wasRight(). */
+  if(!showsCrowd()) return null;
   var n=parseInt(String(SHOW.cap).replace(/[^0-9]/g,''),10)||1000;
   /* A broadcast reaches vastly more people and converts a far smaller slice
      of them than a room does — nobody in an arena is doing the dishes. */
@@ -1769,19 +1793,26 @@ function renderHold(){
      +'<div><span class="v">'+(S.gap+1)+'<em> of '+GAPS.length+'</em></span><span class="l">Gametime</span></div>'
      +'<div><span class="v">'+esc(g.mins)+'</span><span class="l">'+(SHOW.broadcast?'of break':'to play it')+'</span></div>'
      +'<div><span class="v">'+(g.q.length*g.worth*BASE)+'</span><span class="l">points up</span></div>'
-     +'<div><span class="v">'+playing()+'</span><span class="l">'+(SHOW.broadcast?'watching':'in the room')+'</span></div>'
+     +(playing()!==null
+        ? '<div><span class="v">'+playing()+'</span><span class="l">'+(SHOW.broadcast?'watching':'in the room')+'</span></div>'
+        : '')
    +'</div></div></div>'
    +'<button class="btn" onclick="startGap()">'+'Play '+esc(g.t)+'</button>'
    +'<div class="card"><div class="eyebrow gel">The sheet</div>'
    +'<div style="margin:11px 0 8px">'+sheetHtml()+'</div>'
-   +'<p class="lede">'+(S.gap===0
+   +'<p class="lede">'+((S.gap===0 && !g.songsDone)
      ? (SHOW.broadcast?'Nothing has happened yet. The show has not started.':'Nothing played yet. Doors are open.')
      : (S.gap>=GAPS.length-1
         ? (SHOW.broadcast?'That was the whole broadcast.':SHOW.set.length+' songs. That was the night.')
         : g.songsDone+' of '+SHOW.set.length+' done. '+(SHOW.broadcast?'They are in a break.':'Nothing is on stage right now.')))+'</p></div>'
-   +'<div class="spon"><div class="mk">LN</div><div class="tx">'
-   +'<div class="l">'+esc(g.t)+' presented by</div>'
-   +'<div class="b">'+(SHOW.broadcast?'On a broadcast, a Gametime <b>is</b> the commercial break. The advertiser already paid for this minute — now somebody is looking at it.':'Between rounds and nowhere else. Never over a question, never during a song.')+'</div></div></div>'
+   /* A SPONSOR NOBODY SOLD IS A FABRICATION TOO. The slot is an
+      illustration of where inventory goes; in a room carrying real
+      results it is a brand that never agreed to be there. */
+   +(showsCrowd()
+     ? '<div class="spon"><div class="mk">LN</div><div class="tx">'
+       +'<div class="l">'+esc(g.t)+' presented by</div>'
+       +'<div class="b">'+(SHOW.broadcast?'On a broadcast, a Gametime <b>is</b> the commercial break. The advertiser already paid for this minute — now somebody is looking at it.':'Between rounds and nowhere else. Never over a question, never during a song.')+'</div></div></div>'
+     : '')
    +'</div>';
   $('stage').innerHTML=h;
   if(pending) startHeard(g.heard);
