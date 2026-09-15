@@ -1567,6 +1567,7 @@ function loadShow(i){
   S.ans={}; S.sealed=[]; S.heardDone={}; S.streak=0; S.best=0;
   S.earned=0; S.carry=SHOW.demo?0:180; S.pts=S.carry;
   S.showIdx=i;
+  loadPlay();
   applyTruth();
   /* THE WORDS HAVE TO BE TRUE IN EVERY ROOM. A room carrying real
      results must not call itself demo data, and the Emmys have nothing
@@ -1683,7 +1684,9 @@ function renderHostPanel(){
    answers the host has already called — those are facts about the
    broadcast, not part of anybody's game. */
 function resetNight(){
+  RESETTING=true;
   try{ localStorage.removeItem('fg.open.' + (SHOW.key || 's'+S.showIdx)); }catch(e){}
+  clearPlay();
   location.reload();
 }
 function toggleHost(){
@@ -1847,6 +1850,7 @@ function goto(i){
   stopClock(); S.gap=i; S.qi=-1; S.phase='hold'; S.locked=false;
   for(var d=0;d<5;d++) $('d'+d).classList.toggle('on', d===i);
   renderSetlist();
+  savePlay();
   if(pendingFor(i).length) renderSettle(); else renderHold();
   navGo('gametime');
 }
@@ -2190,6 +2194,7 @@ function seal(idx){
   var g=GAPS[S.gap], q=g.q[S.qi];
   S.ans[S.gap+':'+S.qi]=q.o[idx];
   S.sealed.push({gap:S.gap, qi:S.qi, pick:q.o[idx], at:Date.now(), rate:worthNow()});
+  savePlay();
   buzz(12);
   var tiles=document.querySelectorAll('.tile');
   for(var i=0;i<tiles.length;i++){
@@ -2239,13 +2244,60 @@ function sealMissed(){
 /* THE SETTLE BEAT. A gap that has sealed calls landing in it does NOT open
    on a question — it opens on the fan's own card, greyed, exactly as they
    left it, with how long ago they left it. Then it flips. */
+/* ====================== THE NIGHT SURVIVES THE PHONE ===============
+   A sealed prediction lived in memory and nowhere else, so ANY reload
+   destroyed every card silently — no message, no error, just nothing to
+   settle an hour later. The whole premise of this product is "seal now,
+   settle in ninety minutes", and ninety minutes of a real phone means
+   locking, a phone call, switching apps, and iOS evicting the tab. It
+   survived none of them.
+
+   Second time this desk has shipped this exact bug: the sports sibling's
+   prediction card was never written to disk either.
+
+   What is saved is the PLAY. What is not saved is anything with a clock
+   in it — phase, the question index, the deadline — because resuming
+   mid-question into a dead clock is its own bug. You come back to the
+   hold screen of the Gametime you were in, with every card intact. */
+function playKey(){ return 'fg.play.' + (SHOW && SHOW.key ? SHOW.key : 's'+S.showIdx); }
+/* A reset reloads the page, and a reload fires pagehide, and pagehide
+   saves — which wrote the state straight back over the reset. Found by
+   the check, not by reading it. */
+var RESETTING=false;
+function savePlay(){
+  if(RESETTING) return;
+  try{
+    localStorage.setItem(playKey(), JSON.stringify({
+      sealed:S.sealed, ans:S.ans, pts:S.pts, carry:S.carry, earned:S.earned,
+      streak:S.streak, best:S.best, gap:S.gap, heardDone:S.heardDone
+    }));
+  }catch(e){}
+}
+function loadPlay(){
+  var d;
+  try{ d=JSON.parse(localStorage.getItem(playKey())||'null'); }catch(e){ d=null; }
+  if(!d) return;
+  if(Array.isArray(d.sealed)) S.sealed=d.sealed;
+  if(d.ans && typeof d.ans==='object') S.ans=d.ans;
+  if(typeof d.pts==='number') S.pts=d.pts;
+  if(typeof d.carry==='number') S.carry=d.carry;
+  if(typeof d.earned==='number') S.earned=d.earned;
+  if(typeof d.streak==='number') S.streak=d.streak;
+  if(typeof d.best==='number') S.best=d.best;
+  if(d.heardDone && typeof d.heardDone==='object') S.heardDone=d.heardDone;
+  if(typeof d.gap==='number' && GAPS[d.gap]) S.gap=d.gap;
+  /* never restore anything that runs on a clock */
+  S.qi=-1; S.phase='hold'; S.locked=false; S.settling=null;
+}
+function clearPlay(){ try{ localStorage.removeItem(playKey()); }catch(e){} }
+
 function pendingFor(gap){
   return S.sealed.filter(function(x){ return GAPS[x.gap].q[x.qi].settles===gap && !x.done; });
 }
 function renderSettle(){
   var list=pendingFor(S.gap);
   if(!list.length){ S.settling=null; renderHold(); return; }
-  var it=list[0]; it.done=true; S.settling=it;
+  var it=list[0]; it.done=true; S.settling=it; savePlay();
   var q=GAPS[it.gap].q[it.qi];
   var ok=it.pick===q.a;
   var mins=Math.max(1,Math.round((Date.now()-it.at)/60000));
@@ -2749,6 +2801,13 @@ else {
 /* The panel exists only for whoever is running the night. It is off
    unless ?host=1 is in the URL, so a player link never shows it — and
    it is rendered AFTER loadShow so it reflects the room actually up. */
+/* A phone that locks fires pagehide, not unload. The sports sibling lost
+   a whole quarter to exactly this. */
+window.addEventListener('pagehide', function(){ try{ savePlay(); }catch(e){} });
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){ try{ savePlay(); }catch(e){} }
+});
+
 if(hostOn()){
   var _hp = document.getElementById('hostpanel');
   if(_hp){
