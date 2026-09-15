@@ -704,12 +704,35 @@ body.nonotes .q-why{display:none}
   color-mix(in srgb,var(--gel-b) 22%,transparent));border-color:var(--gel-b);
   box-shadow:0 0 16px color-mix(in srgb,var(--gel-b) 50%,transparent)}
 .bowl .seg.me b{color:var(--gel-b)}
+
+/* ---- THE RESOLUTION PANEL (?host=1 only) -------------------------
+   Inside .phone, never position:fixed — a fixed overlay here once
+   sprayed confetti across the whole desktop browser. */
+#hostpanel{position:absolute;left:0;right:0;bottom:0;z-index:70;max-height:56%;
+  overflow-y:auto;background:rgba(6,6,11,.975);border-top:2px solid var(--amb);
+  padding:10px 12px 16px;font-family:var(--mono);font-size:11px}
+#hostpanel .hp-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;
+  color:var(--amb);letter-spacing:.14em;font-weight:700;padding:2px 0 9px;
+  border-bottom:1px solid var(--line);margin-bottom:9px;position:sticky;top:-10px;
+  background:rgba(6,6,11,.985)}
+#hostpanel .hp-h span{color:var(--muted);letter-spacing:.06em;font-weight:500;
+  text-align:right;font-size:10px}
+#hostpanel .hp-q{padding:7px 0;border-bottom:1px solid var(--line3)}
+#hostpanel .hp-t{color:var(--muted);line-height:1.35;margin-bottom:6px}
+#hostpanel .hp-q.pend .hp-t{color:var(--amb)}
+#hostpanel .hp-o{display:flex;flex-wrap:wrap;gap:5px}
+#hostpanel .hp-b{font-family:var(--mono);font-size:11px;padding:6px 9px;border-radius:6px;
+  border:1px solid var(--line2);background:var(--card);color:var(--body);cursor:pointer;
+  line-height:1.15}
+#hostpanel .hp-b.on{background:var(--green);border-color:var(--green);color:#04150e;font-weight:700}
+#hostpanel .hp-b:focus-visible{outline:2px solid var(--amb);outline-offset:2px}
 </style>
 </head>
 <body class="nonotes">
 <div class="phone">
   <canvas id="celeb" aria-hidden="true"></canvas>
   <div id="wash"></div>
+  <div id="hostpanel" hidden></div>
   <div id="slam"></div>
 
   <div class="demo">
@@ -1288,6 +1311,86 @@ SHOWS.push({
   }
 });
 
+/* ---- THE 78th PRIMETIME EMMYS — a SHADOW RUN, 14 Sept 2026 --------
+   Built at 6:20pm PT with the broadcast already an hour old, to test
+   the operating loop before Game Night Zero on the 27th: advancing
+   Gametimes by hand against a live show, and grading an award the
+   moment it is announced.
+
+   THE BACK HALF ONLY. Three Gametimes, not five, because there is only
+   an hour and a half of show left — the same rule that gives a club
+   three and an arena five. Worths are 2/4/5 so they match the VMA
+   room's later Gametimes exactly; what is learned here transfers.
+
+   PREDICT AND RECALL ONLY. No room questions: one person is not a
+   room, and a room question with nobody counting it is a guess wearing
+   a percentage. Same law as a generated artist night.
+
+   EVERY RECALL ANSWER BELOW ALREADY HAPPENED and is sourced from the
+   published winners list. EVERY PREDICT ANSWER IS EMPTY ON PURPOSE —
+   nobody knows them yet, and a guess baked in as truth is the bug this
+   run exists to prove. The host sets them from the panel as they are
+   announced. ------------------------------------------------------ */
+SHOWS.push({
+  key:"emmys",
+  act:"The 78th Emmys", venue:"NBC · Peacock", city:"Peacock Theater, LA",
+  scale:"Broadcast · shadow run", gelA:"#d4af37", gelB:"#35e0e8",
+  cap:"", broadcast:true, real:true,
+  set:["Lead Actress Comedy","Supporting Limited","Lead Actor Drama",
+       "Lead Actress Drama","Reality Host","Lead Actor Comedy",
+       "Limited Series","Comedy Series","Drama Series"],
+  gaps:[
+   {n:"Gametime 01", t:"Right Back", when:"Mid-show break · the big three are still to come",
+    sub:"An hour is gone and the night's last two awards have not been opened. Seal them now: they settle at the very end, and they pay at the rate of the Gametime they land in, not this one.",
+    worth:2, songsDone:5, mins:"3 min", q:[
+    {k:"Predict", mode:"predict", settles:2, win:30, t:"Who takes Outstanding Drama Series?",
+     o:["The Pitt","Severance","Slow Horses","Pluribus"], a:"",
+     lock:"Sealed. Settles at the very end of the night.",
+     r:"The last envelope of the night.",
+     w:"The final award of the broadcast, sealed ninety minutes early. This is the seal-and-settle beat the whole product is built on, and tonight is the first time it has ever run against a real live result."},
+    {k:"Predict", mode:"predict", settles:2, win:30, t:"Who takes Outstanding Comedy Series?",
+     o:["The Bear","Hacks","Abbott Elementary","Shrinking"], a:"",
+     lock:"Sealed. Settles with the Drama Series call.",
+     r:"Announced just before the last one.",
+     w:"A second long seal, so the sealed tray has more than one card in it — the tray is what keeps the phone coming back."},
+    {k:"Recall", mode:"recall", t:"Who won Lead Actress in a Drama Series?",
+     o:["Keri Russell","Rhea Seehorn","Carrie Coon","Zendaya"], a:"Rhea Seehorn",
+     r:"Rhea Seehorn, for Pluribus.",
+     w:"Already announced on air. A recall question is only fair if the answer was in the room — this one was."},
+    {k:"Recall", mode:"recall", t:"Who won Lead Actor in a Drama Series?",
+     o:["Sterling K. Brown","Gary Oldman","Noah Wyle","Rufus Sewell"], a:"Noah Wyle",
+     r:"Noah Wyle. The Pitt.",
+     w:"Two recalls back to back is deliberate: it proves whether a viewer who has been present for an hour can actually retrieve what they saw."}
+   ]},
+
+   {n:"Gametime 02", t:"The Envelope", when:"Last break · the final awards are next",
+    sub:"The last break of the night. Everything you sealed an hour ago is about to open.",
+    worth:4, songsDone:7, mins:"2 min", q:[
+    {k:"Recall", mode:"recall", t:"Who won Lead Actress in a Comedy Series?",
+     o:["Quinta Brunson","Jean Smart","Ayo Edebiri","Elle Fanning"], a:"Jean Smart",
+     r:"Jean Smart, for Hacks. Again.",
+     w:"Asked at the moment attention is highest and a network most wants to know somebody is still there."},
+    {k:"Recall", mode:"recall", t:"DTF St. Louis took both supporting Limited awards. Who were they?",
+     o:["Cardellini and Harbour","Janney and Rhys","O'Flynn and Cumming","Coon and Sewell"],
+     a:"Cardellini and Harbour",
+     r:"Linda Cardellini and David Harbour.",
+     w:"A harder recall on purpose — a question that separates somebody watching from somebody with the television on."}
+   ]},
+
+   {n:"Gametime 03", t:"Credits", when:"After · the show is over",
+    sub:"The credits are rolling and nobody has moved. Your sealed calls open here.",
+    worth:5, songsDone:9, mins:"20 min", q:[
+    {k:"Recall", mode:"recall", t:"What was the last award of the night?",
+     o:["Outstanding Drama Series","Outstanding Comedy Series",
+        "Outstanding Limited Series","Lead Actor in a Drama Series"],
+     a:"Outstanding Drama Series",
+     r:"Drama Series closes it. It always does.",
+     w:"The last thing the room saw, asked ninety seconds later — the peak-end moment the product is designed around."}
+   ]}
+  ],
+  heard:{}
+});
+
 /* The three live globals the whole engine reads. loadShow swaps them. */
 var SHOW, GAPS, HEARD, CEILING=0;
 /* ====================== STATE ======================================= */
@@ -1436,11 +1539,75 @@ function loadShow(i){
   S.ans={}; S.sealed=[]; S.heardDone={}; S.streak=0; S.best=0;
   S.earned=0; S.carry=SHOW.demo?0:180; S.pts=S.carry;
   S.showIdx=i;
+  applyTruth();
   paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud(); renderPicker();
   for(var d=0;d<5;d++){ var b=$('d'+d); if(b){ b.style.display = d<GAPS.length?'':'none';
     var lb=GAPS[d]?GAPS[d].t.replace(/^The /,''):''; b.textContent=lb.charAt(0).toUpperCase()+lb.slice(1); b.classList.toggle('on',d===0); } }
 }
 function pickShow(i){ loadShow(i); navGo('gametime'); }
+
+/* ====================== THE RESOLUTION PANEL =======================
+   A concert has no feed. The doctrine's answer is a setlist plus a
+   six-button panel a production assistant taps — this is the smallest
+   real version of that panel, and it is the piece the moat argument
+   actually rests on.
+
+   IT MUTATES q.a AT THE SOURCE, deliberately. There are eight separate
+   readers of q.a in this file (the grade, the reveal, the settle card,
+   the round summary, the section split). Teaching each one about an
+   override is exactly the one-fact-many-copies disease that has now
+   caused thirteen catalogued bugs here. One write, at the source, and
+   every reader is right by construction.
+
+   Truth persists per show key, so a reload mid-broadcast does not lose
+   what the host has already called. */
+function truthKey(){ return 'fg.truth.' + (SHOW && SHOW.key ? SHOW.key : 's'+S.showIdx); }
+function readTruth(){
+  try{ return JSON.parse(localStorage.getItem(truthKey()) || '{}'); }catch(e){ return {}; }
+}
+function applyTruth(){
+  var t = readTruth(), k;
+  for(k in t){
+    if(!t.hasOwnProperty(k)) continue;
+    var p = k.split(':'), gi = +p[0], qi = +p[1];
+    if(GAPS[gi] && GAPS[gi].q[qi] && GAPS[gi].q[qi].o.indexOf(t[k]) >= 0){
+      GAPS[gi].q[qi].a = t[k];
+    }
+  }
+}
+function setTruth(gi, qi, val){
+  var t = readTruth();
+  t[gi + ':' + qi] = val;
+  try{ localStorage.setItem(truthKey(), JSON.stringify(t)); }catch(e){}
+  applyTruth();
+  renderHostPanel();
+}
+function hostOn(){
+  try{ return new URLSearchParams(location.search).get('host') === '1'; }catch(e){ return false; }
+}
+function renderHostPanel(){
+  var el = document.getElementById('hostpanel');
+  if(!el) return;
+  var h = '<div class="hp-h">RESOLUTION PANEL<span>' + (SHOW.act||'') + '</span></div>', pending = 0;
+  for(var gi=0; gi<GAPS.length; gi++){
+    for(var qi=0; qi<GAPS[gi].q.length; qi++){
+      var q = GAPS[gi].q[qi];
+      if(q.mode === 'room') continue;
+      var unset = !q.a;
+      if(unset) pending++;
+      h += '<div class="hp-q' + (unset ? ' pend' : '') + '">'
+         + '<div class="hp-t">' + (unset ? '● ' : '✓ ') + esc(q.t) + '</div><div class="hp-o">';
+      for(var oi=0; oi<q.o.length; oi++){
+        h += '<button type="button" class="hp-b' + (q.o[oi] === q.a ? ' on' : '') + '" '
+           + 'onclick="setTruth(' + gi + ',' + qi + ',this.dataset.v)" '
+           + 'data-v="' + esc(q.o[oi]) + '">' + esc(q.o[oi]) + '</button>';
+      }
+      h += '</div></div>';
+    }
+  }
+  h = h.replace('</span>', ' · ' + (pending ? pending + ' UNSET' : 'all set') + '</span>');
+  el.innerHTML = h;
+}
 
 /* THE PICKER. Three rooms at three scales, and the point of it is the
    third one: a club show is not a small arena. It has three gaps, not
@@ -2401,7 +2568,7 @@ var SRC = (function(){
    demo and leaves. An unknown or missing ?room= falls through to the
    default show, exactly as before. */
 var ROOMS = { bep:0, peas:0, karolg:1, 'karol-g':1, static:2, echo:2, club:2,
-              vmas:3, vma:3, mtv:3 };
+              vmas:3, vma:3, mtv:3, emmys:4, emmy:4, nbc:4 };
 
 /* ====================== BOOT ====================================== */
 var URLSHOW = showFromUrl();
@@ -2411,6 +2578,14 @@ else {
   try{ _rq = String(new URLSearchParams(location.search).get('room') || '').toLowerCase(); }catch(e){}
   var _ri = ROOMS[_rq];
   loadShow((typeof _ri === 'number' && SHOWS[_ri]) ? _ri : 0);
+}
+
+/* The panel exists only for whoever is running the night. It is off
+   unless ?host=1 is in the URL, so a player link never shows it — and
+   it is rendered AFTER loadShow so it reflects the room actually up. */
+if(hostOn()){
+  var _hp = document.getElementById('hostpanel');
+  if(_hp){ _hp.hidden = false; renderHostPanel(); }
 }
 /* THE COUNTDOWN DOES NOT PARK AT 0:00 AND SIT THERE. It rolls into the
    thing it was counting down to. */
