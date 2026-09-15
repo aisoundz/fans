@@ -1722,6 +1722,10 @@ function navGo(k){
   $('scroller').scrollTop=0;
   $('hud').style.display = (k==='gametime') ? 'flex' : 'flex';
   if(k==='board') renderBoard();
+  /* The sheet was only ever redrawn when the Gametime changed, so the
+     Fans tab showed whatever was true the last time you moved. It is the
+     progress bar of the night; it has to be redrawn when it is read. */
+  if(k==='fans') renderSetlist();
 }
 
 /* ====================== THE SHEET =================================== */
@@ -1857,7 +1861,13 @@ function goto(i){
 
 function renderShut(i){
   var g=GAPS[i];
-  for(var d=0;d<5;d++){ var b=$('d'+d); if(b) b.classList.toggle('on', d===i); }
+  /* THE HIGHLIGHT STAYS ON THE GAMETIME YOU ARE ACTUALLY IN. Moving it
+     to a shut one made the tab bar say ENVELOPE while the game, the
+     sheet and the score were all still in Right Back — so a player could
+     believe they had played a round they had not, reach Credits, and
+     settle nothing. Exactly the failure this pacing was added to
+     prevent, reintroduced by the pacing itself. */
+  for(var d=0;d<5;d++){ var b=$('d'+d); if(b) b.classList.toggle('on', d===S.gap); }
   $('stage').innerHTML='<div class="hold"><div class="holdhero">'
    +'<div class="k">Not open yet</div>'
    +'<div class="big">'+esc(g.t)+'</div>'
