@@ -762,6 +762,9 @@ body.nonotes .q-why{display:none}
   border-radius:var(--r2);background:rgba(255,181,69,.05);color:var(--muted);
   font:500 14px/1.5 var(--f)}
 .waitfor b{color:var(--amb)}
+
+.verdict.void{border-color:var(--line2)}
+.verdict.void .m{color:var(--muted)}
 </style>
 </head>
 <body class="nonotes">
@@ -1232,36 +1235,54 @@ SHOWS.push({
    true of every awards show. The performer-specific slots get filled in
    the week of. ------------------------------------------------------- */
 SHOWS.push({
-  act:"MTV VMAs", venue:"CBS · MTV · Paramount+", city:"Live from Los Angeles",
+  key:"vmas", real:true,
+  act:"MTV VMAs", venue:"CBS · MTV · Paramount+", city:"Peacock Theater, LA",
   scale:"Broadcast · 27 Sept", gelA:"#b14aff", gelB:"#ffd23f",
-  cap:"5,200,000 watching", broadcast:true,
-  set:["Opening performance","Best Pop","Performance","Best Hip-Hop",
+  cap:"", broadcast:true,
+  /* Snoop Dogg hosts. Madonna opens — announced 16 Sept, her first VMAs
+     performance in 23 years. Also performing: Lisa, RAYE, Sienna Spiro,
+     Shaboozey, GENER8ION, Gunna, Yung Lean. Nirvana take the Michael
+     Jackson Video Vanguard Award.
+     THE RUNNING ORDER BELOW IS STILL A GUESS and drives the sheet. It is
+     the last hardcoded guess in this room — see the Emmys debrief. */
+  set:["Madonna opens","Best Pop","Performance","Best Hip-Hop",
        "Best Collaboration","Performance","Song of the Year","Best New Artist",
-       "Performance","Artist of the Year","Performance","Video of the Year"],
+       "Video Vanguard: Nirvana","Artist of the Year","Performance","Video of the Year"],
   gaps:[
    {n:"Gametime 01", t:"Red Carpet", when:"Pre-show · nothing has happened yet",
     sub:"An hour of arrivals and predictions. Nothing has been decided, so tonight this is the sheet — you seal your calls now and they pay out on air.",
     worth:1, songsDone:0, mins:"60 min", q:[
     {k:"Predict", mode:"predict", settles:3, win:30, t:"Who takes Video of the Year?",
-     o:["Taylor Swift","Madonna","Sabrina Carpenter","Ariana Grande"], a:"Madonna",
-     lock:"Sealed. Settles at The Envelope.", r:"Eleven nominations. One moon person.",
-     w:"The last award of the night, sealed ninety minutes before it opens. This is the single best-timed question available anywhere on television, and it costs nothing to run."},
-    {k:"Predict", mode:"predict", settles:1, win:30, t:"Who opens the show?",
-     o:["Sabrina Carpenter","Bruno Mars","LISA","Somebody not nominated"], a:"Sabrina Carpenter",
-     lock:"Sealed. Settles at the first break.", r:"She opened it. Called.",
+     /* SIX NOMINEES, SIX TILES. This shipped with four, chosen by hand,
+        and it dropped Bruno Mars and Gener8ion. At the Emmys the same
+        habit cut Outstanding Comedy Series from eight to four and the
+        winner was one of the four dropped — the question could not be
+        answered correctly by anybody. Options come off the published
+        list now: node host/resolve.js 2026_MTV_Video_Music_Awards
+        --category "Video of the Year". */
+     o:["Ariana Grande","Bruno Mars","Gener8ion featuring Yung Lean",
+        "Madonna","Sabrina Carpenter","Taylor Swift"], a:"",
+     lock:"Sealed. Settles at The Envelope.",
+     r:"The last moon person of the night.",
+     w:"The last award of the night, sealed ninety minutes before it opens. The single best-timed question available anywhere on television, and it costs nothing to run."},
+    {k:"Predict", mode:"predict", settles:3, win:30, t:"Who takes Artist of the Year?",
+     o:["Ariana Grande","Bruno Mars","Madonna","Morgan Wallen",
+        "Sabrina Carpenter","Taylor Swift"], a:"",
+     lock:"Sealed. Settles at The Envelope.",
+     r:"Artist of the Year, called an hour and a half early.",
+     w:"A second long seal, so the tray has more than one card in it. The tray is what brings the phone back out."},
+    {k:"Predict", mode:"predict", settles:1, win:30, t:"What does Madonna open with?",
+     /* She was announced as the opener on 16 Sept — so WHO opens is now
+        lookupable and is no longer a question. WHAT she does is not. */
+     o:["A brand new song","A classic","A medley","A duet with somebody"], a:"",
+     lock:"Sealed. Settles at the first break.",
+     r:"First VMAs performance in 23 years.",
      w:"The teacher card — it settles first, so the room learns what a sealed call feels like before the big one lands."},
-    {k:"Room", mode:"room", t:"Where are you watching from?",
-     o:["On the couch alone","With people","A watch party","Second screen at work"],
-     r:"Most of you are not alone.",
-     w:"The room's own answer is the truth. It is also the first co-viewing measurement anybody has taken during an awards broadcast, and networks have wanted it for forty years."},
     {k:"Predict", mode:"predict", settles:4, win:30, t:"How many does Madonna win tonight?",
-     o:["None","One","Two","Three or more"], a:"Two",
-     lock:"Sealed until the credits.", r:"Two from eleven. The gap is the story.",
-     w:"Zero to three, never more — a tally you can hold in your head across a two-hour show without a notebook."},
-    {k:"Room", mode:"room", t:"Who are you actually rooting for?",
-     o:["Taylor Swift","Madonna","Sabrina Carpenter","Somebody else"],
-     r:"The room picked its horse.",
-     w:"Un-Googleable, cannot void, and it produces a live sentiment read per market that no broadcaster currently has."}
+     o:["None","One or two","Three or four","Five or more"], a:"",
+     lock:"Sealed until the credits.",
+     r:"Thirteen nominations. The gap is the story.",
+     w:"She leads the night with thirteen nominations. Banded, never a raw tally — you can hold four bands in your head across a two-hour show, not a count."}
    ]},
 
    {n:"Gametime 02", t:"Cutaway", when:"First break · we'll be right back",
@@ -1314,7 +1335,7 @@ SHOWS.push({
      r:"Four. You were counting.",
      w:"A count you can only hold if you were present for the whole broadcast, which is precisely what an advertiser is paying for."},
     {k:"Predict", mode:"predict", settles:4, win:12, t:"Last call — does the winner cry?",
-     o:["Yes","No"], a:"Yes",
+     o:["Yes","No"], a:"",
      lock:"Sealed. Settles in about four minutes.", r:"They cried. They always do.",
      w:"A prediction that settles inside the same commercial break's show segment. Ninety seconds of dead air turned into the tensest moment of somebody's night."}
    ]},
@@ -1548,9 +1569,17 @@ function split(q){
    inline check against q.a, and a ROOM question has no q.a — its answer is
    whatever the building said. So a round of room questions could pay points
    and report "Nothing that round" on the same screen. */
+/* A question the host has not called yet has no correct answer. Grading
+   against an empty string marks EVERY player wrong for the host being
+   slow, silently and with total confidence. It voids instead. */
+function isVoid(gi,qi){
+  var q=GAPS[gi].q[qi];
+  return q.mode!=='room' && !q.a;
+}
 function wasRight(gi,qi){
   var q=GAPS[gi].q[qi], a=S.ans[gi+':'+qi];
   if(a===undefined||a==='—') return false;
+  if(isVoid(gi,qi)) return false;
   if(q.mode==='room') return a===q.o[topOf(q)];
   return a===q.a;
 }
@@ -1575,7 +1604,23 @@ function sectionPct(q){
    =================================================================== */
 function loadShow(i){
   stopClock();
-  SHOW=SHOWS[i]; GAPS=SHOW.gaps; HEARD=SHOW.heard||{};
+  SHOW=SHOWS[i];
+  GAPS=SHOW.gaps; HEARD=SHOW.heard||{};
+  /* A ROOM QUESTION IN A REAL ROOM IS A FABRICATION. The room's own
+     answer IS the truth — but there is no server here, so every phone is
+     alone and nothing counts anybody. wasRight() grades a room question
+     against topOf(), which is derived from a hash of the question text.
+     On the 27th that would award points for agreeing with a number we
+     made up. showsCrowd() already suppresses the crowd BAR; this removes
+     the questions that depend on one. They come back the day a backend
+     counts submissions, and not before. */
+  if(SHOW.real){
+    GAPS = SHOW.gaps.map(function(g){
+      var c={}; for(var k in g) c[k]=g[k];
+      c.q = g.q.filter(function(q){ return q.mode!=='room'; });
+      return c;
+    }).filter(function(g){ return g.q.length; });
+  }
   CEILING=computeCeiling();
   S.gap=0; S.qi=-1; S.phase='hold'; S.locked=false;
   S.ans={}; S.sealed=[]; S.heardDone={}; S.streak=0; S.best=0;
@@ -2145,6 +2190,15 @@ function answer(idx){
 
   /* 520ms — the reveal */
   setTimeout(function(){
+    if(isVoid(S.gap,S.qi)){
+      /* Nothing was called, so nothing is graded. Say so, bank the
+         points rather than confiscating them, and move on. */
+      S.pts += earned; S.earned += earned;
+      $('after').innerHTML='<div class="verdict void"><div class="m">&#8709;</div>'
+        +'<div class="x">Not called yet<small>this one voided &middot; you keep '+earned+'</small></div></div>'
+        +'<div class="reax">Nobody has announced it, so nobody can be wrong about it.</div>';
+      renderHud(); setTimeout(function(){ advance(); },2600); return;
+    }
     var picked=$('t'+idx), right=$('t'+ai);
     if(picked&&!ok){ picked.classList.remove('picked'); picked.classList.add('wrong','shake'); }
     if(picked&&ok){ picked.classList.remove('picked'); picked.classList.add('right'); }
@@ -2365,6 +2419,18 @@ function renderSettle(){
   if(!list.length){ S.settling=null; renderHold(); return; }
   var it=list[0]; it.done=true; S.settling=it; savePlay();
   var q=GAPS[it.gap].q[it.qi];
+  if(!q.a){
+    /* The host never called it. A sealed card cannot settle against
+       nothing — it would flip to a red cross for the host's lateness. */
+    S.pts += (it.rate||1)*BASE; S.earned += (it.rate||1)*BASE;
+    $('stage').innerHTML='<div class="hold"><div class="holdhero">'
+      +'<div class="k">Sealed at '+esc(GAPS[it.gap].t.toLowerCase())+'</div>'
+      +'<div class="big">Not called</div>'
+      +'<div class="sub">'+esc(q.t)+'<br><br>Nobody announced the result, so this one voids and you keep the points. Your call was '
+      +esc(it.pick)+'.</div></div>'
+      +'<button class="btn" onclick="goto('+S.gap+')">Carry on</button></div>';
+    renderHud(); return;
+  }
   var ok=it.pick===q.a;
   var mins=Math.max(1,Math.round((Date.now()-it.at)/60000));
   var held=Math.max(1,Math.min(3,S.gap-it.gap));      /* the hold bonus */
@@ -2562,8 +2628,12 @@ function claimHtml(){
       to the founder, not to somebody standing in a car park, so it moved to
       the designer notes where the rest of the reasoning lives. */
    +'<div class="earned"><b>'+S.earned+'</b><span>of '+CEILING+(real?'':' in this room')+' &middot; '+pct+'% of the night</span></div>'
+   /* "carried in from Spotify" is true of a concert room and false of a
+      broadcast, which has no Spotify link at all. Caught by the gate,
+      which asserted a real room offers no Spotify and found this buried
+      in the accounting note rather than on a button. */
    +'<div class="q-why"><b>Why the carry-in is excluded</b>'
-   +'The '+S.carry+' carried in from Spotify counts toward the score and not toward this percentage, because a number labelled "of the night" has to measure the night. Earned and total are two quantities and only one is ever shown as a percentage.</div>'
+   +'The '+S.carry+' carried in'+(SHOW.broadcast?'':' from Spotify')+' counts toward the score and not toward this percentage, because a number labelled "of the night" has to measure the night. Earned and total are two quantities and only one is ever shown as a percentage.</div>'
    /* There is no merch stand at a broadcast you watched from a sofa, and
       nothing comes back on Spotify from an awards show with no songs.
       This slot is where an advocate reward or a sponsor goes; until one
