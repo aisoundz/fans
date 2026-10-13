@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Security headers. GitHub Pages cannot set response headers, so the
+     policy is a meta tag. See SECURITY-HEADERS.md for what that costs
+     (HSTS, nosniff and clickjacking are not reachable from this host)
+     and why assets.mailerlite.com is in script-src: the signup on
+     /vmas uses JSONP, which loads a real <script> from that origin. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#06060b">
 <meta name="description" content="FANS GAMETIME — the game that pays to be there. Play the gaps in a live show.">

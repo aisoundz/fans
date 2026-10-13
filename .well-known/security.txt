@@ -1,0 +1,19 @@
+# FANS GAMETIME
+# https://fansgametime.com
+#
+# If you have found a security problem with this site, please write to the
+# address below. A plain description and a way to reproduce it is more useful
+# than a formal report.
+#
+# Worth knowing before you report it: the signup form on /vmas uses JSONP,
+# which loads a script from assets.mailerlite.com by design rather than by
+# accident. It carries no credential. The account and form ids in that URL are
+# placeholders, so the form is not yet wired to a live list.
+#
+# Please do not run automated scanners against the live site. Every page it
+# serves is a static file.
+
+Contact: mailto:aisoundz9@gmail.com
+Expires: 2027-09-01T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://fansgametime.com/.well-known/security.txt
