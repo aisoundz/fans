@@ -109,35 +109,75 @@ async function lastEdited(page){
    it would have announced Ariana Grande the winner of Video of the Year
    eight days before anybody voted, with total confidence — the exact
    failure this file exists to prevent. Bold is the invariant across both
-   states, and no bold means NOT DECIDED YET. */
+   states, and no bold means NOT DECIDED YET.
+
+   TWO PAGE SHAPES, AND WHAT A SECOND STAR MEANS DEPENDS ON THE PAGE.
+   - A category is opened either by {{Award category|...|Name}} (Emmys,
+     VMAs, Grammys) or by a table header cell `! ... |[[...|Name]]` whose
+     body sits in the matching `| valign="top" |` cell below it (CMAs).
+     The first version knew only the template, and on the CMAs it parsed
+     nothing at all.
+   - A Grammy-family page lists every nominee at one star and hangs the
+     producer and engineer credits under each at two. The first version
+     read those credits as nominees: Record of the Year had 20, half of
+     them "Rafa Arcaute & Federico Vindver, record producers…". So: if a
+     category has several one-star lines, those ARE the nominees and
+     deeper lines are detail. If it has exactly one, that is a decided
+     Emmys-style winner and the two-star lines under it are the losers. */
 function parseCategories(wt){
   const out = [];
   let cur = null;
+  const pending = [];                           /* table headers awaiting their cell */
+  const open = name => {
+    if(cur) out.push(cur);
+    cur = { category: clean(name), lines: [] };
+  };
   for(const raw of wt.split('\n')){
     const line = raw.trim();
 
     const cat = line.match(/\{\{\s*Award category[^|]*\|[^|]*\|\s*(.+?)\}\}/i);
-    if(cat){
-      if(cur) out.push(cur);
-      cur = { category: clean(cat[1]), winner: null, winnerFull: null, nominees: [], decided: false };
+    if(cat){ open(cat[1]); continue; }
+
+    if(/^!/.test(line)){                        /* `! style=… |[[Target|Name]]` */
+      /* drop the attribute run (`width=… style=… |`), keep the cell */
+      const name = clean(line.replace(/^!\s*(?:[^|[]*\|)?/, ''));
+      if(name) pending.push(name);
       continue;
     }
-    if(!cur) continue;
-    if(!/^\*+\s*\S/.test(line)) continue;
-
-    const body = line.replace(/^\*+\s*/, '');
-    const name = token(body);
-    if(!name) continue;
-    if(!cur.nominees.includes(name)) cur.nominees.push(name);
-
-    if(/'''/.test(body) && !cur.winner){        /* bold: this one won */
-      cur.winner = name;
-      cur.winnerFull = clean(body);
-      cur.decided = true;
+    /* any cell opener — `| valign="top" |`, `| colspan="2" |`, bare `|` —
+       but not a row break (|-), table end (|}) or caption (|+). Keying
+       on valign alone let a colspan cell's bold honoree land inside the
+       previous category and announce a winner three weeks early. */
+    if(/^\|(?![-}+])/.test(line) && pending.length){
+      open(pending.shift());
+      const rest = line.replace(/^\|[^|]*\|/, '').trim();
+      if(/^\*/.test(rest)) cur.lines.push(rest);
+      continue;
     }
+    if(/^\|\}/.test(line)){ pending.length = 0; continue; }
+    if(!cur) continue;
+    if(/^\*+\s*\S/.test(line)) cur.lines.push(line);
   }
   if(cur) out.push(cur);
-  return out.filter(c => c.nominees.length);
+
+  return out.map(c => {
+    const depth = l => l.match(/^\*+/)[0].length;
+    const ones = c.lines.filter(l => depth(l) === 1);
+    const keep = ones.length >= 2 ? ones : c.lines.filter(l => depth(l) <= 2);
+    const r = { category: c.category, winner: null, winnerFull: null, nominees: [], decided: false };
+    for(const l of keep){
+      const body = l.replace(/^\*+\s*/, '');
+      const name = token(body);
+      if(!name) continue;
+      if(!r.nominees.includes(name)) r.nominees.push(name);
+      if(/'''/.test(body) && !r.winner){        /* bold: this one won */
+        r.winner = name;
+        r.winnerFull = clean(body);
+        r.decided = true;
+      }
+    }
+    return r;
+  }).filter(c => c.nominees.length);
 }
 
 async function resolve(page){
@@ -168,8 +208,10 @@ async function resolve(page){
   return { page, asOf: await lastEdited(page), categories: cats };
 }
 
+module.exports = { parseCategories, token, clean };
+
 /* ------------------------------ CLI ------------------------------ */
-(async () => {
+if(require.main === module) (async () => {
   const args = process.argv.slice(2);
   const page = args[0];
   if(!page){

@@ -11,7 +11,11 @@ const B = process.env.TARGET || 'http://127.0.0.1:8777';
 const SRC = '/home/higherthan7/fans/vmas/index.html';
 let fail=0; const ok=(n,c,d='')=>{console.log((c?'PASS  ':'FAIL  ')+n+(d?'  → '+d:''));if(!c)fail++;};
 
-const FAKE = 'https://fake.test/jsonp/1/forms/2/subscribe';
+/* The real MailerLite origin, answered by a route — so the page's CSP is
+   exercised too. A fake.test origin went red the day the CSP landed (13 Oct)
+   while the real form would have worked. */
+const ORIGIN = 'https://assets.mailerlite.com';
+const FAKE = ORIGIN+'/jsonp/1/forms/2/subscribe';
 
 async function run(br, mode){
   const ctx = await br.newContext({viewport:{width:393,height:852}});
@@ -21,7 +25,7 @@ async function run(br, mode){
   const html = fs.readFileSync(SRC,'utf8')
     .replace("var CAPTURE_ENDPOINT  = '';", "var CAPTURE_ENDPOINT  = '"+FAKE+"';");
   await ctx.route('**/vmas/**', r => r.fulfill({status:200, contentType:'text/html', body:html}));
-  await ctx.route('https://fake.test/**', async route => {
+  await ctx.route(ORIGIN+'/**', async route => {
     const u = new URL(route.request().url()); hit = u;
     if(mode==='ok'){
       await route.fulfill({status:200, contentType:'application/javascript',

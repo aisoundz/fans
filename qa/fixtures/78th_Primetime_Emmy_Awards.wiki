@@ -1,0 +1,800 @@
+{{pp-sock|small=yes}}
+<!--{{Current event||current award ceremony|date=September 2026}}-->
+{{Short description|2026 American television awards}}
+{{Use American English|date=July 2026}}
+{{Use mdy dates|date=July 2026}}
+{{Infobox award
+|name             = 78th Primetime Emmy Awards
+|image            = 78th Primetime Emmy Awards.jpg
+|alt              = 
+|caption          = Promotional poster
+|date             = {{ubl |September 14, 2026 (Ceremony) |[[78th Primetime Creative Arts Emmy Awards|September 5–6, 2026]] (Creative Arts Awards)}}
+|location         = {{ubl |[[Peacock Theater]] |Los Angeles, California}}
+|presenter        = [[Academy of Television Arts & Sciences]]
+|most_awards      =  {{ubl |Major: ''[[Widow's Bay]]'' (6) |Total: ''Widow's Bay'' (14)}}  
+|most_nominations = {{ubl |Major: ''[[The Pitt]]'' (12) |Total: ''The Pitt'' (25)}}
+|award1_type      = [[Primetime Emmy Award for Outstanding Comedy Series|Comedy Series]]
+|award1_winner    = ''Widow's Bay''
+|award2_type      = [[Primetime Emmy Award for Outstanding Drama Series|Drama Series]]
+|award2_winner    = ''The Pitt''
+|award3_type      = [[Primetime Emmy Award for Outstanding Limited or Anthology Series|Limited or Anthology Series]]
+|award3_winner    =  ''[[DTF St. Louis]]'' 
+|host             = [[Mariska Hargitay]]
+|network          = {{ubl |[[NBC]] |[[Peacock (streaming service)|Peacock]]}}
+|producer         = Jesse Collins Entertainment
+|director         = 
+|viewership       = 6.8 million<ref>{{cite web |url= https://www.hollywoodreporter.com/tv/tv-news/2026-emmy-awards-tv-ratings-1236702880/ |title=Emmy Awards Ratings Dip on NBC, Peacock |last=Porter |first=Rick |date=September 15, 2026 |website=[[The Hollywood Reporter]] |access-date=September 23, 2026}}</ref>
+|runtime          = 3 hours
+|previous         = [[77th Primetime Emmy Awards|77th]]
+|next             = [[79th Primetime Emmy Awards|79th]]
+|main             = {{nowrap|[[Primetime Emmy Awards]]}}
+|suppressfields   = website
+}}
+The '''78th Primetime Emmy Awards''' honored the best in American [[prime time]] television programming from June{{nbsp}}1, 2025, until May{{nbsp}}31, 2026, as chosen by the [[Academy of Television Arts & Sciences]].<ref>{{cite press release |url=https://www.televisionacademy.com/files/assets/Downloads/2026-rules-procedures-v4.pdf |title=78th Emmy Awards – 2025–2026 Rules and Procedures |date=April 7, 2026 |publisher=[[Academy of Television Arts & Sciences]] |access-date=May 11, 2026 |archive-url=https://web.archive.org/web/20260708184053/https://www.televisionacademy.com/files/assets/Downloads/2026-rules-procedures-v4.pdf |archive-date=July 8, 2026 }}</ref>   The awards ceremony was held live on September{{nbsp}}14, 2026, at the [[Peacock Theater]] in [[Downtown Los Angeles]], California, and was preceded by the [[78th Primetime Creative Arts Emmy Awards|78th{{nbsp}}Primetime Creative Arts Emmy Awards]] on September{{nbsp}}5 and{{nbsp}}6. The ceremony was produced by Jesse Collins Entertainment and broadcast in the United States by [[NBC]] and [[Peacock (streaming service)|Peacock]].<ref name="Airdate">{{cite web |url=https://deadline.com/2025/11/2026-emmys-airdate-nbc-1236621428/ |title=2026 Emmys Gets Airdate on NBC |last=Petski |first=Denise |website=[[Deadline Hollywood]] |date=November 18, 2025 |access-date=March 3, 2026}}</ref><ref>{{cite web |url=https://www.nbc.com/nbc-insider/2026-emmys-air-date-announcement |title=NBC Reveals the Air Date for the 78th Emmy Awards in 2026 |last=Phelan |first=Chris |publisher=[[NBC]] |date=November 18, 2025 |access-date=March 3, 2026}}</ref><ref name="Calendar">{{cite web |url=https://variety.com/2025/tv/news/emmy-calendar-2026-voting-nomination-dates-tv-academy-1236607719/ |title=TV Academy Reveals Emmy Calendar for 2026 — Including Eligibility, Submission, Voting, and Nomination Dates |last=Schneider |first=Michael |website=[[Variety (magazine)|Variety]] |date=December 12, 2025 |access-date=March 3, 2026}}</ref><ref>{{cite web |url=https://deadline.com/2026/04/jesse-collins-entertainment-emmys-2-1236876445/ |title=Jesse Collins Entertainment to Produce Emmys, Again |last=White |first=Peter |website=[[Deadline Hollywood]] |date=April 30, 2026 |access-date=May 1, 2026}}</ref> The ceremony was produced by Jesse Collins Entertainment, directed by Alex Rudzinski, and broadcast in the United States by [[NBC]] and [[Peacock (streaming service)|Peacock]]. [[Mariska Hargitay]] hosted the event.<ref name="Hargitay"/>
+
+At the main ceremony, ''[[Widow's Bay]]'' led all programs with six awards including [[Primetime Emmy Award for Outstanding Comedy Series|Outstanding Comedy Series]], and ''[[The Pitt]]'' won two awards including [[Primetime Emmy Award for Outstanding Drama Series|Outstanding Drama Series]]. Other winning programs included ''[[Pluribus (TV series)|Pluribus]]'' with two awards, and ''[[The Beast in Me (TV series)|The Beast in Me]]'', ''[[DTF St. Louis]]'', ''[[Hacks]]'', ''[[The Late Show with Stephen Colbert]]'', ''[[Remarkably Bright Creatures (film)|Remarkably Bright Creatures]]'', ''[[Slow Horses]]'', and ''[[The Traitors (American TV series)|The Traitors]]'' with one each. Including Creative Arts Emmys, ''Widow's Bay'' led all shows with 14 wins, while [[Apple TV (streaming service)|Apple TV]] led all networks with 28 wins.
+
+==Winners and nominees==
+[[File:MatthewRhys-byPhilipRomano.jpg|thumb|upright|alt=|[[Matthew Rhys]], winner for Outstanding Lead Actor in a Comedy Series and Outstanding Lead Actor in a Limited or Anthology Series or Movie]]
+[[File:Jean Smart by Gage Skidmore.jpg|thumb|upright|alt=.|[[Jean Smart]], Outstanding Lead Actress in a Comedy Series winner]]
+[[File:Noah Wyle - Walk of Fame-01.jpg|thumb|upright|alt=.|[[Noah Wyle]], Outstanding Lead Actor in a Drama Series winner]]
+[[File:Rhea Seehorn at 53rd Saturn Awards 2026-03.jpg|thumb|upright|alt=.|[[Rhea Seehorn]], Outstanding Lead Actress in a Drama Series winner]]
+[[File:Sally Field - Grauman's Egyptian Theatre - Norma Rae.jpg|thumb|upright|alt=.|[[Sally Field]], Outstanding Lead Actress in a Limited or Anthology Series or Movie winner]]
+[[File:Stephen Root 2024.jpg|thumb|upright|alt=.|[[Stephen Root]], Outstanding Supporting Actor in a Comedy Series winner]]
+[[File:Allison Janney (40568877620).jpg|thumb|upright|alt=.|[[Allison Janney]], Outstanding Supporting Actress in a Drama Series winner]]
+
+The nominations for the 78th Primetime Emmy Awards were announced on July 8, 2026, at the Television Academy's Wolf Theatre in [[North Hollywood, Los Angeles]], hosted by actor [[Jeff Hiller]] and actress [[Liza Colón-Zayas]], along with Television Academy chair [[Cris Abrego]].<ref>{{cite news |last1=Loving |first1=Casey |title=How to Watch the 2026 Emmy Nominations Live |url=https://www.thewrap.com/industry-news/awards/how-to-watch-emmy-nominations-live-2026/ |access-date=July 15, 2026 |work=[[TheWrap]] |date=July 8, 2026 |archive-url=https://web.archive.org/web/20260709031609/https://www.thewrap.com/industry-news/awards/how-to-watch-emmy-nominations-live-2026/ |archive-date=July 9, 2026 |language=en-US |url-status=live}}</ref> Including nominations at the [[78th Primetime Creative Arts Emmy Awards]], ''[[The Pitt]]'' led all programs with 25 nominations, followed by ''[[Hacks]]'' with 24 nominations.<ref>{{cite news |last1=Dalton |first1=Andrew |title=''The Pitt'' Leads with 25 Emmy Nominations; ''Hacks'' Breaks Record for Comedies with 24 |url=https://apnews.com/article/emmy-nominations-pluribus-beef-hacks-pitt-7d21700a43d7d5da1a662898e3646d46 |access-date=August 11, 2006 |agency=[[Associated Press]] |date=July 8, 2026 |archive-url=https://web.archive.org/web/20260708150816/https://apnews.com/article/emmy-nominations-pluribus-beef-hacks-pitt-7d21700a43d7d5da1a662898e3646d46 |archive-date=July 8, 2026 |language=en-US |url-status=live}}</ref> ''Hacks'' became the most-nominated comedy series for a single season in the awards' history with 24 nominations; the program surpassed the record jointly held by the [[FX (TV channel)|FX]] comedy-drama series ''[[The Bear (TV series)|The Bear]]'' and the [[Apple TV (streaming service)|Apple TV]] comedy series ''[[The Studio (TV series)|The Studio]]'' which earned 23 nominations in [[76th Primetime Emmy Awards|2024]] and [[77th Primetime Emmy Awards|2025]], respectively.<ref>{{cite news |last1=Porter |first1=Rick |title=''Hacks'' Creators on Their Record-Breaking Emmy Nomination Haul: 'Incredible Way to End' |url=https://www.hollywoodreporter.com/tv/tv-features/hacks-creators-record-breaking-emmy-nominations-1236642225/ |access-date=August 11, 2026 |work=[[The Hollywood Reporter]] |date=July 8, 2026 |archive-url=https://web.archive.org/web/20260709200649/https://www.hollywoodreporter.com/tv/tv-features/hacks-creators-record-breaking-emmy-nominations-1236642225/ |archive-date=July 9, 2026 |language=en-US |url-status=live}}</ref> [[HBO]] and its streaming service [[HBO Max]] led all networks and platforms with 123 nominations; [[Netflix]] came in second place with 109 nominations.
+
+Winners are listed first, highlighted in '''boldface''', and indicated with a double dagger (‡).<ref>{{Cite web |date=2026-09-15 |title=Emmys 2026: The winners in full |url=https://www.bbc.com/news/articles/ce8l9pnkn62o |access-date=2026-09-15 |publisher=[[BBC]] |language=en-GB}}</ref><ref>{{Cite news |last=Gonzalez |first=Shivani |date=2026-09-14 |title=Emmy Awards Winners 2026: See the Full List |url=https://www.nytimes.com/2026/09/14/arts/television/emmy-winners-list.html |access-date=2026-09-15 |work=[[The New York Times]] |language=en-US |issn=0362-4331}}</ref>{{efn |The outlets listed for each program are the U.S. broadcasters or streaming services identified in the nominations, which for some international productions are different than the broadcaster(s) that originally commissioned the program. Programs broadcast by [[HBO]] or [[HBO Max]] were listed under both services in the nominations list; only the original broadcaster is listed below.}} For simplicity, producers who received nominations for program awards have been omitted.
+
+===Programs===
+{|class="wikitable" role="presentation"
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Comedy Series|Outstanding Comedy Series]]}}
+*'''''[[Widow's Bay]]'' ([[Apple TV (streaming service)|Apple{{nbsp}}TV]])'''‡
+**''[[Abbott Elementary]]'' ([[American Broadcasting Company|ABC]])
+**''[[The Bear (TV series)|The Bear]]'' ([[FX Networks|FX]])
+**''[[Hacks]]'' ([[HBO Max]])
+**''[[Margo's Got Money Troubles]]'' (Apple{{nbsp}}TV)
+**''[[Nobody Wants This]]'' ([[Netflix]])
+**''[[Only Murders in the Building]]'' ([[Hulu]])
+**''[[Shrinking (TV series)|Shrinking]]'' (Apple{{nbsp}}TV)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Drama Series|Outstanding Drama Series]]}}
+*'''''[[The Pitt]]'' (HBO Max)'''‡
+**''[[The Diplomat (American TV series)|The Diplomat]]'' (Netflix)
+**''[[The Gilded Age (TV series)|The Gilded Age]]'' ([[HBO]])
+**''[[A Knight of the Seven Kingdoms (TV series)|A Knight of the Seven Kingdoms]]'' (HBO)
+**''[[Paradise (2025 TV series)|Paradise]]'' (Hulu)
+**''[[Pluribus (TV series)|Pluribus]]'' (Apple{{nbsp}}TV)
+**''[[Slow Horses]]'' (Apple{{nbsp}}TV)
+**''[[Your Friends & Neighbors (TV series)|Your Friends & Neighbors]]'' (Apple{{nbsp}}TV)
+|-
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Limited or Anthology Series|Outstanding Limited or Anthology Series]]}}
+*'''''[[DTF St. Louis]]'' (HBO)'''‡
+**''[[All Her Fault]]'' ([[Peacock (streaming service)|Peacock]])
+**''[[The Beast in Me (TV series)|The Beast in Me]]'' (Netflix)
+**''[[Beef (TV series)|Beef]]'' (Netflix)
+**''[[Love Story (2026 TV series)|Love Story: John F. Kennedy Jr. & Carolyn Bessette]]'' (FX)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Reality Competition Program|Outstanding Reality Competition Program]]}}
+*'''''[[The Traitors (American TV series)|The Traitors]]'' (Peacock)'''‡
+**''[[Dancing with the Stars (American TV series)|Dancing with the Stars]]'' (ABC)
+**''[[RuPaul's Drag Race]]'' ([[MTV]])
+**''[[Survivor (American TV series)|Survivor]]'' ([[CBS]])
+**''[[Top Chef]]'' ([[Bravo (American TV network)|Bravo]])
+|-
+|colspan=2 style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Variety Series|Outstanding Variety Series]]}}
+*'''''[[The Late Show with Stephen Colbert]]'' (CBS)'''‡
+**''[[The Daily Show]]'' ([[Comedy Central]])
+**''[[Jimmy Kimmel Live!]]'' (ABC)
+**''[[Last Week Tonight with John Oliver]]'' (HBO)
+**''[[Saturday Night Live]]'' ([[NBC]])
+|}
+
+===Acting===
+====Lead====
+{|class="wikitable" role="presentation"
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actor in a Comedy Series|Outstanding Lead Actor in a Comedy Series]]}}
+*'''[[Matthew Rhys]] – ''[[Widow's Bay]]'' as Tom Loftis (Apple{{nbsp}}TV)'''‡
+**[[Yahya Abdul-Mateen II|Yahya Abdul-Mateen{{nbsp}}II]] – ''[[Wonder Man (TV series)|Wonder Man]]'' as [[Wonder Man|Simon Williams / Wonder Man]] ([[Disney+]])
+**[[Steve Carell]] – ''[[Rooster (TV series)|Rooster]]'' as Greg Russo (HBO)
+**[[Jason Segel]] – ''[[Shrinking (TV series)|Shrinking]]'' as Jimmy Laird (Apple{{nbsp}}TV)
+**[[Martin Short]] – ''[[Only Murders in the Building]]'' as Oliver Putnam (Hulu)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actress in a Comedy Series|Outstanding Lead Actress in a Comedy Series]]}}
+*'''[[Jean Smart]] – ''[[Hacks]]'' as Deborah Vance (HBO Max)'''‡
+**[[Quinta Brunson]] – ''[[Abbott Elementary]]'' as Janine Teagues (ABC)
+**[[Ayo Edebiri]] – ''[[The Bear (TV series)|The Bear]]'' as [[Sydney Adamu]] (FX)
+**[[Elle Fanning]] – ''[[Margo's Got Money Troubles]]'' as Margo Millet (Apple TV)
+**[[Lisa Kudrow]] – ''[[The Comeback (TV series)|The Comeback]]'' as Valerie Cherish (HBO)
+|-
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actor in a Drama Series|Outstanding Lead Actor in a Drama Series]]}}
+*'''[[Noah Wyle]] – ''[[The Pitt]]'' as [[Michael Robinavitch|Dr.{{nbsp}}Michael "Robby" Robinavitch]] (HBO Max)'''‡
+**[[Sterling K. Brown]] – ''[[Paradise (2025 TV series)|Paradise]]'' as Xavier Collins (Hulu)
+**[[Gary Oldman]] – ''[[Slow Horses]]'' as Jackson Lamb (Apple{{nbsp}}TV)
+**[[Mark Ruffalo]] – ''[[Task (TV series)|Task]]'' as Tom Brandis (HBO)
+**[[Rufus Sewell]] – ''[[The Diplomat (American TV series)|The Diplomat]]'' as Hal Wyler (Netflix)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actress in a Drama Series|Outstanding Lead Actress in a Drama Series]]}}
+*'''[[Rhea Seehorn]] – ''[[Pluribus (TV series)|Pluribus]]'' as [[Carol Sturka]] (Apple{{nbsp}}TV)'''‡
+**[[Carrie Coon]] – ''[[The Gilded Age (TV series)|The Gilded Age]]'' as Bertha Russell (HBO)
+**[[Chase Infiniti]] – ''[[The Testaments (TV series)|The Testaments]]'' as Agnes MacKenzie (Hulu)
+**[[Keri Russell]] – ''[[The Diplomat (American TV series)|The Diplomat]]'' as Katherine "Kate" Wyler (Netflix)
+**[[Zendaya]] – ''[[Euphoria (American TV series)|Euphoria]]'' as [[Rue Bennett]] (HBO)
+|-
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actor in a Limited or Anthology Series or Movie|Outstanding Lead Actor in a Limited or Anthology Series or Movie]]}}
+*'''[[Matthew Rhys]] – ''[[The Beast in Me (TV series)|The Beast in Me]]'' as Nile Jarvis (Netflix)'''‡
+**[[Riz Ahmed]] – ''[[Bait (TV series)|Bait]]'' as Shah Latif ([[Amazon Prime Video|Prime Video]])
+**[[Jason Bateman]] – ''[[Black Rabbit]]'' as Vince Friedken (Netflix)
+**[[Charlie Hunnam]] – ''[[Monster: The Ed Gein Story]]'' as [[Ed Gein]] (Netflix)
+**[[Oscar Isaac]] – ''[[Beef (TV series)|Beef]]'' as Joshua Martín (Netflix)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Lead Actress in a Limited or Anthology Series or Movie|Outstanding Lead Actress in a Limited or Anthology Series or Movie]]}}
+*'''[[Sally Field]] – ''[[Remarkably Bright Creatures (film)|Remarkably Bright Creatures]]'' as Tova Sullivan (Netflix)'''‡
+**[[Claire Danes]] – ''[[The Beast in Me (TV series)|The Beast in Me]]'' as Aggie Wiggs (Netflix)
+**[[Carey Mulligan]] – ''[[Beef (TV series)|Beef]]'' as Lindsay Crane-Martín (Netflix)
+**[[Sarah Pidgeon]] – ''[[Love Story (2026 TV series)|Love Story: John{{nbsp}}F. Kennedy{{nbsp}}Jr. & Carolyn Bessette]]'' as [[Carolyn Bessette Kennedy|Carolyn Bessette]] (FX)
+**[[Sarah Snook]] – ''[[All Her Fault]]'' as Marissa Irvine (Peacock)
+|}
+
+====Supporting====
+{|class="wikitable" role="presentation"
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Supporting Actor in a Comedy Series|Outstanding Supporting Actor in a Comedy Series]]}}
+*'''[[Stephen Root]] – ''[[Widow's Bay]]'' as Wyck Crawford (Apple{{nbsp}}TV)'''‡
+**[[Colman Domingo]] – ''[[The Four Seasons (TV series)|The Four Seasons]]'' as Danny (Netflix)
+**[[Paul W. Downs]] – ''[[Hacks]]'' as Jimmy LuSaque{{nbsp}}Jr. (HBO Max)
+**[[Harrison Ford]] – ''[[Shrinking (TV series)|Shrinking]]'' as Dr.{{nbsp}}Paul Rhoades (Apple{{nbsp}}TV)
+**[[Nick Offerman]] – ''[[Margo's Got Money Troubles]]'' as James "Jinx" Millet (Apple{{nbsp}}TV)
+**[[Michael Urie]] – ''Shrinking'' as Brian (Apple{{nbsp}}TV)
+**[[Tyler James Williams]] – ''[[Abbott Elementary]]'' as Gregory Eddie (ABC)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Supporting Actress in a Comedy Series|Outstanding Supporting Actress in a Comedy Series]]}}
+*'''[[Kate O'Flynn]] – ''[[Widow's Bay]]'' as Patricia Moyer (Apple{{nbsp}}TV)'''‡
+**[[Dale Dickey]] – ''Widow's Bay'' as Rosemary (Apple{{nbsp}}TV)
+**[[Hannah Einbinder]] – ''[[Hacks]]'' as Ava Daniels (HBO Max)
+**[[Janelle James]] – ''[[Abbott Elementary]]'' as Ava Coleman (ABC)
+**[[Michelle Pfeiffer]] – ''[[Margo's Got Money Troubles]]'' as Shyanne (Apple{{nbsp}}TV)
+**[[Megan Stalter]] – ''Hacks'' as Kayla Schaefer (HBO Max)
+**[[Jessica Williams (actress)|Jessica Williams]] – ''[[Shrinking (TV series)|Shrinking]]'' as Gaby Evans (Apple{{nbsp}}TV)
+|-
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Supporting Actor in a Drama Series|Outstanding Supporting Actor in a Drama Series]]}}
+*'''[[Tom Pelphrey]] – ''[[Task (TV series)|Task]]'' as Robbie Prendergrast (HBO)'''‡
+**[[Patrick Ball (actor)|Patrick Ball]] – ''[[The Pitt]]'' as [[Frank Langdon|Dr.{{nbsp}}Frank Langdon]] (HBO Max)
+**[[Billy Crudup]] – ''[[The Morning Show (American TV series)|The Morning Show]]'' as Cory Ellison (Apple{{nbsp}}TV)
+**[[Shawn Hatosy]] – ''The Pitt'' as Dr.{{nbsp}}Jack Abbot (HBO Max)
+**[[Gerran Howell]] – ''The Pitt'' as [[Dennis Whitaker|Dr.{{nbsp}}Dennis Whitaker]] (HBO Max)
+**[[Jack Lowden]] – ''[[Slow Horses]]'' as River Cartwright (Apple{{nbsp}}TV)
+**[[Carlos Manuel Vesga]] – ''[[Pluribus (TV series)|Pluribus]]'' as Manousos Oviedo (Apple{{nbsp}}TV)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Supporting Actress in a Drama Series|Outstanding Supporting Actress in a Drama Series]]}}
+*'''[[Allison Janney]] – ''[[The Diplomat (American TV series)|The Diplomat]]'' as President Grace Penn (Netflix)'''‡
+**[[Taylor Dearden]] – ''[[The Pitt]]'' as [[Mel King (The Pitt)|Dr.{{nbsp}}Mel King]] (HBO Max)
+**[[Fiona Dourif]] – ''The Pitt'' as Dr.{{nbsp}}Cassie McKay (HBO Max)
+**[[Katherine LaNasa]] – ''The Pitt'' as [[Dana Evans (The Pitt)|Dana Evans]] (HBO Max)
+**[[Sepideh Moafi]] – ''The Pitt'' as Dr.{{nbsp}}Baran Al-Hashimi (HBO Max)
+**[[Julianne Nicholson]] – ''[[Paradise (2025 TV series)|Paradise]]'' as Samantha "Sinatra" Redmond (Hulu)
+**[[Karolina Wydra]] – ''[[Pluribus (TV series)|Pluribus]]'' as Zosia (Apple{{nbsp}}TV)
+|}
+
+===Directing===
+{|class="wikitable" role="presentation"
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Directing for a Comedy Series|Outstanding Directing for a Comedy Series]]}}
+*'''''[[Widow's Bay]]'': "[[Welcome to Widow's Bay|Welcome to Widow's Bay!]]" – [[Hiro Murai]] (Apple{{nbsp}}TV)'''‡
+**''[[Abbott Elementary]]'': "Ballgame" – [[Randall Einhorn]] (ABC)
+**''[[The Bear (TV series)|The Bear]]'': "[[Bears (The Bear)|Bears]]" – [[Christopher Storer]] (FX)
+**''[[The Chair Company]]'': "Life goes by too f**king fast, it really does." – [[Andrew DeYoung (director)|Andrew DeYoung]] (HBO)
+**''[[Hacks]]'': "Hacks" – [[Lucia Aniello]] (HBO Max)
+**''[[The Ms. Pat Show]]'': "Give It Arrest" – [[Mary Lou Belli]] ([[BET+]])
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Directing for a Drama Series|Outstanding Directing for a Drama Series]]}}
+*'''''[[Slow Horses]]'': "Scars" – [[Saul Metzstein]] (Apple{{nbsp}}TV)'''‡
+**''[[The Gilded Age (TV series)|The Gilded Age]]'': "My Mind Is Made Up" – [[Salli Richardson-Whitfield]] (HBO)
+**''[[Paradise (2025 TV series)|Paradise]]'': "Exodus" – [[Hanelle Culpepper]] (Hulu)
+**''[[The Pitt]]'': "[[12:00 P.M. (The Pitt season 2)|12:00{{nbsp}}P.M.]]" – [[Noah Wyle]] (HBO Max)
+**''[[Pluribus (TV series)|Pluribus]]'': "[[We Is Us]]" – [[Vince Gilligan]] (Apple{{nbsp}}TV)
+**''[[Task (TV series)|Task]]'': "[[Out beyond ideas of wrongdoing and rightdoing, there is a river.]]" – Salli Richardson-Whitfield (HBO)
+|}
+
+===Writing===
+{|class="wikitable" role="presentation"
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Writing for a Comedy Series|Outstanding Writing for a Comedy Series]]}}
+*'''''[[Widow's Bay]]'': "[[Welcome to Widow's Bay|Welcome to Widow's Bay!]]" – [[Katie Dippold]] (Apple{{nbsp}}TV)'''‡
+**''[[Abbott Elementary]]'': "Team Building" – [[Quinta Brunson]] (ABC)
+**''[[The Chair Company]]'': "Life goes by too f**king fast, it really does." – [[Tim Robinson]] and [[Zach Kanin]] (HBO)
+**''[[The Comeback (TV series)|The Comeback]]'': "Valerie Does It All" – [[Michael Patrick King]] and [[Lisa Kudrow]] (HBO)
+**''[[Hacks]]'': "Hacks" – [[Lucia Aniello]], [[Paul W. Downs]], and [[Jen Statsky]] (HBO Max)
+**''[[Jury Duty (2023 TV series)|Jury Duty Presents: Company Retreat]]'': "Mergers and Acquisitions" – [[Anthony King (writer)|Anthony King]] (Prime Video)
+|style="vertical-align:top;" width="50%" |{{Award category |{{Emmy Awards/color}} |[[Primetime Emmy Award for Outstanding Writing for a Drama Series|Outstanding Writing for a Drama Series]]}}
+*'''''[[Pluribus (TV series)|Pluribus]]'': "[[We Is Us]]" – [[Vince Gilligan]] (Apple{{nbsp}}TV)'''‡
+**''[[The Diplomat (American TV series)|The Diplomat]]'': "Amagansett" – [[Peter Ackerman (playwright)|Peter Akerman]] and [[Debora Cahn]] (Netflix)
+**''[[The Pitt]]'': "[[1:00 P.M. (The Pitt season 2)|1:00{{nbsp}}P.M.]]" – Kirsten Pierre-Geyfman and [[R. Scott Gemmill]] (HBO)
+**''The Pitt'': "[[12:00 P.M. (The Pitt season 2)|12:00{{nbsp}}P.M.]]" – Valerie Chu (HBO)
+**''[[Slow Horses]]'': "Scars" – [[Will Smith (comedian)|Will Smith]] (Apple{{nbsp}}TV)
+**''[[Task (TV series)|Task]]'': "[[A Still Small Voice (Task)|A Still Small Voice]]" – [[Brad Ingelsby]] (HBO)
+|}
+
+===Bob Hope Humanitarian Award===
+The [[Bob Hope Humanitarian Award]] was presented to actor and activist [[Michael J. Fox]], in recognition of "his transformative contributions to [[Parkinson's disease]] research and advocacy".<ref>{{cite web |url=https://variety.com/2026/tv/news/michael-j-fox-bob-hope-humanitarian-award-emmys-1236823047/ |title=Michael J. Fox Will Be Honored with TV Academy's Bob Hope Humanitarian Award at the Emmys |last=Schneider |first=Michael |website=[[Variety (magazine)|Variety]] |date=July 29, 2026 |access-date=July 30, 2026}}</ref>
+
+===Multiple nominations and wins===
+For the purposes of the lists below, "major" constitutes the categories listed above (program, acting, directing, and writing), while "total" includes the categories presented at the [[78th Primetime Creative Arts Emmy Awards|Creative Arts Emmy Awards ceremony]]. Programs and networks must have multiple wins or major nominations or at least five total nominations to be included.
+
+====By program====
+{{col-float|width=30em}}
+
+{|class="wikitable plainrowheaders sortable" style="text-align: center; max-width:29em"
+|+ Programs with multiple nominations
+|-
+!scope="colgroup" colspan=2 |Nominations
+!scope="col" rowspan=2 |Program
+!scope="col" rowspan=2 |Network
+|-
+!scope="col" |Total
+!scope="col" |Major
+|-
+|25
+|12
+|''[[The Pitt]]''
+|rowspan=2 |[[HBO Max]]
+|-
+|24
+|rowspan=2 |7
+|''[[Hacks]]''
+|-
+|19
+|''[[Widow's Bay]]''
+|rowspan=2 |[[Apple TV (streaming service)|Apple TV]]
+|-
+|18
+|6
+|''[[Pluribus (TV series)|Pluribus]]''
+|-
+|16
+|3
+|''[[Beef (TV series)|Beef]]''
+|[[Netflix]]
+|-
+|13
+|rowspan=2 |1
+|''[[DTF St. Louis]]''
+|[[HBO]]
+|-
+|rowspan=2 |11
+|''[[Saturday Night Live]]''
+|[[NBC]]
+|-
+|rowspan=2 |0
+|''[[Spider-Noir]]''
+|[[MGM+]] / [[Amazon Prime Video|Prime Video]]
+|-
+|rowspan=9 |9
+|''[[Super Bowl LX halftime show|The Apple Music Super Bowl LX Halftime Show Starring Bad Bunny]]''
+|NBC
+|-
+|3
+|''[[The Beast in Me (TV series)|The Beast in Me]]''
+|Netflix
+|-
+|0
+|''[[Fallout (American TV series)|Fallout]]''
+|Prime Video
+|-
+|rowspan=2 |1
+|''[[A Knight of the Seven Kingdoms (TV series)|A Knight of the Seven Kingdoms]]''
+|HBO
+|-
+|''[[The Late Show with Stephen Colbert]]''
+|[[CBS]]
+|-
+|0
+|''[[98th Academy Awards|The Oscars]]''
+|[[American Broadcasting Company|ABC]]
+|-
+|1
+|''[[RuPaul's Drag Race]]''
+|[[MTV]]
+|-
+|rowspan=2 |5
+|''[[Shrinking (TV series)|Shrinking]]''
+|rowspan=2 |Apple TV
+|-
+|''[[Slow Horses]]''
+|-
+|rowspan=4 |8
+|rowspan=2 |3
+|''[[The Bear (TV series)|The Bear]]''
+|[[FX Networks|FX]]
+|-
+|''[[The Gilded Age (TV series)|The Gilded Age]]''
+|HBO
+|-
+|4
+|''[[Margo's Got Money Troubles]]''
+|rowspan=2 |Apple TV
+|-
+|0
+|''[[Palm Royale]]''
+|-
+|rowspan=8 |7
+|6
+|''[[Abbott Elementary]]''
+|ABC
+|-
+|2
+|''[[All Her Fault]]''
+|[[Peacock (streaming service)|Peacock]]
+|-
+|1
+|''[[Black Rabbit]]''
+|rowspan=2 |Netflix
+|-
+|5
+|''[[The Diplomat (American TV series)|The Diplomat]]''
+|-
+|rowspan=2 |1
+|''[[Euphoria (American TV series)|Euphoria]]''
+|HBO
+|-
+|''[[Monster: The Ed Gein Story]]''
+|Netflix
+|-
+|4
+|''[[Paradise (2025 TV series)|Paradise]]''
+|[[Hulu]]
+|-
+|0
+|''[[Stranger Things]]''
+|Netflix
+|-
+|rowspan=9 |6
+|1
+|''[[Jimmy Kimmel Live!]]''
+|ABC
+|-
+|2
+|''[[Love Story (2026 TV series)|Love Story: John F. Kennedy Jr. & Carolyn Bessette]]''
+|FX
+|-
+|rowspan=3 |0
+|''[[Mel Brooks: The 99 Year Old Man!]]''
+|HBO
+|-
+|''[[The Muppet Show (2026 TV special)|The Muppet Show]]''
+|[[Disney+]]
+|-
+|''[[Ocean with David Attenborough]]''
+|[[National Geographic (American TV channel)|National Geographic]]
+|-
+|4
+|''[[Task (TV series)|Task]]''
+|HBO
+|-
+|1
+|''[[The Traitors (American TV series)|The Traitors]]''
+|Peacock
+|-
+|rowspan=4 |0
+|''[[Wednesday (TV series)|Wednesday]]''
+|Netflix
+|-
+|''[[Wicked: One Wonderful Night]]''
+|NBC
+|-
+|rowspan=8 |5
+|''[[The Amazing Race (American TV series)|The Amazing Race]]''
+|CBS
+|-
+|''[[The Boys (TV series)|The Boys]]''
+|Prime Video
+|-
+|1
+|''[[Dancing with the Stars (American TV series)|Dancing with the Stars]]''
+|ABC
+|-
+|rowspan=2 |0
+|''[[John Candy: I Like Me]]''
+|Prime Video
+|-
+|''[[Love on the Spectrum (American TV series)|Love on the Spectrum]]''
+|Netflix
+|-
+|2
+|''[[Only Murders in the Building]]''
+|Hulu
+|-
+|1
+|''[[Survivor (American TV series)|Survivor]]''
+|CBS
+|-
+|0
+|''[[Taylor Swift: The Eras Tour#The Final Show|Taylor Swift: The Eras Tour: The Final Show]]''
+|Disney+
+|-
+|rowspan=2 |<5
+|rowspan=2 |2
+|''[[The Chair Company]]''
+|rowspan=2 |HBO
+|-
+|''[[The Comeback (TV series)|The Comeback]]''
+|}
+
+{{col-float-break}}
+
+{|class="wikitable plainrowheaders sortable" style="text-align: center; max-width:29em"
+|+ Programs with multiple wins
+|-
+!scope="colgroup" colspan=2 |Wins
+!scope="col" rowspan=2 |Program
+!scope="col" rowspan=2 |Network
+|-
+!scope="col" |Total
+!scope="col" |Major
+|-
+|14
+|6
+|''[[Widow's Bay]]''
+|[[Apple TV (streaming service)|Apple TV]]
+|-
+|rowspan=3 |7
+|0
+|''[[Super Bowl LX halftime show|The Apple Music Super Bowl LX Halftime Show Starring Bad Bunny]]''
+|[[NBC]]
+|-
+|rowspan=3 |1
+|''[[DTF St. Louis]]''
+|[[HBO]]
+|-
+|''[[The Traitors (American TV series)|The Traitors]]''
+|[[Peacock (streaming service)|Peacock]]
+|-
+|rowspan=3 |6
+|''[[The Late Show with Stephen Colbert]]''
+|[[CBS]]
+|-
+|rowspan=2 |2
+|''[[The Pitt]]''
+|[[HBO Max]]
+|-
+|''[[Pluribus (TV series)|Pluribus]]''
+|Apple TV
+|-
+|5
+|rowspan=6 |0
+|''[[Spider-Noir]]''
+|[[MGM+]]
+|-
+|4
+|''[[The Muppet Show (2026 TV special)|The Muppet Show]]''
+|[[Disney+]]
+|-
+|rowspan=4 |3
+|''[[Beef (TV series)|Beef]]''
+|rowspan=2 |[[Netflix]]
+|-
+|''[[Love on the Spectrum (American TV series)|Love on the Spectrum]]''
+|-
+|''[[Margo's Got Money Troubles]]''
+|rowspan=2 |Apple TV
+|-
+|''[[Palm Royale]]''
+|-
+|rowspan=8 |2
+|1
+|''[[The Beast in Me (TV series)|The Beast in Me]]''
+|rowspan=2 |Netflix
+|-
+|rowspan=2 |0
+|''[[Bridgerton]]''
+|-
+|''[[Fallout (American TV series)|Fallout]]''
+|[[Amazon Prime Video]]
+|-
+|1
+|''[[Hacks]]''
+|HBO Max
+|-
+|rowspan=3 |0
+|''[[My Mom Jayne]]''
+|HBO
+|-
+|''[[Ocean with David Attenborough]]''
+|[[National Geographic (American TV channel)|National Geographic]]
+|-
+|''[[Primal (TV series)|Primal]]''
+|[[Adult Swim]]
+|-
+|1
+|''[[Remarkably Bright Creatures (film)|Remarkably Bright Creatures]]''
+|rowspan=1 |Netflix
+|}
+{{col-float-end}}
+
+====By network====
+{{col-float|width=30em}}
+
+{|class="wikitable plainrowheaders sortable" style="text-align: center; max-width:29em"
+|+ Networks with multiple nominations
+|-
+!scope="colgroup" colspan=2 |Nominations
+!scope="col" rowspan=2 |Network
+|-
+!scope="col" |Total
+!scope="col" |Major
+|-
+|122
+|35
+|[[HBO]] / [[HBO Max]]
+|-
+|111
+|16
+|[[Netflix]]
+|-
+|87
+|29
+|[[Apple TV (streaming service)|Apple TV]]
+|-
+|40
+|8
+|[[American Broadcasting Company|ABC]]
+|-
+|32
+|2
+|[[CBS]]
+|-
+|28
+|2
+|[[Amazon Prime Video|Prime Video]]
+|-
+|30
+|1
+|[[NBC]]
+|-
+|23
+|5
+|[[FX Networks|FX]]
+|-
+|22
+|7
+|[[Hulu]]
+|-
+|18
+|3
+|[[Peacock (streaming service)|Peacock]]
+|-
+|14
+|1
+|[[Disney+]]
+|-
+|12
+|rowspan=2 |0
+|[[National Geographic (American TV channel)|National Geographic]]
+|-
+|rowspan=2 |11
+|[[MGM+]]
+|-
+|rowspan=2 |1
+|[[MTV]]
+|-
+|7
+|[[Comedy Central]]
+|-
+|6
+|0
+|[[YouTube]]
+|-
+|rowspan=2 |5
+|1
+|[[Bravo (American TV network)|Bravo]]
+|-
+|0
+|[[PBS]]
+|}
+
+{{col-float-break}}
+
+{|class="wikitable plainrowheaders sortable" style="text-align: center; max-width:29em"
+|+ Networks with multiple wins
+|-
+!scope="colgroup" colspan=2 |Wins
+!scope="col" rowspan=2 |Network
+|-
+!scope="col" |Total
+!scope="col" |Major
+|-
+|28
+|9
+|[[Apple TV (streaming service)|Apple TV]]
+|-
+|21
+|5
+|[[HBO]] / [[HBO Max]]
+|-
+|16
+|3
+|[[Netflix]]
+|-
+|8
+|0
+|[[NBC]]
+|-
+|7
+|rowspan=2 |1
+|[[Peacock (streaming service)|Peacock]]
+|-
+|rowspan=2 |6
+|[[CBS]]
+|-
+|rowspan=9 |0
+|[[Disney+]]
+|-
+|rowspan=2 |5
+|[[Amazon Prime Video]]
+|-
+|[[MGM+]]
+|-
+|rowspan=2 |3
+|[[FX (TV channel)|FX]]
+|-
+|[[National Geographic (American TV channel)|National Geographic]]
+|-
+|rowspan=4 |2
+|[[Adult Swim]]
+|-
+|[[Comedy Central]]
+|-
+|[[PBS]]
+|-
+|[[YouTube]]
+|}
+{{col-float-end}}
+
+==Presenters==
+{| class="wikitable plainrowheaders sortable"
+|+ {{sronly|Presenters at the ceremony}}
+|-
+! scope="col"| Name(s)
+! scope="col"| Role
+|-
+| [[Amy Poehler]]
+| Presented the [[Primetime Emmy Award for Outstanding Supporting Actress in a Comedy Series]]
+|-
+| [[Zendaya]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actress in a Comedy Series]]
+|-
+| [[Sarah Michelle Gellar]]<br>[[David Boreanaz]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actor in a Limited or Anthology Series or Movie]]
+|-
+| [[Alan Cumming]]
+| Presented the [[Primetime Emmy Award for Outstanding Supporting Actress in a Drama Series]]
+|-
+| [[Julia Garner]]<br>[[Florence Pugh]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actress in a Drama Series]]
+|-
+| [[Sofía Vergara]]
+| Presented the [[Primetime Emmy Award for Outstanding Supporting Actor in a Comedy Series]]
+|-
+| The cast of the ''Baywatch'' reboot
+| Presented the [[Primetime Emmy Award for Outstanding Reality Competition Program]]
+|-
+| [[John Mulaney]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actor in a Drama Series]]
+|-
+| [[Odessa A'zion]]<br>[[Rachel Sennott]]
+| Presented the [[Primetime Emmy Award for Outstanding Supporting Actor in a Drama Series]]
+|-
+| [[Emma D'Arcy]]<br>[[Emilia Clarke]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actress in a Limited or Anthology Series or Movie]]
+|-
+| [[Amanda Peet]]<br>[[Jon Hamm]]
+| Presented the [[Primetime Emmy Award for Outstanding Lead Actor in a Comedy Series]]
+|-
+| [[LL Cool J]]<br>[[Scott Caan]]
+| Presented the [[Primetime Emmy Award for Outstanding Writing for a Comedy Series]]
+|-
+| [[Shailene Woodley]]<br>[[Peter Krause]]
+| Presented the [[Primetime Emmy Award for Outstanding Directing for a Drama Series]]
+|-
+| [[Paul Anthony Kelly]]<br>[[Awkwafina]]
+| Presented the [[Primetime Emmy Award for Outstanding Variety Series]]
+|-
+| [[Marcello Hernández]]
+| Presented the [[Primetime Emmy Award for Outstanding Directing for a Comedy Series]]
+|-
+| [[Julianna Margulies]]
+| Presented the [[Bob Hope Humanitarian Award]] to [[Michael J. Fox]]
+|-
+| [[Linda Cardellini]]<br>[[David Harbour]]
+| Presented the [[Primetime Emmy Award for Outstanding Writing for a Drama Series]]
+|-
+| [[Niecy Nash-Betts]]
+| Presented the [[Primetime Emmy Award for Outstanding Limited or Anthology Series]]
+|-
+| The cast of ''[[Charlie's Angels]]''
+| Presented the [[Primetime Emmy Award for Outstanding Drama Series]]
+|-
+| [[Woody Harrelson]]<br>[[Matthew McConaughey]]
+| Presented the [[Primetime Emmy Award for Outstanding Comedy Series]]
+|}
+
+==Ceremony information==
+[[File:Mariska Hargitay Woodstock Film Festival.jpg|right|thumb|upright|alt=Mariska Hargitay in 2025.|[[Mariska Hargitay]] hosted the ceremony.]]
+
+The nominations for the 78th{{nbsp}}Primetime Emmy Awards were announced on July{{nbsp}}8, 2026, at the Television Academy's Wolf Theatre in [[North Hollywood, Los Angeles]], hosted by actor [[Jeff Hiller]] and actress [[Liza Colón-Zayas]], along with Television Academy chair [[Cris Abrego]].<ref>{{cite web |url=https://www.televisionacademy.com/features/news/awards-news/260618-emmy-nominations-announcement |title=Emmy Winners Liza Colón-Zayas and Jeff Hiller to Announce 78th Emmy Awards Nominations July 8 |publisher=[[Academy of Television Arts & Sciences]] |date=June 18, 2026 |access-date=June 18, 2026}}</ref><ref>{{cite web |url=https://www.hollywoodreporter.com/tv/tv-news/watch-2026-emmy-nominations-livestream-online-1236640358/ |title=2026 Emmy Nominations: Watch the Livestream |last=Jeffries |first=Naomi |website=[[The Hollywood Reporter]] |date=July 8, 2026 |access-date=July 8, 2026}}</ref><ref>{{cite web |url=https://deadline.com/lists/emmy-nominations-full-list-nominees-scorecard/ |title=Emmy Nominations 2026: The Complete List |last1=Gomez |first1=Dessi |last2=Hipes |first2=Patrick |last3=Pedersen |first3=Erik |website=[[Deadline Hollywood]] |date=July 8, 2026 |access-date=July 8, 2026}}</ref> The nominations for [[Primetime Emmy Award for Outstanding Variety Series|Outstanding Variety Series]] and [[Primetime Emmy Award for Outstanding Reality Competition Program|Outstanding Reality Competition Program]] were announced three hours before the rest of the categories.<ref>{{cite web |url=https://deadline.com/2026/07/colbert-kimmel-john-oliver-jon-stewart-snl-late-night-emmys-1236975168/ |title=Stephen Colbert, Jimmy Kimmel, John Oliver, Jon Stewart & 'SNL' to Battle It Out for Bumper Late-Night Emmy or Emmys |last=White |first=Peter |website=[[Deadline Hollywood]] |date=July 8, 2026 |access-date=July 8, 2026}}</ref> On July{{nbsp}}7, actress [[Mariska Hargitay]] was announced as the ceremony's host.<ref name="Hargitay">{{cite web |url=https://deadline.com/2026/07/mariska-hargitay-host-2026-emmy-awards-nbc-1236975778/ |title=Mariska Hargitay to Host 2026 Emmy Awards on NBC |last=Andreeva |first=Nellie |website=[[Deadline Hollywood]] |date=July 7, 2026 |access-date=July 7, 2026}}</ref> [[NBC]] and the [[Academy of Television Arts & Sciences|Television Academy]] considered talent both within and outside of [[NBCUniversal]] for the role, but ultimately hired NBC's ''[[Law & Order: Special Victims Unit]]''{{'}}s lead actress in honor of the network's 100th{{nbsp}}anniversary. This was the first Primetime Emmys ceremony that the host is not a comedian, comedy performer, reality host or television personality since [[Angela Lansbury]] in [[45th Primetime Emmy Awards|1993]], and the first time that the event was hosted by a woman since [[Jane Lynch]] in [[63rd Primetime Emmy Awards|2011]].<ref name="Hargitay"/>
+
+Jesse Collins, Dionne Harmon, and Jeannae Rouzan-Clay of Jesse Collins Entertainment  served as [[executive producer]]s of the telecast.<ref>{{cite web |url=https://www.televisionacademy.com/features/news/awards-news/260707-78th-emmys-host-mariska-hargitay |title=Mariska Hargitay to Host 78th Emmy Awards on NBC |publisher=[[Academy of Television Arts & Sciences]] |date=July 7, 2026 |access-date=July 7, 2026}}</ref> To avoid conflicts with the network's broadcast of ''[[NBC Sunday Night Football]]'', the event was scheduled on a Monday night, instead of a Sunday, which NBC had previously done when they aired the awards ceremony every four years since 2014.<ref name="Airdate"/>
+
+===Category and rule changes===
+In January{{nbsp}}2026, the Television Academy announced plans to present its first new major award in nearly twenty years with the creation of the Legacy Award, which will be presented annually to television programs that have made a "profound and lasting impact" on audiences, and remain relevant to culture, society and the industry.<ref>{{cite press release |url=https://www.televisionacademy.com/features/news/awards-news/2026-legacy-award-260108 |title=Television Academy Announces Plans for First New Major Award in Nearly 20 Years |publisher=[[Academy of Television Arts & Sciences]] |date=January 8, 2026 |access-date=March 3, 2026}}</ref> Additionally, [[Primetime Emmy Award for Outstanding Scripted Variety Series|Outstanding Scripted Variety Series]] and [[Primetime Emmy Award for Outstanding Talk Series|Outstanding Talk Series]] were merged into Outstanding Variety Series. The new Variety Series category is tracked, meaning the number of nominees from each format is proportional to the number of submissions, and it became an area award where voters select any and all nominees they believe deserve an award, with the potential for multiple winners.<ref>{{cite web |url=https://www.televisionacademy.com/features/news/awards-news/260128-emmys-variety-rules |title=Emmys Rules Merge Variety Categories |publisher=[[Academy of Television Arts & Sciences]] |date=January 28, 2026 |access-date=July 8, 2026}}</ref><ref>{{cite web |url=https://www.indiewire.com/awards/industry/2026-emmys-rule-changes-good-bad-basic-1235186297/ |title=The Good, the Bad, and the Basic Rule Changes Affecting the 2026 Emmys |last=Jones |first=Marcus |website=[[IndieWire]] |date=March 26, 2026 |access-date=July 23, 2026}}</ref><ref>{{cite web |url=https://variety.com/lists/2026-emmys-best-variety-series-predictions/1236757434/ |title=Emmys: Outstanding Variety Series — The New Rules That Could Produce Five Winners |last=Davis |first=Clayton |website=[[Variety (magazine)|Variety]] |date=July 1, 2026 |access-date=July 23, 2026}}</ref>
+
+In July, the Television Academy voted to move five categories to the Creative Arts ceremonies on the preceding weekend: [[Primetime Emmy Award for Outstanding Supporting Actor in a Limited or Anthology Series or Movie|Outstanding Supporting Actor]], [[Primetime Emmy Award for Outstanding Supporting Actress in a Limited or Anthology Series or Movie|Supporting Actress]], [[Primetime Emmy Award for Outstanding Directing for a Limited or Anthology Series or Movie|Directing]], and [[Primetime Emmy Award for Outstanding Writing for a Limited or Anthology Series or Movie|Writing for a Limited or Anthology Series or Movie]] and [[Primetime Emmy Award for Outstanding Writing for a Variety Series|Writing for a Variety Series]]. Abrego justified the changes as a way to add other elements to the show such as musical performances or comedy segments, with the moves selected to "be as balanced and as equitable as possible".<ref>{{cite web |url=https://variety.com/2026/tv/news/emmys-removes-categories-telecast-supporting-limited-acting-1236814429/ |title=Emmys to Move Five Categories Out of NBC Telecast in a Bid to Revamp the Ceremony (Exclusive) |last=Schneider |first=Michael |website=[[Variety (magazine)|Variety]] |date=July 17, 2026 |access-date=July 23, 2026}}</ref><ref>{{cite web |url=https://www.televisionacademy.com/features/news/awards-news/260717-78th-emmys-categories-by-show |title=Emmys Update — Categories by Show |publisher=[[Academy of Television Arts & Sciences]] |date=July 17, 2026 |access-date=July 23, 2026}}</ref><ref>{{cite web |url=https://deadline.com/2026/07/emmys-cuts-televised-categories-2026-ceremony-1236997119/ |title=Emmys Cuts Number of Televised Categories for 2026 Primetime Ceremony |last=White |first=Peter |website=[[Deadline Hollywood]] |date=July 17, 2026 |access-date=July 23, 2026}}</ref> A joint statement from the [[Directors Guild of America]], the [[Writers Guild of America]], and [[SAG-AFTRA]] criticized the changes and commented, "The decision to eliminate these categories from the prime-time broadcast devalues the contributions of the talented people the Academy is meant to honor."<ref>{{cite web |url=https://www.wga.org/news-events/news/press/2026/statement-on-emmys-broadcast-changes |title=Statement on Emmys Broadcast Changes |publisher=[[Writers Guild of America West]] |date=July 17, 2026 |access-date=July 23, 2026}}</ref><ref>{{cite web |url=https://www.indiewire.com/awards/industry/will-2026-emmys-bring-back-cut-categories-1235206508/ |title=Will the Emmys Bring Back Cut Categories? History Provides Hope |last=Jones |first=Marcus |website=[[IndieWire]] |date=July 21, 2026 |access-date=July 23, 2026}}</ref><ref>{{cite web |url=https://variety.com/2026/tv/columns/emmys-shake-up-telecast-move-categories-tv-academy-trying-1236819841/ |title=Shaking Up the Emmys By Moving Five Categories Out of the Telecast Might Not Work, But at Least the TV Academy is Trying Something |last=Schneider |first=Michael |website=[[Variety (magazine)|Variety]] |date=July 23, 2026 |access-date=July 23, 2026}}</ref> "The move doesn't make much sense. All they've done is piss off a lot of the people and stars they are trying to court and attend their ceremony. I think this will blow up in their face", one outraged awards strategist told ''[[Variety (magazine)|Variety]]''.<ref>{{cite web |url=https://variety.com/2026/tv/columns/emmys-cut-five-categories-telecast-backlash-1236816847/ |title=The Emmys 'F—ed This Up': Streamers and Networks Are Outraged as Five Categories Get Cut from the Telecast |last=Davis |first=Clayton |website=[[Variety (magazine)|Variety]] |date=July 20, 2026 |access-date=July 25, 2026}}</ref> Additionally, [[Primetime Emmy Award for Outstanding Variety Special (Live)|Outstanding Variety Special (Live)]] was shifted back to the Creative Arts ceremonies, leaving 19{{nbsp}}categories for the main ceremony (a decrease from last year's 26).<ref>{{cite web |url=https://www.thewrap.com/industry-news/awards/television-academy-cuts-7-categories-primetime-emmys/ |title=Television Academy Cuts 7 Categories from 2026 Primetime Emmys Telecast |last=Loving |first=Casey |website=[[TheWrap]] |date=July 17, 2026 |access-date=July 23, 2026}}</ref>
+
+==In Memoriam==
+The In Memoriam segment was presented by [[Macaulay Culkin]], [[Annie Murphy]] and [[Dan Levy (Canadian actor)|Dan Levy]], and featured [[Noah Kahan]] singing "[[Bridge over Troubled Water (song)|Bridge Over Troubled Water]]".<ref>{{cite magazine |first=P. Claire |last=Dodson |title=Noah Kahan Performs Heartbreaking 'In Memoriam' at Emmys 2026: Watch ‘Bridge Over Troubled Water’ |magazine=[[Teen Vogue]] |date=2026-09-14 |url=https://www.teenvogue.com/story/noah-kahan-in-memoriam-emmys-2026-09-14 |access-date=2026-09-14}}</ref><ref>{{cite AV media |title=In Memoriam: 78th Emmy Awards |publisher=[[Academy of Television Arts & Sciences]] |medium=[[YouTube]] |location=[[Los Angeles]] |date=2026-09-14 |url=https://www.youtube.com/watch?v=cOxmrVZr5WQ |access-date=2026-09-15}}</ref>
+{{columns-list|colwidth=25em|
+* [[Catherine O'Hara]] {{endash}} performer
+* [[James Van Der Beek]] {{endash}} performer
+* Crawford "Mac" McGill {{endash}} executive
+* Dixon Q Dern {{endash}} attorney
+* Sarah Caplan {{endash}} producer
+* [[Kiki Shepard]] {{endash}} host
+* [[Anthony Geary]] {{endash}} performer
+* [[Isiah Whitlock Jr.]] {{endash}} performer
+* [[Gary Dontzig]] {{endash}} producer, writer
+* [[Demond Wilson]] {{endash}} performer
+* [[Gil Gerard]] {{endash}} performer
+* [[June Lockhart]] {{endash}} performer
+* [[Anthony Head]] {{endash}} performer
+* [[Diane Ladd]] {{endash}} performer
+* [[Sid and Marty Krofft|Sid Krofft]] {{endash}} producer
+* [[Ted Turner]] {{endash}} executive
+* [[Pat Crowley|Patricia Crowley]]<!--name as shown onscreen--> {{endash}} performer
+* [[Bruce Bilson]] {{endash}} director, Television Academy governor
+* [[John Masius]] {{endash}} writer
+* [[Eric Dane]] {{endash}} performer
+* Bob Broder {{endash}} agent, executive
+* [[Eric Overmyer]] {{endash}} producer, writer
+* [[Hayden Panettiere]] {{endash}} performer
+* [[Tom Cherones]] {{endash}} director
+* [[Louise Lasser]] {{endash}} performer
+* [[T. K. Carter]] {{endash}} performer
+* [[Robert Duvall]] {{endash}} performer
+* [[Dolly Parton]] {{endash}} performer
+* [[Sandy Wernick]] {{endash}} manager, producer
+* [[Robert Carradine]] {{endash}} performer
+* Sylvia Gold {{endash}} agent
+* Scott Printz {{endash}} producer
+* [[Vincent Pastore]] {{endash}} performer
+* [[Kevin Arkadie]] {{endash}} writer
+* [[Maria Riva]] {{endash}} performer
+* [[Peter Lassally]] {{endash}} producer
+* [[Harris Katleman]] {{endash}} executive
+* [[Randolph Mantooth]] {{endash}} performer
+* [[Laura Adler]] {{endash}} casting director
+* [[Jon Cypher]] {{endash}} performer
+* Jay Daniel<!--not the link to the musician--> {{endash}} producer
+* [[Gene Shalit]] {{endash}} journalist
+* [[Cleto Escobedo III]] {{endash}} musician
+* Salli Newman {{endash}} executive
+* [[Sam Neill]] {{endash}} performer
+* [[Hal Williams]] {{endash}} performer
+* [[Tim Curry]] {{endash}} performer
+* [[Shelley Fabares]] {{endash}} performer
+* [[Bob Mackie]] {{endash}} costume designer
+* [[James Burrows]] {{endash}} director
+* [[Rob Reiner]] {{endash}} performer, producer, writer
+}}
+
+Earlier in the show, Parton was honored by [[Sally Field]], with [[Reba McEntire]] performing Parton's song "Appalachian Memories". At the beginning of the tribute, O'Hara was eulogized by Culkin, Murphy, and Levy. To close the segment,  Burrows and Reiner were honored by [[Jamie Lee Curtis]].
+
+==Notes==
+{{notelist}}
+
+==References==
+{{reflist}}
+
+==External links==
+*{{IMDb title|id=tt38983114}}
+*[https://www.televisionacademy.com Academy of Television Arts and Sciences website]
+
+{{Emmy Awards}}
+
+{{DEFAULTSORT:Primetime Emmy Awards, 078}}
+[[Category:September 2026 in the United States]]
+[[Category:2026 awards in the United States]]
+[[Category:2026 in American television]]
+[[Category:2026 in Los Angeles]]
+[[Category:2026 television awards]]
+[[Category:2026 television specials]]
+[[Category:Primetime Emmy Award ceremonies|078]]

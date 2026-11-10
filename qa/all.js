@@ -59,7 +59,9 @@ function stopServer(){ if(server && !server.killed) try{ server.kill(); }catch(e
     const t0 = Date.now();
     const r = spawnSync('node', [f], {
       encoding: 'utf8',
-      env: Object.assign({}, process.env, { TARGET }),
+      /* every suite runs against a stand-in relay, never production */
+      env: Object.assign({}, process.env, { TARGET,
+        NODE_OPTIONS: ((process.env.NODE_OPTIONS || '') + ' --require ' + path.join(DIR, 'lib', 'relay-mock.js')).trim() }),
       timeout: 240000
     });
     const out = (r.stdout || '') + (r.stderr || '');

@@ -7,7 +7,7 @@
      (HSTS, nosniff and clickjacking are not reachable from this host)
      and why assets.mailerlite.com is in script-src: the signup on
      /vmas uses JSONP, which loads a real <script> from that origin. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://assets.mailerlite.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://pasctuhasvvlabiwpjaj.supabase.co; form-action 'self'; base-uri 'self'; object-src 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -261,7 +261,9 @@ p.lede{font:400 13.5px/1.55 var(--f);color:var(--muted);margin:0}
 /* THE TILES. Chunky, two-up, pressable. Not a list of radio rows. */
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .tiles.one{grid-template-columns:1fr}
-.tile{position:relative;overflow:hidden;min-height:88px;padding:14px 13px;cursor:pointer;
+/* the top padding is the letter's room: a three-line label (a ten-nominee
+   award) grew up over the A/B/C */
+.tile{position:relative;overflow:hidden;min-height:88px;padding:28px 13px 14px;cursor:pointer;
   border-radius:var(--r);border:1.5px solid var(--line2);color:var(--ink);
   background:linear-gradient(160deg,var(--card2),var(--card));
   font:800 15.5px/1.28 var(--f);text-align:left;display:flex;align-items:flex-end;
@@ -757,6 +759,13 @@ body.nonotes .q-why{display:none}
 #hostpanel .hp-ctl{display:flex;flex-direction:column;gap:7px;padding:11px 0 12px;
   border-bottom:1px solid var(--line);margin-bottom:4px}
 #hostpanel .hp-now{color:var(--muted);letter-spacing:.06em}
+/* whether the players can see what you just called — the one line the
+   host must never have to guess at */
+#hostpanel .hp-relay{font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+  padding:9px 0;color:var(--muted);border-bottom:1px solid var(--line)}
+#hostpanel .hp-relay.ok{color:var(--green)}
+#hostpanel .hp-relay.bad{color:var(--red);font-weight:700}
+#hostpanel .hp-relay .hp-b{margin-left:6px}
 #hostpanel .hp-now b{color:var(--ink)}
 #hostpanel .hp-go{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.1em;
   padding:11px 12px;border-radius:8px;border:0;background:var(--amb);color:#1a1005;cursor:pointer}
@@ -1247,6 +1256,7 @@ SHOWS.push({
   act:"MTV VMAs", venue:"CBS · MTV · Paramount+", city:"Peacock Theater, LA",
   scale:"Broadcast · 27 Sept", gelA:"#b14aff", gelB:"#ffd23f",
   cap:"", broadcast:true,
+  discl:"Play-along &middot; real results &middot; not affiliated with MTV, CBS or Paramount",
   /* Snoop Dogg hosts. Madonna opens — announced 16 Sept, her first VMAs
      performance in 23 years. Also performing: Lisa, RAYE, Sienna Spiro,
      Shaboozey, GENER8ION, Gunna, Yung Lean. Nirvana take the Michael
@@ -1462,6 +1472,251 @@ SHOWS.push({
   heard:{}
 });
 
+/* ---- THE 60th CMA AWARDS — the first night with strangers in it ----
+   Wed 18 Nov 2026, ABC + Disney+, 7pm CT, Bridgestone Arena, Nashville.
+   Lainey Wilson hosts — and is up for Entertainer of the Year.
+
+   Nominees come off the published list, every one of them:
+     node host/resolve.js 60th_Annual_Country_Music_Association_Awards --all
+   (qa/resolve.js guards that this parse is right.)
+
+   THREE RULES LEARNED FROM THE VMA ROOM, which broke all three:
+   1. EVERY ANSWER IS EMPTY. The VMA bank shipped recall answers written
+      before the show — "Sabrina Carpenter" for Artist of the Year, which
+      Madonna won. The host calls every answer, live, from the panel.
+   2. A SEALED CALL SETTLES AFTER ITS AWARD, NEVER BEFORE. A card settles
+      the moment a player walks into its Gametime, and an uncalled card
+      voids for good. Video of the Year settled at The Envelope — the
+      break BEFORE it was handed out. Every award call here settles at
+      Credits, so it cannot depend on where in the running order the
+      award falls.
+   3. NO ROOM QUESTIONS. Nothing counts the room yet.
+
+   Count things that happen 0–3 times. A host cannot tally sixteen
+   performances one-handed, so nothing here asks them to.
+
+   Dolly Parton died on 25 August. The show will mark it, and nothing on
+   this sheet makes a game of that. ---------------------------------- */
+SHOWS.push({
+  key:"cmas", real:true,
+  act:"The 60th CMA Awards", venue:"ABC · Disney+", city:"Bridgestone Arena, Nashville",
+  scale:"Broadcast · 18 Nov", gelA:"#e8a33d", gelB:"#3db8e8",
+  cap:"", broadcast:true,
+  discl:"Play-along &middot; real results &middot; not affiliated with the CMA, ABC or Disney",
+  /* NOT A RUNNING ORDER. Nobody publishes one, and the VMA room's guessed
+     order was the last guess left in it. This only paces the strip. */
+  set:["Opening","Award","Performance","Award","Performance","Award",
+       "Performance","Award","Performance","Award","Performance","Entertainer of the Year"],
+  gaps:[
+   {n:"Gametime 01", t:"Red Carpet", when:"Pre-show · nothing has been handed out yet",
+    sub:"Nothing is decided yet, so this is the sheet. Seal your calls now — every one of them pays out at the credits, at five times the rate.",
+    worth:1, songsDone:0, mins:"60 min", q:[
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Who wins Entertainer of the Year?",
+     o:["Luke Combs","Cody Johnson","Ella Langley","Chris Stapleton","Lainey Wilson"], a:"",
+     lock:"Sealed. Settles at the credits.",
+     r:"The last award of the night.",
+     w:"Sealed three hours before it is read out, and the host of the show is one of the five."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Who wins Female Vocalist of the Year?",
+     o:["Miranda Lambert","Ella Langley","Megan Moroney","Kacey Musgraves","Lainey Wilson"], a:"",
+     lock:"Sealed. Settles at the credits.",
+     r:"Lainey was going for five in a row.",
+     w:"Only Miranda Lambert has ever won it five years running — and she is on this list too."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Ella Langley has nine nominations. How many does she win?",
+     o:["None","One","Two","Three or more"], a:"",
+     lock:"Sealed until the credits.",
+     r:"Nine nominations. The gap is the story.",
+     w:"Banded, never a raw tally. A count you carry through three hours of television."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"How many outfits does Lainey Wilson host in?",
+     o:["One or two","Three or four","Five or six","Seven or more"], a:"",
+     lock:"Sealed. Count along.",
+     r:"Every one of them counted.",
+     w:"A call you can only check by watching the host all night — which is the point."}
+   ]},
+
+   {n:"Gametime 02", t:"Cutaway", when:"First break · we'll be right back",
+    sub:"The show has opened and the first award is out. Three minutes of advertising — and every phone in the room comes up.",
+    worth:2, songsDone:2, mins:"3 min", q:[
+    {k:"Recall", mode:"recall", t:"How did the show open?",
+     o:["One performance","Several acts, one after another","The host, talking","A tribute"], a:"",
+     r:"You saw the first minute.",
+     w:"You either watched the first minute or you were still finding the remote."},
+    {k:"Recall", mode:"recall", t:"The first award of the night went to…",
+     o:["A woman","A man","A group or a duo"], a:"",
+     r:"First one on the board.",
+     w:"Resolves no matter which category they open with."},
+    {k:"Recall", mode:"recall", t:"Has Lainey changed outfits yet?",
+     o:["Yes","No"], a:"",
+     r:"Keep counting — you sealed a call on this.",
+     w:"The checkpoint for the sealed outfit call."}
+   ]},
+
+   {n:"Gametime 03", t:"Right Back", when:"Mid-show · the long break",
+    sub:"Halfway. The show goes to its longest break of the night.",
+    worth:3, songsDone:6, mins:"4 min", q:[
+    {k:"Tally", mode:"recall", t:"How many winners have thanked God so far?",
+     o:["None","One","Two","Three or more"], a:"",
+     r:"Now you cannot stop counting.",
+     w:"To answer it you have to have listened to every acceptance speech."},
+    {k:"Recall", mode:"recall", t:"Has a winner cried on stage yet?",
+     o:["Yes","No"], a:"",
+     r:"Somebody always does.",
+     w:"Everybody has an opinion and nobody can look it up."},
+    {k:"Recall", mode:"recall", t:"How many awards has Ella Langley won so far?",
+     o:["None","One","Two","Three or more"], a:"",
+     r:"The sealed call on her is still open.",
+     w:"A checkpoint on the card you sealed at the red carpet."}
+   ]},
+
+   {n:"Gametime 04", t:"The Envelope", when:"Last break · the biggest award is still to come",
+    sub:"The final break. Entertainer of the Year is on the other side of it, and you sealed a call on it hours ago.",
+    worth:4, songsDone:10, mins:"2 min", q:[
+    {k:"Recall", mode:"recall", t:"Has anybody been played off by the music tonight?",
+     o:["Yes","No"], a:"",
+     r:"The band always wins.",
+     w:"Only answerable if you sat through the speeches."},
+    {k:"Recall", mode:"recall", t:"Have Brooks & Dunn had their Lifetime Achievement moment yet?",
+     o:["Yes","No"], a:"",
+     r:"The first duo ever to get it.",
+     w:"Announced in September. Where it lands in the night is not."},
+    {k:"Predict", mode:"predict", settles:4, win:12, t:"Last call — does the Entertainer of the Year cry?",
+     o:["Yes","No"], a:"",
+     lock:"Sealed. Settles at the credits.", r:"The last ninety seconds of the night.",
+     w:"Two minutes of advertising turned into the tensest moment of somebody's evening."}
+   ]},
+
+   {n:"Gametime 05", t:"Credits", when:"After · the show is over",
+    sub:"The credits are rolling and nobody has moved yet. Every call you sealed tonight settles now, at five times the rate.",
+    worth:5, songsDone:12, mins:"20 min", q:[
+    {k:"Recall", mode:"recall", t:"Who took Male Vocalist of the Year?",
+     o:["Luke Combs","Cody Johnson","Chris Stapleton","Zach Top","Stephen Wilson Jr."], a:"",
+     r:"Stapleton was going for nine.",
+     w:"Handed out hours ago. Asked now, while the memory is still hot."},
+    {k:"Recall", mode:"recall", t:"Single of the Year went to…",
+     o:["\"Be Her\" — Ella Langley","\"Choosin' Texas\" — Ella Langley",
+        "\"I Knew It, I Knew You\" — Taylor Swift","\"Somewhere Over Laredo\" — Lainey Wilson",
+        "\"The Fall\" — Cody Johnson"], a:"",
+     r:"Four of the five were women, a first.",
+     w:"The first year women held four of the five Single of the Year slots."},
+    {k:"Recall", mode:"recall", t:"What closed the show?",
+     o:["A performance","Entertainer of the Year","The host signing off"], a:"",
+     r:"The last thing you saw.",
+     w:"The last thing the room saw, asked four minutes later."}
+   ]}
+  ],
+  heard:{}
+});
+
+/* ---- THE 27th LATIN GRAMMYS — the dry run for the relay ------------
+   Thu 12 Nov 2026, Univision, 8pm ET/PT (the West sees it on delay),
+   MGM Grand Garden Arena, Las Vegas. Roselyn Sánchez hosts, her tenth.
+   Announced performers: Anitta, Rosalía, Daddy Yankee, Juanes, Carín León.
+
+   Six days before the CMAs, played by the founder and a few phones, the
+   way the Emmys rehearsed the VMAs. What it is for: one host device, a
+   second and third phone, and proof that a call made on the first
+   reaches the others and settles their cards.
+
+   MOST CATEGORIES ARE HANDED OUT AT THE AFTERNOON PREMIERE, not on air.
+   Predictions stick to the televised four and all settle at Credits.
+     node host/resolve.js 27th_Annual_Latin_Grammy_Awards --all
+   Same three rules as the CMA room: empty answers, settle after the
+   award, no room questions. -------------------------------------- */
+SHOWS.push({
+  key:"latingrammys", real:true,
+  act:"The 27th Latin Grammys", venue:"Univision", city:"MGM Grand Garden Arena, Las Vegas",
+  scale:"Broadcast · 12 Nov", gelA:"#d4af37", gelB:"#e83d6f",
+  cap:"", broadcast:true,
+  discl:"Play-along &middot; real results &middot; not affiliated with the Latin Recording Academy or Univision",
+  set:["Opening","Award","Performance","Award","Performance","Award",
+       "Performance","Award","Performance","Award","Performance","Album of the Year"],
+  gaps:[
+   {n:"Gametime 01", t:"Red Carpet", when:"Pre-show · nothing on air has been decided",
+    sub:"Seal your calls now. Every one of them pays out at the credits, at five times the rate.",
+    worth:1, songsDone:0, mins:"60 min", q:[
+    /* TEN NOMINEES, TEN TILES. The Emmys cut eight to four and dropped
+       the winner. */
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Which record wins Record of the Year?",
+     o:["\"Ha Ha\" — Ca7riel & Paco Amoroso","\"¿Como Se Ama?\" — Jorge Drexler",
+        "\"Dime\" — Silvana Estrada","\"O Amor Nos Encontrou\" — Loulu Gilberto",
+        "\"Coleccionando Heridas\" — Karol G & Marco Antonio Solís","\"Femme Fatale\" — Mon Laferte",
+        "\"Desde Que Te Tengo\" — Carín León","\"Niño\" — Milo J",
+        "\"La Perla\" — Rosalía ft. Yahritza y Su Esencia","\"Alma\" — Elena Rose"], a:"",
+     lock:"Sealed. Settles at the credits.",
+     r:"Ten records. One of them.",
+     w:"All ten published nominees, because a winner left off the tiles makes the question unanswerable."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Which album wins Album of the Year?",
+     o:["Equilibrivm — Anitta","Free Spirits — Ca7riel & Paco Amoroso","Taracá — Jorge Drexler",
+        "Vendrán Suaves Lluvias — Silvana Estrada","Tropicoqueta — Karol G","Femme Fatale — Mon Laferte",
+        "Muda — Carín León","La Vida Era Más Corta — Milo J","¿Dónde es el After? — Rawayana","Lux — Rosalía"], a:"",
+     lock:"Sealed. Settles at the credits.",
+     r:"The big one.",
+     w:"Sealed hours before it is read out."},
+    {k:"Predict", mode:"predict", settles:4, win:30, t:"Karol G has seven nominations. How many does she win, premiere included?",
+     o:["None","One","Two","Three or more"], a:"",
+     lock:"Sealed until the credits.",
+     r:"Seven nominations. The gap is the story.",
+     w:"Banded. The host checks the full results list before calling it."}
+   ]},
+
+   {n:"Gametime 02", t:"Cutaway", when:"First break · we'll be right back",
+    sub:"The show has opened. Three minutes of advertising.",
+    worth:2, songsDone:2, mins:"3 min", q:[
+    {k:"Recall", mode:"recall", t:"How did the show open?",
+     o:["One performance","Several acts, one after another","The host, talking","A tribute"], a:"",
+     r:"You saw the first minute.",
+     w:"You either watched the first minute or you were still finding the remote."},
+    {k:"Recall", mode:"recall", t:"Has Roselyn Sánchez changed outfits yet?",
+     o:["Yes","No"], a:"",
+     r:"Her tenth time hosting.",
+     w:"Only answerable by watching."}
+   ]},
+
+   {n:"Gametime 03", t:"Right Back", when:"Mid-show · the long break",
+    sub:"Halfway. The longest break of the night.",
+    worth:3, songsDone:6, mins:"4 min", q:[
+    {k:"Tally", mode:"recall", t:"How many winners have thanked God so far?",
+     o:["None","One","Two","Three or more"], a:"",
+     r:"Now you cannot stop counting.",
+     w:"To answer it you have to have listened to every speech."},
+    {k:"Recall", mode:"recall", t:"Has a winner cried on stage yet?",
+     o:["Yes","No"], a:"",
+     r:"Somebody always does.",
+     w:"Everybody has an opinion and nobody can look it up."},
+    {k:"Recall", mode:"recall", t:"Has Daddy Yankee performed yet?",
+     o:["Yes","No"], a:"",
+     r:"Announced in October.",
+     w:"On the bill. Where he lands in the night is not published."}
+   ]},
+
+   {n:"Gametime 04", t:"The Envelope", when:"Last break · the biggest awards are still to come",
+    sub:"The final break. The calls you sealed at the red carpet are on the other side of it.",
+    worth:4, songsDone:10, mins:"2 min", q:[
+    {k:"Recall", mode:"recall", t:"Has a winner given part of their speech in English?",
+     o:["Yes","No"], a:"",
+     r:"You were listening.",
+     w:"Only answerable if you heard the speeches."},
+    {k:"Predict", mode:"predict", settles:4, win:12, t:"Last call — does the Album of the Year winner cry?",
+     o:["Yes","No"], a:"",
+     lock:"Sealed. Settles at the credits.", r:"The last ninety seconds.",
+     w:"Two minutes of advertising turned into the tensest moment of the night."}
+   ]},
+
+   {n:"Gametime 05", t:"Credits", when:"After · the show is over",
+    sub:"The credits are rolling. Every call you sealed tonight settles now, at five times the rate.",
+    worth:5, songsDone:12, mins:"20 min", q:[
+    {k:"Recall", mode:"recall", t:"How many outfits did the host wear tonight?",
+     o:["One or two","Three or four","Five or six","Seven or more"], a:"",
+     r:"Every one of them counted.",
+     w:"A count you could only keep by watching all three hours."},
+    {k:"Recall", mode:"recall", t:"What closed the show?",
+     o:["A performance","Album of the Year","The host signing off"], a:"",
+     r:"The last thing you saw.",
+     w:"The last thing the room saw, asked four minutes later."}
+   ]}
+  ],
+  heard:{}
+});
+
 /* The three live globals the whole engine reads. loadShow swaps them. */
 var SHOW, GAPS, HEARD, CEILING=0;
 /* ====================== STATE ======================================= */
@@ -1493,7 +1748,11 @@ function paintShow(){
   /* On a real artist's link this is not a demo of anything — it is their
      show, and the banner should say so. */
   var db=$('dbar');
-  if(db) db.innerHTML = SHOW.real
+  /* A broadcast room is paced by the host, so "you set the pace" was
+     false in exactly the rooms strangers will play. */
+  if(db) db.innerHTML = paced()
+    ? esc(SHOW.act)+' &mdash; each Gametime opens at the break'
+    : SHOW.real
     ? esc(SHOW.act)+' &mdash; you set the pace'
     : 'Demo &mdash; you are the show clock';
   /* The board's eyebrow is the venue you are actually in. */
@@ -1656,11 +1915,14 @@ function loadShow(i){
     ? 'What you were asked comes back and asks you again days later. That is not a gimmick &mdash; it is the part that makes the night stick.'
     : 'The songs you answered about come back on Spotify next week and ask you again. That is not a gimmick &mdash; it is the part that makes the night stick.';
   var _d=document.getElementById('discl');
-  if(_d) _d.innerHTML = SHOW.real
+  /* every real room names who it is NOT affiliated with — the Emmys
+     line was printing under the VMAs */
+  if(_d) _d.innerHTML = SHOW.discl ? SHOW.discl : SHOW.real
     ? 'Shadow run &middot; real results &middot; not affiliated with NBC, Peacock or the Television Academy'
     : 'Prototype &middot; demo data &middot; not affiliated with Live Nation or any artist';
   paintShow(); renderSetlist(); renderHold(); renderBoard(); renderHud(); renderPicker();
   renderGapButtons();
+  startRelay();
   for(var d=0;d<5;d++){ var b=$('d'+d); if(b){ b.style.display = d<GAPS.length?'':'none';
     var lb=GAPS[d]?GAPS[d].t.replace(/^The /,''):''; b.textContent=lb.charAt(0).toUpperCase()+lb.slice(1); b.classList.toggle('on',d===0); } }
 }
@@ -1686,7 +1948,14 @@ function readTruth(){
   try{ return JSON.parse(localStorage.getItem(truthKey()) || '{}'); }catch(e){ return {}; }
 }
 function applyTruth(){
-  var t = readTruth(), k;
+  var t = readTruth(), k, gi, qi, q;
+  /* Start from what the bank shipped with, so a call the host CHANGED
+     (or the relay replaced) does not survive as a stale q.a. */
+  for(gi=0; gi<GAPS.length; gi++) for(qi=0; qi<GAPS[gi].q.length; qi++){
+    q = GAPS[gi].q[qi];
+    if(!('_a0' in q)) q._a0 = q.a || '';
+    if(q.mode !== 'room') q.a = q._a0;
+  }
   for(k in t){
     if(!t.hasOwnProperty(k)) continue;
     var p = k.split(':'), gi = +p[0], qi = +p[1];
@@ -1701,6 +1970,7 @@ function setTruth(gi, qi, val){
   try{ localStorage.setItem(truthKey(), JSON.stringify(t)); }catch(e){}
   applyTruth();
   renderHostPanel();
+  pushState();
 }
 function hostOn(){
   try{ return new URLSearchParams(location.search).get('host') === '1'; }catch(e){ return false; }
@@ -1732,11 +2002,17 @@ function renderHostPanel(){
   var ctl = '';
   if(paced()){
     var op = openedGap(), last = op >= GAPS.length-1;
+    /* CALL FIRST, THEN OPEN. A recall question is graded the instant a
+       player answers it; one answered before the host has called it
+       voids. So the button says how many in the next Gametime are still
+       uncalled — it does not refuse, because a broadcast does not wait. */
+    var nc = last ? 0 : GAPS[op+1].q.filter(function(q){ return q.mode === 'recall' && !q.a; }).length;
     ctl = '<div class="hp-ctl">'
         + '<div class="hp-now">OPEN: <b>' + esc(GAPS[op].t) + '</b> · ' + (op+1) + ' of ' + GAPS.length + '</div>'
         + '<button type="button" class="hp-go"' + (last?' disabled':'')
         +   ' onclick="setOpenedGap(' + (op+1) + ')">'
-        +   (last ? 'ALL OPEN' : 'OPEN ' + esc(GAPS[op+1].t).toUpperCase()) + '</button>'
+        +   (last ? 'ALL OPEN' : 'OPEN ' + esc(GAPS[op+1].t).toUpperCase()
+                 + (nc ? ' · ' + nc + ' NOT CALLED YET' : '')) + '</button>'
         + '<button type="button" class="hp-rs" onclick="resetNight()">RESET NIGHT</button>'
         + '</div>';
   }
@@ -1745,7 +2021,7 @@ function renderHostPanel(){
     +   '<span>RESOLUTION PANEL · ' + (pending ? pending + ' UNSET' : 'ALL SET') + '</span>'
     +   '<span class="hp-caret">' + (wasOpen ? 'CLOSE ▾' : 'OPEN ▴') + '</span>'
     + '</button>'
-    + '<div class="hp-body">' + ctl + h + '</div>';
+    + '<div class="hp-body">' + relayLine() + ctl + h + '</div>';
 }
 /* Start the night again. It clears the pace and the play, and KEEPS the
    answers the host has already called — those are facts about the
@@ -1928,10 +2204,15 @@ function setOpenedGap(n){
      and the player replayed the same round. The button exists to say
      "the break has started"; it has to move the night. */
   goto(n);
+  pushState();
 }
-/* Only a room carrying real results is paced. The demo rooms are
-   illustrations and must stay walkable end to end. */
-function paced(){ return !!(SHOW && SHOW.real); }
+/* Only a BROADCAST is paced. The demo rooms are illustrations and must
+   stay walkable end to end — and so must an artist's own night from
+   advance.html. That one is real too, and from 15 Sept to 28 Oct this
+   read `SHOW.real`, so every artist link stopped dead after Gametime 1:
+   nobody holds a host panel at a club gig, so nothing ever opened the
+   second. It was found by rendering a generated link, on the live site. */
+function paced(){ return !!(SHOW && SHOW.real && SHOW.broadcast); }
 function gapOpen(i){ return !paced() || i <= openedGap(); }
 function renderGapButtons(){
   for(var d=0; d<5; d++){
@@ -1943,7 +2224,8 @@ function renderGapButtons(){
 }
 
 function goto(i){
-  if(!gapOpen(i)){ renderShut(i); navGo('gametime'); return; }
+  if(!gapOpen(i)){ RELAY.waiting = i; renderShut(i); navGo('gametime'); return; }
+  RELAY.waiting = null;
   stopClock(); S.gap=i; S.qi=-1; S.phase='hold'; S.locked=false;
   for(var d=0;d<5;d++) $('d'+d).classList.toggle('on', d===i);
   renderSetlist();
@@ -1965,7 +2247,8 @@ function renderShut(i){
    +'<div class="k">Not open yet</div>'
    +'<div class="big">'+esc(g.t)+'</div>'
    +(g.when?'<div class="when2">'+esc(g.when)+'</div>':'')
-   +'<div class="sub">This Gametime opens when the break actually comes. '
+   +'<div class="sub">This Gametime opens when the break actually comes'
+   +(relayOn()?' &mdash; stay on this screen and it opens itself. ':'. ')
    +'You cannot play ahead of the show &mdash; a call you seal now would settle '
    +'against something that has not happened.</div>'
    +'</div>'
@@ -2946,7 +3229,122 @@ var SRC = (function(){
    demo and leaves. An unknown or missing ?room= falls through to the
    default show, exactly as before. */
 var ROOMS = { bep:0, peas:0, karolg:1, 'karol-g':1, static:2, echo:2, club:2,
-              vmas:3, vma:3, mtv:3, emmys:4, emmy:4, nbc:4 };
+              vmas:3, vma:3, mtv:3, emmys:4, emmy:4, nbc:4,
+              cmas:5, cma:5, latingrammys:6, latin:6, 'latin-grammys':6 };
+
+/* ====================== THE RELAY ==================================
+   Until 28 Oct the host's calls lived in the host's own localStorage and
+   nowhere else. On anybody else's phone only the first Gametime ever
+   opened and every question voided, because no answer ever arrived — so
+   no night with a second person in it could have worked, the VMAs
+   included. Every suite drove host and player in ONE browser, which is
+   the one configuration guaranteed not to show it.
+
+   One row per show in Supabase (project fans-gametime): which Gametime
+   is open, and what the host has called. Anyone may READ it. Only
+   host_set() may write, and only with the host key; the table refuses
+   direct writes. The host key arrives once as ?k=, is kept on the host's
+   device, and is stripped from the address bar so it never ends up in a
+   screenshot or a shared link.
+
+   Players poll rather than hold a socket: one small GET every 15s while
+   the page is visible, and at once when a phone wakes. A live listener
+   per phone is how the sports sibling hit its concurrency ceiling on
+   19 Aug, and a 15s lag is invisible against a 3-minute ad break.
+
+   ONLY REAL ROOMS RELAY. The demo rooms are illustrations, walkable end
+   to end, and must never wait on a network. */
+var RELAY = {
+  url:'https://pasctuhasvvlabiwpjaj.supabase.co',
+  key:'sb_publishable_q129c5nbZOWxKs6j6DnKWw_b-T_mLJ3',
+  every:15000, seq:0, dirty:false, status:'', waiting:null, timer:null
+};
+(function(){
+  try{
+    var p = new URLSearchParams(location.search), k = p.get('k');
+    if(k){
+      localStorage.setItem('fg.hostkey', k);
+      p.delete('k');
+      var q = p.toString();
+      history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash);
+    }
+  }catch(e){}
+})();
+function hostKey(){ try{ return localStorage.getItem('fg.hostkey') || ''; }catch(e){ return ''; } }
+function relayOn(){ return paced() && !!(SHOW && SHOW.key) && typeof fetch === 'function'; }
+function relayHdrs(){ return { apikey: RELAY.key, 'Content-Type': 'application/json' }; }
+
+function pullState(){
+  if(!relayOn() || document.hidden) return;
+  var seq = RELAY.seq, key = SHOW.key;
+  fetch(RELAY.url + '/rest/v1/show_state?select=opened,truth&show_key=eq.' + encodeURIComponent(key),
+        { headers: relayHdrs(), cache: 'no-store' })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(rows){
+      /* a pull that left before the host's last push would undo it */
+      if(seq !== RELAY.seq || !SHOW || SHOW.key !== key) return;
+      if(hostOn() && RELAY.dirty) return;
+      mergeState(rows && rows[0]);
+    })
+    .catch(function(){ /* the next poll is the retry */ });
+}
+/* The remote row is the truth about the broadcast. It REPLACES the local
+   calls rather than merging, so a host who corrects a wrong call
+   corrects it on every phone. */
+function mergeState(row){
+  if(!row) return;
+  try{ localStorage.setItem(truthKey(), JSON.stringify(row.truth || {})); }catch(e){}
+  applyTruth();
+  var was = openedGap(), now = Math.max(0, Math.min(GAPS.length-1, +row.opened || 0));
+  if(now !== was){
+    try{ localStorage.setItem('fg.open.' + SHOW.key, String(now)); }catch(e){}
+    renderGapButtons();
+    if(now > was) buzz([10,40,18]);
+    /* only someone standing at a shut door is moved through it — never a
+       player halfway through a question */
+    if(RELAY.waiting !== null && gapOpen(RELAY.waiting)){
+      var w = RELAY.waiting; RELAY.waiting = null; goto(w);
+    }
+  }
+  if(hostOn()) renderHostPanel();
+}
+/* The host always sends the WHOLE state, so a retry is the same call and
+   a lost response cannot leave the row half-written. */
+function pushState(){
+  if(!relayOn() || !hostOn()) return;
+  var k = hostKey();
+  if(!k){ RELAY.status = 'nokey'; renderHostPanel(); return; }
+  RELAY.seq++; RELAY.dirty = true; RELAY.status = 'sending'; renderHostPanel();
+  var seq = RELAY.seq;
+  fetch(RELAY.url + '/rest/v1/rpc/host_set', {
+    method:'POST', headers: relayHdrs(), cache:'no-store',
+    body: JSON.stringify({ p_show: SHOW.key, p_key: k, p_opened: openedGap(), p_truth: readTruth() })
+  })
+  .then(function(r){ if(!r.ok) throw new Error(r.status === 401 ? 'key' : 'HTTP ' + r.status); return r.json(); })
+  .then(function(){ if(seq === RELAY.seq){ RELAY.dirty = false; RELAY.status = 'sent'; renderHostPanel(); } })
+  .catch(function(e){ if(seq === RELAY.seq){ RELAY.status = (e && e.message === 'key') ? 'badkey' : 'failed'; renderHostPanel(); } });
+}
+function relayLine(){
+  if(!relayOn()) return '';
+  var s = RELAY.status, k = hostKey(), t, c;
+  if(!k || s === 'nokey'){ t = 'LOCAL ONLY · no host key on this device — players cannot see your calls'; c = 'bad'; }
+  else if(s === 'badkey'){ t = 'REFUSED · this host key is wrong — players cannot see your calls'; c = 'bad'; }
+  else if(s === 'failed'){ t = 'NOT SENT · players have not seen your last call'; c = 'bad'; }
+  else if(s === 'sending'){ t = 'SENDING…'; c = ''; }
+  else if(s === 'sent'){ t = 'SENT · every phone has this within 15 seconds'; c = 'ok'; }
+  else { t = 'CONNECTED · nothing called yet'; c = ''; }
+  return '<div class="hp-relay ' + c + '">' + t
+    + (c === 'bad' && k && s !== 'badkey' ? ' <button type="button" class="hp-b" onclick="pushState()">SEND AGAIN</button>' : '')
+    + '</div>';
+}
+function startRelay(){
+  if(RELAY.timer) clearInterval(RELAY.timer);
+  RELAY.timer = null;
+  if(!relayOn()) return;
+  pullState();
+  RELAY.timer = setInterval(pullState, RELAY.every);
+}
+document.addEventListener('visibilitychange', function(){ if(!document.hidden) pullState(); });
 
 /* ====================== BOOT ====================================== */
 var URLSHOW = showFromUrl();
